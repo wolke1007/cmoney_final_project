@@ -38,12 +38,12 @@ public class AuthencateController {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-    @RequestMapping({ "/hello" })
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String firstPage() {
         return "Hello World";
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         try {

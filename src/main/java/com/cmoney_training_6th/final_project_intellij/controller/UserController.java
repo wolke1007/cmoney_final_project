@@ -1,7 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.controller;
 
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.model.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
