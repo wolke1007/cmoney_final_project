@@ -13,7 +13,7 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int account_id;
 
-    @Column(unique=true)
+    @Column(nullable=false, unique=true)
     private String social_license_id;
 
     @Column(length=50)
@@ -25,6 +25,7 @@ public class User {
     @Column(nullable=false, length=50)
     private String last_name;
 
+    @Column(nullable=false)
     private String password;
 
     private String address_city;
@@ -33,13 +34,14 @@ public class User {
 
     private String address_line;
 
+    @Column(nullable=false)
     private String phone;
 
-    @Column(unique=true)
+    @Column(nullable=false, unique=true)
     private String username;
 
     @Column(length=50)
-    private String role;
+    private String role = "ROLE_USER";
 
     private boolean active = true;
 
