@@ -34,7 +34,7 @@ public class UserController {
             @RequestParam String address_area,
             @RequestParam String address_line,
             @RequestParam String phone,
-            @RequestParam String email,
+            @RequestParam String username,
             @RequestParam String role) throws Exception
     {
         // @ResponseBody means the returned String is the response, not a view name
@@ -68,7 +68,7 @@ public class UserController {
             n.setAddress_city(address_city);
             n.setAddress_line(address_line);
             n.setPhone(phone);
-            n.setEmail(email);
+            n.setUsername(username);
             n.setRole(role);
             userRepository.save(n);
             return "Saved";
