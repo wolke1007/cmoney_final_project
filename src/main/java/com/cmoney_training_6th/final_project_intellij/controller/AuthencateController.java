@@ -1,8 +1,8 @@
 package com.cmoney_training_6th.final_project_intellij.controller;
 
 import com.cmoney_training_6th.final_project_intellij.MyUserDetailsService;
-import com.cmoney_training_6th.final_project_intellij.model.AuthenticationRequest;
-import com.cmoney_training_6th.final_project_intellij.model.AuthenticationResponse;
+import com.cmoney_training_6th.final_project_intellij.AuthenticationRequest;
+import com.cmoney_training_6th.final_project_intellij.AuthenticationResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

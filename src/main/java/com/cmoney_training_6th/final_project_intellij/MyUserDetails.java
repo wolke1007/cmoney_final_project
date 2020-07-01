@@ -1,5 +1,6 @@
-package com.cmoney_training_6th.final_project_intellij.model;
+package com.cmoney_training_6th.final_project_intellij;
 
+import com.cmoney_training_6th.final_project_intellij.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

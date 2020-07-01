@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij.model;
+package com.cmoney_training_6th.final_project_intellij;
 
 import java.io.Serializable;
 
