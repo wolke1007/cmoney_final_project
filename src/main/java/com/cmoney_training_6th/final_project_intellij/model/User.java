@@ -6,12 +6,12 @@ import javax.persistence.*;
 
 
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "account")
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int account_id;
+    private int id;
 
     @Column(nullable=false, unique=true)
     private String social_license_id;
@@ -45,12 +45,12 @@ public class User {
 
     private boolean active = true;
 
-    public int getAccount_id() {
-        return account_id;
+    public int getId() {
+        return id;
     }
 
-    public void setAccount_id(int account_id) {
-        this.account_id = account_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSocial_license_id() {

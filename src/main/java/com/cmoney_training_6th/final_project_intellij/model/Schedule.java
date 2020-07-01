@@ -1,6 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -9,7 +10,7 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int schedule_id;
+    private int id;
 
     @Column(nullable=false, length=50)
     private String day;
