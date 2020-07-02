@@ -15,22 +15,23 @@ public class Hospital {
     @JoinColumn(name="owner_user_id")
     private User user;
 
-    @Column(nullable=false, unique=true)
+//    @Column(nullable=false, unique=true)
+    @Column(unique=true)
     private int uni_serial_id;
 
-    @Column(nullable=false, unique=true)
+//    @Column(nullable=false, columnDefinition="nvarchar(255)")
+    @Column(columnDefinition="nvarchar(255)")
     private String name;
 
-    @Column(nullable=false, unique=true)
     private String phone;
 
-    @Column(nullable=false, unique=true)
+    @Column(columnDefinition="nvarchar(255)")
     private String address_city;
 
-    @Column(nullable=false, unique=true)
+    @Column(columnDefinition="nvarchar(255)")
     private String address_area;
 
-    @Column(nullable=false, unique=true)
+    @Column(columnDefinition="nvarchar(255)")
     private String address_line;
 
     public int getId() {

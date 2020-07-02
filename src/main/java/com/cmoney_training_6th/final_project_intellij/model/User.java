@@ -13,28 +13,33 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @Column(nullable=false, unique=true)
+//    @Column(nullable=false, unique=true)
     private String social_license_id;
 
     @Column(length=50)
     private String join_time;
 
-    @Column(nullable=false, length=50)
+//    @Column(nullable=false, columnDefinition="nvarchar(50)")
+    @Column(columnDefinition="nvarchar(50)")
     private String first_name;
 
-    @Column(nullable=false, length=50)
+//    @Column(nullable=false, columnDefinition="nvarchar(50)")
+    @Column(columnDefinition="nvarchar(50)")
     private String last_name;
 
     @Column(nullable=false)
     private String password;
 
+    @Column(columnDefinition="nvarchar(255)")
     private String address_city;
 
+    @Column(columnDefinition="nvarchar(255)")
     private String address_area;
 
+    @Column(columnDefinition="nvarchar(255)")
     private String address_line;
 
-    @Column(nullable=false)
+//    @Column(nullable=false)
     private String phone;
 
     @Column(nullable=false, unique=true)

@@ -1,5 +1,6 @@
-package com.cmoney_training_6th.final_project_intellij;
+package com.cmoney_training_6th.final_project_intellij.services;
 
+import com.cmoney_training_6th.final_project_intellij.MyUserDetails;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

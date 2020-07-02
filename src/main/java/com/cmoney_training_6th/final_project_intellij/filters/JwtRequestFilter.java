@@ -1,7 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.filters;
 
 
-import com.cmoney_training_6th.final_project_intellij.MyUserDetailsService;
+import com.cmoney_training_6th.final_project_intellij.services.MyUserDetailsService;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -12,10 +12,11 @@ public class Schedule {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @Column(nullable=false, length=50)
+//    @Column(nullable=false, length=50)
+    @Column(length=50)
     private String day;
 
-    @Column(nullable=false, length=50)
+
     private String time;
 
 }
