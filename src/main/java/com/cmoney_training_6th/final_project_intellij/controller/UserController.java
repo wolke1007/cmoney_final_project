@@ -4,14 +4,20 @@ import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
-import com.cmoney_training_6th.final_project_intellij.util.ErrorResponse;
+import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
@@ -31,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping(path="/regist/user") // Map ONLY POST Requests
-    public ErrorResponse addNewUser (
+    public CommonResponse addNewUser (
             HttpServletResponse response,
             @RequestParam String username,
             @RequestParam String password,
@@ -40,12 +46,12 @@ public class UserController {
             ) throws Exception
     {
         ValidateParameter checkPassword = new ValidateParameter("password", password);
-        if(!checkPassword.strLongerThan(50)
-                .strShorterThan(0)
-                .getResult()){
-            response.setStatus(400);
-            return new ErrorResponse(checkPassword.toString(),400);
-        }
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
         try {
             User n = new User();
             n.setUsername(username);
@@ -53,10 +59,10 @@ public class UserController {
             n.setJoin_time(join_time);
             n.setRole(role);
             userRepository.save(n);
-            return new ErrorResponse("Saved", 200);
+            return new CommonResponse("Saved", 200);
         }catch (DataIntegrityViolationException e) {
             response.setStatus(400);
-            return new ErrorResponse("Key duplicated", 400);
+            return new CommonResponse("Key duplicated", 400);
         }
     }
 
@@ -65,12 +71,28 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping(path="/find/user/name")
-    public ErrorResponse findUserByUserName(@RequestParam String username) {
-        if(userRepository.findByUsername(username).equals(Optional.empty())){
-            return new ErrorResponse("not exist", 200);
-        }
-        return new ErrorResponse("exist", 200);
+//    @PostMapping(path="/find/user/name")
+//    public ErrorResponse findUserByUserName(@RequestParam String username) {
+//        if(userRepository.findByUsername(username).equals(Optional.empty())){
+//            return new ErrorResponse(userRepository.findByUsernameContaining(username).stream(), 200);
+//        }
+//        return new ErrorResponse(userRepository.findByUsernameContaining(username).stream(), 200);
+//    }
+
+    @PostMapping(path="/find/user/id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String findUserById(@RequestParam int id) throws JSONException {
+        Optional<User> test = userRepository.findById(id);
+        Gson g = new Gson();
+        JsonElement je = g.toJsonTree(test).getAsJsonObject().get("value");
+        JsonObject json = (JsonObject)g.toJsonTree(test).getAsJsonObject().get("value");
+        json.remove("password");
+        json.remove("role");
+        json.add("je", je);
+        System.out.println(json);
+        JsonObject newJson = new JsonObject();
+        newJson.addProperty("status", 200);
+        newJson.add("message", json);
+        return newJson.toString();
     }
 
     @PostMapping(path="/find/user/role")
@@ -82,7 +104,7 @@ public class UserController {
     @PostMapping(path="/find/user/doctor")
     public Optional<Doctor> findDoctorByUserId(HttpServletResponse response, @RequestParam int id) {
 //        System.out.println(doctorRepository.findByUserId(id));
-        return doctorRepository.findById(id);
+        return doctorRepository.findByUser_id(id);
     }
 
 }

@@ -17,8 +17,8 @@ public class ValidateParameter {
     public ValidateParameter strLongerThan(int max){
         if(this.str.length() > max){
             this.result = false;
-            System.out.println("max:" + max);
-            System.out.println("this.str.length():" + this.str.length());
+            System.out.println("max:" + max); // DEBUG
+            System.out.println("this.str.length():" + this.str.length()); // DEBUG
             this.resultMsg+=" longer than " + String.valueOf(max);
         }
         return this;
