@@ -49,15 +49,14 @@ public class HospitalController {
     }
 
     @GetMapping(path = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String addNewUser(@RequestParam(value = "hospital_id")
-                                     int hospital_id) {
+    public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
+                                                       int hospital_id) {
         JsonObject retJson = new JsonObject();
         Gson g = new Gson();
         JsonObject json;
         JsonObject doctorJson;
         JsonObject reservationJson;
         int cnt = 0;
-        System.out.println("hostpital_id [" + hospital_id + "]");
         List<Doctor> doctor = doctorRepository.findByHospital_id(hospital_id);
         List<Roaster> roasters;
         try {
@@ -87,47 +86,11 @@ public class HospitalController {
         return new CommonResponse(retJson, 200).toString();
     }
 
-    @GetMapping(path = "/all") // debug 用
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-//    @PostMapping(path="/find/user/name")
-//    public ErrorResponse findUserByUserName(@RequestParam String username) {
-//        if(userRepository.findByUsername(username).equals(Optional.empty())){
-//            return new ErrorResponse(userRepository.findByUsernameContaining(username).stream(), 200);
-//        }
-//        return new ErrorResponse(userRepository.findByUsernameContaining(username).stream(), 200);
-//    }
-
-    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-    @PostMapping(path = "/find/id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String findUserById(@RequestParam int id) throws JSONException {
-        Optional<User> test = userRepository.findById(id);
-        Gson g = new Gson();
-        JsonElement je = g.toJsonTree(test).getAsJsonObject().get("value");
-        JsonObject json = (JsonObject) g.toJsonTree(test).getAsJsonObject().get("value");
-        json.remove("password");
-        json.remove("role");
-        json.add("je", je);
-        System.out.println(json);
+    @PutMapping(path = "/reservation/booking", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String bookingByDoctorId(@RequestParam(value = "hospital_id")
+                                            int hospital_id) {
         JsonObject newJson = new JsonObject();
-        newJson.addProperty("status", 200);
-        newJson.add("message", json);
-        newJson.add("message", json);
-        return newJson.toString();
+        newJson.addProperty("new json test", 123456789);
+        return new CommonResponse("heeehehehee", 200).toString();
     }
-
-    @PostMapping(path = "/find/role")
-    public Iterable<User> findUsersByRole(HttpServletResponse response, @RequestParam String role) {
-        System.out.println(userRepository.findAllByRoleOrderByUsername(role));
-        return userRepository.findAllByRoleOrderByUsername(role);
-    }
-
-    @PostMapping(path = "/find/doctor")
-    public Optional<Doctor> findDoctorByUserId(HttpServletResponse response, @RequestParam int id) {
-//        System.out.println(doctorRepository.findByUserId(id));
-        return doctorRepository.findByUser_id(id);
-    }
-
 }
