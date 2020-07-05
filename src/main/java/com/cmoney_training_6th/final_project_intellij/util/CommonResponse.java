@@ -3,34 +3,38 @@ package com.cmoney_training_6th.final_project_intellij.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class CommonResponse<T> extends JsonElement{
+public class CommonResponse{
 
-    private T message;
     private int status;
+    private JsonObject newJson;
 
-    public CommonResponse(T message, int status){
-        this.message = message;
+    public CommonResponse(String message, int status){
         this.status = status;
+        this.newJson = new JsonObject();
+        this.newJson.addProperty("status", status);
+        setJsonMessage(message);
     }
 
-    public T getMessage() {
-        return message;
-    }
-
-    public void setMessage(T message) {
-        this.message = message;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
+    public CommonResponse(JsonObject message, int status){
         this.status = status;
+        this.newJson = new JsonObject();
+        this.newJson.addProperty("status", status);
+        setJsonMessage(message);
+    }
+
+    public void setJsonMessage(String message){
+        System.out.println("message input is not JsonObject");
+        this.newJson.addProperty("message", message.toString());
+    }
+
+    public void setJsonMessage(JsonObject message){
+        System.out.println("message input is JsonObject");
+        this.newJson.add("message", message);
     }
 
     @Override
-    public JsonElement deepCopy() {
-        return null;
+    public String toString() {
+        return newJson.toString();
     }
+
 }

@@ -1,5 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 
@@ -20,6 +22,12 @@ public class Doctor {
     private Hospital hospital;
 
     private String doctor_license;
+
+    @Column(columnDefinition="nvarchar(255)")
+    private String skill;
+
+    @Column(columnDefinition="nvarchar(1000)")
+    private String experience;
 
     public int getId() {
         return id;
