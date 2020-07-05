@@ -1,13 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.controller.user;
 
-import com.cmoney_training_6th.final_project_intellij.model.Doctor;
-import com.cmoney_training_6th.final_project_intellij.model.Reservation;
-import com.cmoney_training_6th.final_project_intellij.model.Roaster;
-import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.ReservationRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.RoasterRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.model.*;
+import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -20,11 +14,13 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
@@ -37,9 +33,12 @@ public class HospitalController {
 
     @Autowired
     private RoasterRepository roasterRepository;
-
     @Autowired
     private DoctorRepository doctorRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
     public String acHello() {
@@ -86,11 +85,34 @@ public class HospitalController {
         return new CommonResponse(retJson, 200).toString();
     }
 
-    @PutMapping(path = "/reservation/booking", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String bookingByDoctorId(@RequestParam(value = "hospital_id")
-                                            int hospital_id) {
-        JsonObject newJson = new JsonObject();
-        newJson.addProperty("new json test", 123456789);
-        return new CommonResponse("heeehehehee", 200).toString();
+    @PutMapping(path = "/booking", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String bookingByDoctorId(
+            @RequestParam int user_id,
+            @RequestParam int doctor_id,
+            @RequestParam String day,
+            @RequestParam String time) throws Exception, NoSuchElementException {
+//        String bookingNum = "";
+//        JsonObject newJson = new JsonObject();
+//        List<Roaster> roaster = roasterRepository.findByDoctor_id(doctor_id);
+//        Gson g = new Gson();
+//        JsonObject json;
+        int bookingId;
+        Reservation reservation = new Reservation();
+        Optional<Doctor> doctor = doctorRepository.findById(doctor_id);
+        Optional<User> user = userRepository.findById(user_id);
+        Optional<Schedule> schedule = scheduleRepository.findByDayAndTime(day, time);
+        try {
+            reservation.setUser(user.get());
+            reservation.setDoctor(doctor.get());
+            reservation.setSchedule(schedule.get());
+            bookingId = reservationRepository.save(reservation).getId();
+        }
+        catch (NoSuchElementException e) {
+            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
+        }
+        catch (Exception e) {
+            return new CommonResponse("booking fail because: " + e, 404).toString();
+        }
+        return new CommonResponse("reservation_id: " + bookingId, 200).toString();
     }
 }

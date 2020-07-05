@@ -127,4 +127,12 @@ public class Pet {
     public void setOwn_date(String own_date) {
         this.own_date = own_date;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

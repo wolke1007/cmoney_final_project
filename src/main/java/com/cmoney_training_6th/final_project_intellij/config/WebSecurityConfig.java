@@ -55,7 +55,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/user/**").hasRole("DOCTOR")
 //                .antMatchers("/user/**").hasRole("STAFF")
 //                .antMatchers("/user/**").hasRole("ADMIN")
-//                .antMatchers("/admin").hasRole("ADMIN")
+//                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
                 .exceptionHandling().and()
                 .sessionManagement()

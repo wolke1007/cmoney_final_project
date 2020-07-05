@@ -1,6 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -19,7 +20,9 @@ public class Reservation {
     @JoinColumn(name="doctor_id")
     private Doctor doctor;
 
-    private int patient_count;
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name="user_id")
+    private User user;
 
     public int getId() {
         return id;
@@ -45,11 +48,11 @@ public class Reservation {
         this.doctor = doctor;
     }
 
-    public int getPatient_count() {
-        return patient_count;
+    public User getUser() {
+        return user;
     }
 
-    public void setPatient_count(int patient_count) {
-        this.patient_count = patient_count;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

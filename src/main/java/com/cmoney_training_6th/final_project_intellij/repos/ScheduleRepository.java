@@ -7,6 +7,7 @@ package com.cmoney_training_6th.final_project_intellij.repos;
 
 import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.Schedule;
+import com.cmoney_training_6th.final_project_intellij.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-    @Modifying
-    @Query("delete from Schedule u where 1 = 1")
-    void deleteSchedules();
+    Optional<Schedule> findByDayAndTime(String day, String time);
 }

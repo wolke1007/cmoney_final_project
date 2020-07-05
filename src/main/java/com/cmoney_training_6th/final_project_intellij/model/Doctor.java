@@ -60,4 +60,20 @@ public class Doctor {
     public void setDoctor_license(String doctor_license) {
         this.doctor_license = doctor_license;
     }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
 }
