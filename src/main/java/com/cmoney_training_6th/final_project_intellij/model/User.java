@@ -31,6 +31,9 @@ public class User {
     private String password;
 
     @Column(columnDefinition="nvarchar(255)")
+    private String school;
+
+    @Column(columnDefinition="nvarchar(255)")
     private String address_city;
 
     @Column(columnDefinition="nvarchar(255)")
@@ -41,6 +44,9 @@ public class User {
 
 //    @Column(nullable=false)
     private String phone;
+
+    @Column(length=50)
+    private String birthday;
 
     @Column(nullable=false, unique=true)
     private String username;
@@ -153,4 +159,21 @@ public class User {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
 }

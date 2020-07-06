@@ -1,5 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+
 import javax.persistence.*;
 
 

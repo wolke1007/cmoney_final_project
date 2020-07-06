@@ -69,12 +69,12 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
     public String findUserById(@RequestParam int id) {
         Optional<User> test = userRepository.findById(id);
         Gson g = new Gson();

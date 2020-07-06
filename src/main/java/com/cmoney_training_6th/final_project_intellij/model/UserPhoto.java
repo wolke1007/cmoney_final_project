@@ -4,18 +4,17 @@ import javax.persistence.*;
 
 
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "picture")
-public class Picture {
+@Table(name = "user_photo")
+public class UserPhoto {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="pet_id")
-    private Hospital hospital;
+    @JoinColumn(name="user_id")
+    private User user;
 
-    @Column(nullable=false)
     private String path;
 
     public int getId() {
@@ -26,12 +25,12 @@ public class Picture {
         this.id = id;
     }
 
-    public Hospital getHospital() {
-        return hospital;
+    public User getUser() {
+        return user;
     }
 
-    public void setHospital(Hospital hospital) {
-        this.hospital = hospital;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getPath() {
