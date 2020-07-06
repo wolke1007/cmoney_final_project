@@ -6,12 +6,15 @@ import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 //@Controller // This means that this class is a Controller
@@ -70,6 +73,35 @@ public class AdminPetController {
             return new CommonResponse("owner " + username + " not found", 404).toString();
         }
         return new CommonResponse("success", 200).toString();
+    }
+
+    @GetMapping(path = "/pet/list", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String getAllPet() {
+//        ValidateParameter checkPassword = new ValidateParameter("password", username);
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
+        Pet p = new Pet();
+        List<Pet> pets = petRepository.findAll();
+        JsonObject json = new JsonObject();
+        Gson g = new Gson();
+        int pet_cnt = 0;
+        for(Pet pet : pets){
+            JsonObject petJson =g.toJsonTree(pet).getAsJsonObject();
+            String username = pet.getUser().getUsername();
+            String phone = pet.getUser().getPhone();
+            String lastName = pet.getUser().getLast_name();
+            String firstName = pet.getUser().getFirst_name();
+            petJson.remove("user");
+            petJson.addProperty("owner_email", username);
+            petJson.addProperty("owner_phone", phone);
+            petJson.addProperty("owner_name", lastName + firstName);
+            json.add(Integer.toString(pet_cnt++), petJson);
+        }
+        return new CommonResponse(json, 200).toString();
     }
 //
 //    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
