@@ -74,7 +74,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping(path = "/find/id", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE)
     public String findUserById(@RequestParam int id) {
         Optional<User> test = userRepository.findById(id);
         Gson g = new Gson();
@@ -89,16 +89,10 @@ public class UserController {
         return new CommonResponse(newJson, 200).toString();
     }
 
-    @PostMapping(path = "/find/role", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
+    @GetMapping(path = "/by/role", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
     public Iterable<User> findUsersByRole(HttpServletResponse response, @RequestParam String role) {
         System.out.println(userRepository.findAllByRoleOrderByUsername(role));
         return userRepository.findAllByRoleOrderByUsername(role);
-    }
-
-    @PostMapping(path = "/find/doctor", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<Doctor> findDoctorByUserId(HttpServletResponse response, @RequestParam int id) {
-//        System.out.println(doctorRepository.findByUserId(id));
-        return doctorRepository.findByUser_id(id);
     }
 
 }

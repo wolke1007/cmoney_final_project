@@ -6,10 +6,12 @@ package com.cmoney_training_6th.final_project_intellij.repos;
 // CRUD refers Create, Read, Update, Delete
 
 import com.cmoney_training_6th.final_project_intellij.model.Doctor;
+import com.cmoney_training_6th.final_project_intellij.model.Hospital;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface HospitalRepository extends JpaRepository<Doctor, Integer> {
-    Optional<Doctor> findByUser_id(int user_id);
+public interface HospitalRepository extends JpaRepository<Hospital, Integer> {
+
 }

@@ -24,6 +24,9 @@ public class Reservation {
     @JoinColumn(name="user_id")
     private User user;
 
+    @JoinColumn(name="date")
+    private String date;
+
     public int getId() {
         return id;
     }
@@ -54,5 +57,13 @@ public class Reservation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
