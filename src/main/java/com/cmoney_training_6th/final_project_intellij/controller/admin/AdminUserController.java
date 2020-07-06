@@ -38,28 +38,28 @@ public class AdminUserController {
     private UserPhotoRepository userPhotoRepository;
 
     @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String acHello(@RequestParam String utf8) {
+    public String adminUserHello(@RequestParam String utf8) {
         return "account hello 中文測試" + utf8;
     }
 
     @PutMapping(path = "/new/member", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewUser(
             HttpServletResponse response,
-            @RequestParam String social_license_id,
+            @RequestParam(required = false) String social_license_id,
             @RequestParam String username,
             @RequestParam String password,
-            @RequestParam String phone,
+            @RequestParam(required = false) String phone,
             @RequestParam String name,
-            @RequestParam String doctor_lincense,
+            @RequestParam(required = false) String doctor_lincense,
             @RequestParam String role,
-            @RequestParam String school,
-            @RequestParam String birthday,
+            @RequestParam(required = false) String school,
+            @RequestParam(required = false) String birthday,
             @RequestParam String join_time,
             @RequestParam String address_city,
             @RequestParam String address_area,
-            @RequestParam String address_line,
-            @RequestParam String experience,
-            @RequestParam String skill,
+            @RequestParam(required = false) String address_line,
+            @RequestParam(required = false) String experience,
+            @RequestParam(required = false) String skill,
             @RequestParam int hospital_id
     ) {
         ValidateParameter checkPassword = new ValidateParameter("password", password);
