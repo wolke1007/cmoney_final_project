@@ -12,6 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Integer> {
-    Optional<MedicalRecord> findByHospital_id(int hospital_id);
-    Optional<MedicalRecord> findByPet_id(int pet_id);
+
 }

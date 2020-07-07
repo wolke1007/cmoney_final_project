@@ -12,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RoasterRepository extends JpaRepository<Roaster, Integer> {
-    List<Roaster> findByDoctor_id(int doctor_id);
+
 }

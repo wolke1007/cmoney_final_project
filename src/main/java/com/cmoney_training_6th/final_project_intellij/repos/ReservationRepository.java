@@ -13,5 +13,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-    List<Reservation> findByDoctor_id(int doctor_id);
+
 }

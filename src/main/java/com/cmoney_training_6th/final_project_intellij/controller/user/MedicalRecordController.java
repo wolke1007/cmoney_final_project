@@ -2,6 +2,7 @@ package com.cmoney_training_6th.final_project_intellij.controller.user;
 
 import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.MedicalRecord;
+import com.cmoney_training_6th.final_project_intellij.model.Pet;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.MedicalRecordRepository;
@@ -36,12 +37,12 @@ public class MedicalRecordController {
     @PostMapping(path = "/pet") // Map ONLY POST Requests
     public CommonResponse addNewUser(
             HttpServletResponse response,
-            @RequestParam int pet_id
+            @RequestBody Pet pet
     ) throws Exception {
 
         try {
             MedicalRecord m = new MedicalRecord();
-            Optional<MedicalRecord> test = medicalRecordRepository.findByPet_id(pet_id);
+            Optional<MedicalRecord> test = medicalRecordRepository.findByPet_id(pet.getId());
             return new CommonResponse("Saved", 200);
         } catch (DataIntegrityViolationException e) {
             response.setStatus(400);

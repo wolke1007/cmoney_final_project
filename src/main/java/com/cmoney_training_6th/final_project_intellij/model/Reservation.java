@@ -1,9 +1,15 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Optional;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "reservation")
 public class Reservation {
@@ -12,58 +18,13 @@ public class Reservation {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="schedule_id")
-    private Schedule schedule;
+    private int doctor_id; //FK
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="doctor_id")
-    private Doctor doctor;
+    private int user_id; //FK
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="user_id")
-    private User user;
+    private int schedule_id; //FK
 
     @JoinColumn(name="date")
     private String date;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

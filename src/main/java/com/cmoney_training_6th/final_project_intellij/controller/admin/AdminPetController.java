@@ -31,19 +31,9 @@ public class AdminPetController {
     @Autowired
     private UserPhotoRepository userPhotoRepository;
 
-    @PutMapping(path = "/new/pet", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/new/pet", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewPet(
-            @RequestParam String username,
-            @RequestParam String name,
-            @RequestParam String species,
-            @RequestParam(required = false) String breed,
-            @RequestParam(required = false) int age,
-            @RequestParam(required = false) String own_date,
-            @RequestParam(required = false) String allergic_with,
-            @RequestParam(required = false) boolean neutered, // 0 結紮, 1 未結紮
-            @RequestParam(required = false) int gender,
-            @RequestParam(required = false) int weight,
-            @RequestParam(required = false) String chip
+            @RequestBody Pet pet
     ) {
 //        ValidateParameter checkPassword = new ValidateParameter("password", username);
 //        if(!checkPassword.strLongerThan(50)
@@ -53,24 +43,11 @@ public class AdminPetController {
 //            return new CommonResponse(checkPassword,400);
 //        }
         try {
-            Pet p = new Pet();
-            User owner = userRepository.findByUsername(username).get();
-            p.setUser(owner);
-            p.setName(name);
-            p.setSpecies(species);
-            p.setBreed(breed);
-            p.setAge(age);
-            p.setOwn_date(own_date);
-            p.setAllergic_with(allergic_with);
-            p.setNeutered(neutered);
-            p.setGender(gender);
-            p.setWeight(weight);
-            p.setChip(chip);
-            petRepository.save(p);
+            Gson g = new Gson();
+            System.out.println(g.toJsonTree(pet).getAsJsonObject());
+            petRepository.save(pet);
         } catch (DataIntegrityViolationException e) {
-            return new CommonResponse("Key duplicated", 404).toString();
-        } catch (NoSuchElementException e) {
-            return new CommonResponse("owner " + username + " not found", 404).toString();
+            return new CommonResponse(e.toString(), 404).toString();
         }
         return new CommonResponse("success", 200).toString();
     }
@@ -89,8 +66,8 @@ public class AdminPetController {
         JsonObject json = new JsonObject();
         Gson g = new Gson();
         int pet_cnt = 0;
-        for(Pet pet : pets){
-            JsonObject petJson =g.toJsonTree(pet).getAsJsonObject();
+        for (Pet pet : pets) {
+            JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();
             String username = pet.getUser().getUsername();
             String phone = pet.getUser().getPhone();
             String lastName = pet.getUser().getLast_name();
@@ -136,5 +113,4 @@ public class AdminPetController {
 //    }
 
 }
-
 

@@ -13,5 +13,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserPhotoRepository extends JpaRepository<UserPhoto, Integer> {
-    List<UserPhoto> findByUser_id(String user_id);
+
 }

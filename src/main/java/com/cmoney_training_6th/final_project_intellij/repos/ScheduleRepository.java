@@ -15,5 +15,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-    Optional<Schedule> findByDayAndTime(String day, String time);
+
 }

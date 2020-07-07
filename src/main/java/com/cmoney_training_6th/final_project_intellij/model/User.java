@@ -1,10 +1,18 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.*;
+import javax.print.Doc;
+import java.util.ArrayList;
+import java.util.List;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "user")
 public class User {
@@ -13,7 +21,9 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-//    @Column(nullable=false, unique=true)
+    // FK
+    private int hospital_id;
+
     private String social_license_id;
 
     @Column(length=50)
@@ -56,124 +66,19 @@ public class User {
 
     private boolean active = true;
 
-    public int getId() {
-        return id;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
+    List<MedicalRecord> medicalRecords = new ArrayList<>();
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
+    List<Doctor> doctors = new ArrayList<>();
 
-    public String getSocial_license_id() {
-        return social_license_id;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
+    List<Reservation> reservations = new ArrayList<>();
 
-    public void setSocial_license_id(String social_license_id) {
-        this.social_license_id = social_license_id;
-    }
-
-    public String getJoin_time() {
-        return join_time;
-    }
-
-    public void setJoin_time(String join_time) {
-        this.join_time = join_time;
-    }
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAddress_city() {
-        return address_city;
-    }
-
-    public void setAddress_city(String address_city) {
-        this.address_city = address_city;
-    }
-
-    public String getAddress_area() {
-        return address_area;
-    }
-
-    public void setAddress_area(String address_area) {
-        this.address_area = address_area;
-    }
-
-    public String getAddress_line() {
-        return address_line;
-    }
-
-    public void setAddress_line(String address_line) {
-        this.address_line = address_line;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getSchool() {
-        return school;
-    }
-
-    public void setSchool(String school) {
-        this.school = school;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
+    List<UserPhoto> userPhotos = new ArrayList<>();
 }

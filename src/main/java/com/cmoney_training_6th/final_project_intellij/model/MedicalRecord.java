@@ -1,8 +1,16 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "medical_record")
 public class MedicalRecord {
@@ -11,47 +19,14 @@ public class MedicalRecord {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="hospital_id")
-    private Hospital hospital;
-
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="pet_id")
-    private Pet pet;
+    private int hospital_id; // FK
 
 //    @Column(nullable=false, length=50)
     @Column(length=50)
     private String create_date;
 
-    public int getId() {
-        return id;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
+    List<MedicalTreatment> medicalTreatments = new ArrayList<>();
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Hospital getHospital() {
-        return hospital;
-    }
-
-    public void setHospital(Hospital hospital) {
-        this.hospital = hospital;
-    }
-
-    public Pet getPet() {
-        return pet;
-    }
-
-    public void setPet(Pet pet) {
-        this.pet = pet;
-    }
-
-    public String getCreate_date() {
-        return create_date;
-    }
-
-    public void setCreate_date(String create_date) {
-        this.create_date = create_date;
-    }
 }

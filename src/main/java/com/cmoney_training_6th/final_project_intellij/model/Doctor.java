@@ -1,10 +1,18 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "doctor")
 public class Doctor {
@@ -13,13 +21,9 @@ public class Doctor {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="user_id")
-    private User user;
+    private int hospital_id; //FK
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="hospital_id")
-    private Hospital hospital;
+    private int user_id; //FK
 
     private String doctor_license;
 
@@ -29,51 +33,11 @@ public class Doctor {
     @Column(columnDefinition="nvarchar(1000)")
     private String experience;
 
-    public int getId() {
-        return id;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
+    List<Reservation> reservations = new ArrayList<>();
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Hospital getHospital() {
-        return hospital;
-    }
-
-    public void setHospital(Hospital hospital) {
-        this.hospital = hospital;
-    }
-
-    public String getDoctor_license() {
-        return doctor_license;
-    }
-
-    public void setDoctor_license(String doctor_license) {
-        this.doctor_license = doctor_license;
-    }
-
-    public String getSkill() {
-        return skill;
-    }
-
-    public void setSkill(String skill) {
-        this.skill = skill;
-    }
-
-    public String getExperience() {
-        return experience;
-    }
-
-    public void setExperience(String experience) {
-        this.experience = experience;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
+    List<Roaster> roasters = new ArrayList<>();
 }

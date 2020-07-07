@@ -1,8 +1,14 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "roaster")
 public class Roaster {
@@ -11,35 +17,8 @@ public class Roaster {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="doctor_id")
-    private Doctor doctor;
+    private int doctor_id; //FK
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="schedule_id")
-    private Schedule schedule;
+    private int schedule_id; //FK
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
 }
