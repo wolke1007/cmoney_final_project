@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
@@ -67,21 +68,21 @@ public class AdminPetController {
         JsonObject json = new JsonObject();
         Gson g = new Gson();
         int pet_cnt = 0;
-        petRepository.findByUserId(1);
-//        for (User user : users) {
-//            JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();
-//            String username = user.getPets().getUser().getUsername();
-//            String phone = pet.getUser().getPhone();
-//            String lastName = pet.getUser().getLast_name();
-//            String firstName = pet.getUser().getFirst_name();
-//            petJson.remove("user");
-//            petJson.addProperty("owner_email", username);
-//            petJson.addProperty("owner_phone", phone);
-//            petJson.addProperty("owner_name", lastName + firstName);
-//            json.add(Integer.toString(pet_cnt++), petJson);
-//            json.add(Integer.toString(pet_cnt++), g.toJsonTree(user).getAsJsonObject());
-//        }
-        return new CommonResponse("", 200).toString();
+        for (Pet pet : pets) {
+            JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();
+            System.out.println("DEBUG"+petJson);
+            int user_id = petJson.get("userId").getAsInt();
+            User user = userRepository.findById(user_id).get();
+            String username = user.getUsername();
+            String phone = user.getPhone();
+            String lastName = user.getLastName();
+            String firstName = user.getFirstName();
+            petJson.addProperty("owner_email", username);
+            petJson.addProperty("owner_phone", phone);
+            petJson.addProperty("owner_name", lastName + firstName);
+            json.add(Integer.toString(pet_cnt++), petJson);
+        }
+        return new CommonResponse(json, 200).toString();
     }
 //
 //    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
