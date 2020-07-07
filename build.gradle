@@ -1,3 +1,7 @@
+import com.sun.xml.internal.ws.util.HandlerAnnotationProcessor
+
+import java.lang.annotation.Annotation
+
 plugins {
     id 'org.springframework.boot' version '2.3.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -10,6 +14,7 @@ sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+//    jcenter()
 }
 
 dependencies {
@@ -19,11 +24,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.google.code.gson:gson:2.8.6'
     compile group: 'org.json', name: 'json', version: '20190722'
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
-
-    testCompileOnly 'org.projectlombok:lombok:1.18.12'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

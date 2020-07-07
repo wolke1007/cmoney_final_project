@@ -56,7 +56,7 @@ public class UserController {
             User n = new User();
             n.setUsername(jsonUser.getUsername());
             n.setPassword(jsonUser.getPassword());
-            n.setJoin_time(jsonUser.getJoin_time());
+            n.setJoinTime(jsonUser.getJoinTime());
             n.setRole(jsonUser.getRole());
             userRepository.save(n);
             return new CommonResponse("Saved", 200).toString();
@@ -84,12 +84,6 @@ public class UserController {
         newJson.addProperty("status", 200);
         newJson.add("message", json);
         return new CommonResponse(newJson, 200).toString();
-    }
-
-    @GetMapping(path = "/by/role", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
-    public Iterable<User> findUsersByRole(HttpServletResponse response, @RequestParam String role) {
-        System.out.println(userRepository.findAllByRoleOrderByUsername(role));
-        return userRepository.findAllByRoleOrderByUsername(role);
     }
 
 }

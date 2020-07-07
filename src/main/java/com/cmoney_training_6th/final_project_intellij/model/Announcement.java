@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "announcement")
 public class Announcement {
@@ -26,6 +23,38 @@ public class Announcement {
     @Column(columnDefinition = "nvarchar(20000)")
     private String description;
 
-    private int hospital_id;
+    @Column(name="hospital_id")
+    private int hospitalId;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getHospital_id() {
+        return hospitalId;
+    }
+
+    public void setHospital_id(int hospital_id) {
+        this.hospitalId = hospital_id;
+    }
 }

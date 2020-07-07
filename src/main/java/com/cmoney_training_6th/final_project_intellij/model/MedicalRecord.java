@@ -8,9 +8,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "medical_record")
 public class MedicalRecord {
@@ -19,14 +16,46 @@ public class MedicalRecord {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    private int hospital_id; // FK
+    @Column(name="hospital_id")
+    private int hospitalId; // FK
 
 //    @Column(nullable=false, length=50)
-    @Column(length=50)
-    private String create_date;
+    @Column(name="create_date", length=50)
+    private String createDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
     List<MedicalTreatment> medicalTreatments = new ArrayList<>();
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHospital_id() {
+        return hospitalId;
+    }
+
+    public void setHospital_id(int hospital_id) {
+        this.hospitalId = hospital_id;
+    }
+
+    public String getCreate_date() {
+        return createDate;
+    }
+
+    public void setCreate_date(String create_date) {
+        this.createDate = create_date;
+    }
+
+    public List<MedicalTreatment> getMedicalTreatments() {
+        return medicalTreatments;
+    }
+
+    public void setMedicalTreatments(List<MedicalTreatment> medicalTreatments) {
+        this.medicalTreatments = medicalTreatments;
+    }
 }

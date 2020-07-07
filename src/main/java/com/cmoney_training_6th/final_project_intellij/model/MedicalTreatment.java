@@ -8,9 +8,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "medical_treatment")
 public class MedicalTreatment {
@@ -19,7 +16,8 @@ public class MedicalTreatment {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    private int medical_record_id; //FK
+    @Column(name="medical_record_id")
+    private int medicalRecordId; //FK
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
@@ -29,4 +27,35 @@ public class MedicalTreatment {
     @Column(columnDefinition="nvarchar(20000)")
     private String description;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getMedical_record_id() {
+        return medicalRecordId;
+    }
+
+    public void setMedical_record_id(int medical_record_id) {
+        this.medicalRecordId = medical_record_id;
+    }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

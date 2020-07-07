@@ -10,9 +10,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "hospital")
 public class Hospital {
@@ -22,8 +19,8 @@ public class Hospital {
     private int id;
 
 //    @Column(nullable=false, unique=true)
-    @Column(unique=true)
-    private int uni_serial_id;
+    @Column(name="uni_serial_id", unique=true)
+    private int uniSerialId;
 
 //    @Column(nullable=false, columnDefinition="nvarchar(255)")
     @Column(columnDefinition="nvarchar(255)")
@@ -31,14 +28,14 @@ public class Hospital {
 
     private String phone;
 
-    @Column(columnDefinition="nvarchar(255)")
-    private String address_city;
+    @Column(name="address_city", columnDefinition="nvarchar(255)")
+    private String addressCity;
 
-    @Column(columnDefinition="nvarchar(255)")
-    private String address_area;
+    @Column(name="address_area", columnDefinition="nvarchar(255)")
+    private String addressArea;
 
-    @Column(columnDefinition="nvarchar(255)")
-    private String address_line;
+    @Column(name="address_line", columnDefinition="nvarchar(255)")
+    private String addressLine;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
@@ -56,4 +53,99 @@ public class Hospital {
     @JoinColumn(name="id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecords = new ArrayList<>();
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUni_serial_id() {
+        return uniSerialId;
+    }
+
+    public void setUni_serial_id(int uni_serial_id) {
+        this.uniSerialId = uni_serial_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getUniSerialId() {
+        return uniSerialId;
+    }
+
+    public void setUniSerialId(int uniSerialId) {
+        this.uniSerialId = uniSerialId;
+    }
+
+    public String getAddressCity() {
+        return addressCity;
+    }
+
+    public void setAddressCity(String addressCity) {
+        this.addressCity = addressCity;
+    }
+
+    public String getAddressArea() {
+        return addressArea;
+    }
+
+    public void setAddressArea(String addressArea) {
+        this.addressArea = addressArea;
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+    }
+
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
+    }
+
+    public List<Doctor> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<Doctor> doctors) {
+        this.doctors = doctors;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
 }

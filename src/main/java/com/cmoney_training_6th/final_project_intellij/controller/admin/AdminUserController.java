@@ -86,28 +86,28 @@ public class AdminUserController {
 //            return new CommonResponse(checkPassword,400);
 //        }
         // 新增 User
-        try {
-            User u = new User();
-            u.setSocial_license_id(jsonUser.getSocial_license_id());
-            u.setUsername(jsonUser.getUsername());
-            u.setPassword(jsonUser.getPassword());
-            u.setPhone(jsonUser.getPhone());
-            u.setLast_name(jsonUser.getLast_name());
-            u.setFirst_name(jsonUser.getFirst_name());
-            u.setRole(jsonUser.getRole());
-            u.setSchool(jsonUser.getSchool());
-            u.setBirthday(jsonUser.getBirthday());
-            u.setJoin_time(jsonUser.getJoin_time());
-            u.setAddress_city(jsonUser.getAddress_city());
-            u.setAddress_area(jsonUser.getAddress_area());
-            if(jsonUser.getAddress_line() != null){
-                u.setAddress_line(jsonUser.getAddress_line());
-            }
-            userRepository.save(u);
-        } catch (DataIntegrityViolationException e) {
-            response.setStatus(404);
-            return new CommonResponse("Key duplicated", 404).toString();
-        }
+//        try {
+//            User u = new User();
+//            u.setSocial_license_id(jsonUser.getSocial_license_id());
+//            u.setUsername(jsonUser.getUsername());
+//            u.setPassword(jsonUser.getPassword());
+//            u.setPhone(jsonUser.getPhone());
+//            u.setLast_name(jsonUser.getLast_name());
+//            u.setFirst_name(jsonUser.getFirst_name());
+//            u.setRole(jsonUser.getRole());
+//            u.setSchool(jsonUser.getSchool());
+//            u.setBirthday(jsonUser.getBirthday());
+//            u.setJoin_time(jsonUser.getJoin_time());
+//            u.setAddress_city(jsonUser.getAddress_city());
+//            u.setAddress_area(jsonUser.getAddress_area());
+//            if(jsonUser.getAddress_line() != null){
+//                u.setAddress_line(jsonUser.getAddress_line());
+//            }
+//            userRepository.save(u);
+//        } catch (DataIntegrityViolationException e) {
+//            response.setStatus(404);
+//            return new CommonResponse("Key duplicated", 404).toString();
+//        }
         return new CommonResponse("success", 200).toString();
     }
 //

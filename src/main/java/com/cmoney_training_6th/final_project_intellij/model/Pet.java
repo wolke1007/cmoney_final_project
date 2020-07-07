@@ -1,16 +1,11 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "pet")
 public class Pet {
@@ -19,7 +14,8 @@ public class Pet {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    private int user_id; //FK
+    @JoinColumn(name="user_id")
+    private int userId; //FK
 
     @Column(columnDefinition="nvarchar(255)")
     private String name;
@@ -38,13 +34,13 @@ public class Pet {
 
     private String chip;
 
-    @Column(columnDefinition="nvarchar(255)")
-    private String allergic_with;
+    @Column(name="allergic_with", columnDefinition="nvarchar(255)")
+    private String allergicWith;
 
     private boolean neutered;
 
-    @Column(length=50)
-    private String own_date;
+    @Column(name="own_date", length=50)
+    private String ownDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
@@ -53,4 +49,116 @@ public class Pet {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
     List<PetPhoto> petPhotos = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public String getChip() {
+        return chip;
+    }
+
+    public void setChip(String chip) {
+        this.chip = chip;
+    }
+
+    public String getAllergicWith() {
+        return allergicWith;
+    }
+
+    public void setAllergicWith(String allergicWith) {
+        this.allergicWith = allergicWith;
+    }
+
+    public boolean isNeutered() {
+        return neutered;
+    }
+
+    public void setNeutered(boolean neutered) {
+        this.neutered = neutered;
+    }
+
+    public String getOwnDate() {
+        return ownDate;
+    }
+
+    public void setOwnDate(String ownDate) {
+        this.ownDate = ownDate;
+    }
+
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
+    public List<PetPhoto> getPetPhotos() {
+        return petPhotos;
+    }
+
+    public void setPetPhotos(List<PetPhoto> petPhotos) {
+        this.petPhotos = petPhotos;
+    }
 }

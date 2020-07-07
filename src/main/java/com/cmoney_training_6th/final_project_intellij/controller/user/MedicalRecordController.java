@@ -40,14 +40,15 @@ public class MedicalRecordController {
             @RequestBody Pet pet
     ) throws Exception {
 
-        try {
-            MedicalRecord m = new MedicalRecord();
-            Optional<MedicalRecord> test = medicalRecordRepository.findByPet_id(pet.getId());
-            return new CommonResponse("Saved", 200);
-        } catch (DataIntegrityViolationException e) {
-            response.setStatus(400);
-            return new CommonResponse("Key duplicated", 400);
-        }
+//        try {
+//            MedicalRecord m = new MedicalRecord();
+//            Optional<MedicalRecord> test = medicalRecordRepository.findByPet_id(pet.getId());
+//            return new CommonResponse("Saved", 200);
+//        } catch (DataIntegrityViolationException e) {
+//            response.setStatus(400);
+//            return new CommonResponse("Key duplicated", 400);
+//        }
+        return new CommonResponse("Key duplicated", 400);
     }
 
 //    @GetMapping(path="/all") // debug 用
@@ -65,9 +66,9 @@ public class MedicalRecordController {
 
     @GetMapping(path = "/pet/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<MedicalRecord> findRecordById(@PathVariable(value = "id") int pet_id) {
-        MedicalRecord m = new MedicalRecord();
-        Optional<MedicalRecord> ret = medicalRecordRepository.findByPet_id(pet_id);
-        return ret;
+//        MedicalRecord m = new MedicalRecord();
+//        Optional<MedicalRecord> ret = medicalRecordRepository.findByPet_id(pet_id);
+//        return ret;
 //        Optional<User> test = userRepository.findById(id);
 //        Gson g = new Gson();
 //        JsonElement je = g.toJsonTree(test).getAsJsonObject().get("value");
@@ -80,6 +81,7 @@ public class MedicalRecordController {
 //        newJson.addProperty("status", 200);
 //        newJson.add("message", json);
 //        return newJson.toString();
+        return null;
     }
 
 //    @PostMapping(path="/find/user/role")

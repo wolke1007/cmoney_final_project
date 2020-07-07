@@ -10,9 +10,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "doctor")
 public class Doctor {
@@ -21,11 +18,14 @@ public class Doctor {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    private int hospital_id; //FK
+    @Column(name="hospital_id")
+    private int hospitalId; //FK
 
-    private int user_id; //FK
+    @Column(name="user_id")
+    private int userId; //FK
 
-    private String doctor_license;
+    @Column(name="doctor_license")
+    private String doctorLicense;
 
     @Column(columnDefinition="nvarchar(255)")
     private String skill;
@@ -40,4 +40,68 @@ public class Doctor {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
     List<Roaster> roasters = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHospital_id() {
+        return hospitalId;
+    }
+
+    public void setHospital_id(int hospital_id) {
+        this.hospitalId = hospital_id;
+    }
+
+    public int getUser_id() {
+        return userId;
+    }
+
+    public void setUser_id(int user_id) {
+        this.userId = user_id;
+    }
+
+    public String getDoctor_license() {
+        return doctorLicense;
+    }
+
+    public void setDoctor_license(String doctor_license) {
+        this.doctorLicense = doctor_license;
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public List<Roaster> getRoasters() {
+        return roasters;
+    }
+
+    public void setRoasters(List<Roaster> roasters) {
+        this.roasters = roasters;
+    }
 }

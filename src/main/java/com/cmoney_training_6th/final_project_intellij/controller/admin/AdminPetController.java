@@ -31,10 +31,10 @@ public class AdminPetController {
     @Autowired
     private UserPhotoRepository userPhotoRepository;
 
-    @PostMapping(path = "/new/pet", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String addNewPet(
-            @RequestBody Pet pet
-    ) {
+//    @PostMapping(path = "/new/pet", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+//    public String addNewPet(
+//            @RequestBody Pet pet
+//    ) {
 //        ValidateParameter checkPassword = new ValidateParameter("password", username);
 //        if(!checkPassword.strLongerThan(50)
 //                .strShorterThan(0)
@@ -42,15 +42,15 @@ public class AdminPetController {
 //            response.setStatus(400);
 //            return new CommonResponse(checkPassword,400);
 //        }
-        try {
-            Gson g = new Gson();
-            System.out.println(g.toJsonTree(pet).getAsJsonObject());
-            petRepository.save(pet);
-        } catch (DataIntegrityViolationException e) {
-            return new CommonResponse(e.toString(), 404).toString();
-        }
-        return new CommonResponse("success", 200).toString();
-    }
+//        try {
+//            Gson g = new Gson();
+//            System.out.println(g.toJsonTree(pet).getAsJsonObject());
+//            petRepository.save(pet);
+//        } catch (DataIntegrityViolationException e) {
+//            return new CommonResponse(e.toString(), 404).toString();
+//        }
+//        return new CommonResponse("success", 200).toString();
+//    }
 
     @GetMapping(path = "/pet/list", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getAllPet() {
@@ -63,22 +63,25 @@ public class AdminPetController {
 //        }
         Pet p = new Pet();
         List<Pet> pets = petRepository.findAll();
+        List<User> users = userRepository.findAll();
         JsonObject json = new JsonObject();
         Gson g = new Gson();
         int pet_cnt = 0;
-        for (Pet pet : pets) {
-            JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();
-            String username = pet.getUser().getUsername();
-            String phone = pet.getUser().getPhone();
-            String lastName = pet.getUser().getLast_name();
-            String firstName = pet.getUser().getFirst_name();
-            petJson.remove("user");
-            petJson.addProperty("owner_email", username);
-            petJson.addProperty("owner_phone", phone);
-            petJson.addProperty("owner_name", lastName + firstName);
-            json.add(Integer.toString(pet_cnt++), petJson);
-        }
-        return new CommonResponse(json, 200).toString();
+        petRepository.findByUserId(1);
+//        for (User user : users) {
+//            JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();
+//            String username = user.getPets().getUser().getUsername();
+//            String phone = pet.getUser().getPhone();
+//            String lastName = pet.getUser().getLast_name();
+//            String firstName = pet.getUser().getFirst_name();
+//            petJson.remove("user");
+//            petJson.addProperty("owner_email", username);
+//            petJson.addProperty("owner_phone", phone);
+//            petJson.addProperty("owner_name", lastName + firstName);
+//            json.add(Integer.toString(pet_cnt++), petJson);
+//            json.add(Integer.toString(pet_cnt++), g.toJsonTree(user).getAsJsonObject());
+//        }
+        return new CommonResponse("", 200).toString();
     }
 //
 //    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用

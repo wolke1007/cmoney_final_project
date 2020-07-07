@@ -8,9 +8,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "recipe")
 public class Recipe {
@@ -19,10 +16,44 @@ public class Recipe {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    private int medical_item_id; //FK
-    private int medical_treatment_id; //FK
+    @Column(name="medical_item_id")
+    private int medicalItemId; //FK
+
+    @Column(name="medical_treatment_id")
+    private int medicalTreatmentId; //FK
 
 //    @Column(nullable=false)
     private int quantity;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getMedicalItemId() {
+        return medicalItemId;
+    }
+
+    public void setMedicalItemId(int medicalItemId) {
+        this.medicalItemId = medicalItemId;
+    }
+
+    public int getMedicalTreatmentId() {
+        return medicalTreatmentId;
+    }
+
+    public void setMedicalTreatmentId(int medicalTreatmentId) {
+        this.medicalTreatmentId = medicalTreatmentId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

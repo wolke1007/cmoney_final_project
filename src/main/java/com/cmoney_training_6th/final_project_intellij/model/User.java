@@ -10,9 +10,7 @@ import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "user")
 public class User {
@@ -22,20 +20,22 @@ public class User {
     private int id;
 
     // FK
-    private int hospital_id;
+    @Column(name="hospital_id")
+    private int hospitalId;
 
-    private String social_license_id;
+    @Column(name="social_license_id")
+    private String socialLicenseId;
 
-    @Column(length=50)
-    private String join_time;
-
-//    @Column(nullable=false, columnDefinition="nvarchar(50)")
-    @Column(columnDefinition="nvarchar(50)")
-    private String first_name;
+    @Column(name="join_time", length=50)
+    private String joinTime;
 
 //    @Column(nullable=false, columnDefinition="nvarchar(50)")
-    @Column(columnDefinition="nvarchar(50)")
-    private String last_name;
+    @Column(name="first_name", columnDefinition="nvarchar(50)")
+    private String firstName;
+
+//    @Column(nullable=false, columnDefinition="nvarchar(50)")
+    @Column(name="last_name", columnDefinition="nvarchar(50)")
+    private String lastName;
 
     @Column(nullable=false)
     private String password;
@@ -43,14 +43,14 @@ public class User {
     @Column(columnDefinition="nvarchar(255)")
     private String school;
 
-    @Column(columnDefinition="nvarchar(255)")
-    private String address_city;
+    @Column(name="address_city", columnDefinition="nvarchar(255)")
+    private String addressCity;
 
-    @Column(columnDefinition="nvarchar(255)")
-    private String address_area;
+    @Column(name="address_area", columnDefinition="nvarchar(255)")
+    private String addressArea;
 
-    @Column(columnDefinition="nvarchar(255)")
-    private String address_line;
+    @Column(name="address_line", columnDefinition="nvarchar(255)")
+    private String addressLine;
 
 //    @Column(nullable=false)
     private String phone;
@@ -68,6 +68,10 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
+    List<Pet> pets = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecords = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -81,4 +85,172 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="id", referencedColumnName = "id")
     List<UserPhoto> userPhotos = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHospitalId() {
+        return hospitalId;
+    }
+
+    public void setHospitalId(int hospitalId) {
+        this.hospitalId = hospitalId;
+    }
+
+    public String getSocialLicenseId() {
+        return socialLicenseId;
+    }
+
+    public void setSocialLicenseId(String socialLicenseId) {
+        this.socialLicenseId = socialLicenseId;
+    }
+
+    public String getJoinTime() {
+        return joinTime;
+    }
+
+    public void setJoinTime(String joinTime) {
+        this.joinTime = joinTime;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getAddressCity() {
+        return addressCity;
+    }
+
+    public void setAddressCity(String addressCity) {
+        this.addressCity = addressCity;
+    }
+
+    public String getAddressArea() {
+        return addressArea;
+    }
+
+    public void setAddressArea(String addressArea) {
+        this.addressArea = addressArea;
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+    }
+
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
+    public List<Doctor> getDoctors() {
+        return doctors;
+    }
+
+    public void setDoctors(List<Doctor> doctors) {
+        this.doctors = doctors;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public List<UserPhoto> getUserPhotos() {
+        return userPhotos;
+    }
+
+    public void setUserPhotos(List<UserPhoto> userPhotos) {
+        this.userPhotos = userPhotos;
+    }
 }
