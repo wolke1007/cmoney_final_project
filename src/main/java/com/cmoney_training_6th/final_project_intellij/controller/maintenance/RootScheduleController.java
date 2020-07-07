@@ -36,7 +36,7 @@ public class RootScheduleController {
         return "account hello 中文測試" + utf8;
     }
 
-    @PutMapping(path = "/setup", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/setup", produces = MediaType.APPLICATION_JSON_VALUE)
     public String findDoctorByUserId(HttpServletResponse response) throws Exception{
         scheduleRepository.deleteAll();
         ArrayList<String> allDay;

@@ -40,7 +40,7 @@ public class UserController {
         return "account hello 中文測試" + utf8;
     }
 
-    @PutMapping(path = "/regist", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/regist", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewUser(
             HttpServletResponse response,
             @RequestParam String username,

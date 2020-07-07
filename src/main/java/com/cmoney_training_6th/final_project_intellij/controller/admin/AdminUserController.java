@@ -42,7 +42,7 @@ public class AdminUserController {
         return "account hello 中文測試" + utf8;
     }
 
-    @PutMapping(path = "/new/member", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/new/member", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewUser(
             HttpServletResponse response,
             @RequestParam(required = false) String social_license_id,

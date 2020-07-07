@@ -94,7 +94,7 @@ public class HospitalController {
 //        hospitalRepository.findBy
         return new CommonResponse("",200).toString();
     }
-    @PutMapping(path = "/booking", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/booking", produces = MediaType.APPLICATION_JSON_VALUE)
     public String bookingByDoctorId(
             @RequestParam int user_id,
             @RequestParam int doctor_id,
