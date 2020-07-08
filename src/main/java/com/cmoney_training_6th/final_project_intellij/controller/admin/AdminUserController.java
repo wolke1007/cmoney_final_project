@@ -38,7 +38,7 @@ public class AdminUserController {
     private UserPhotoRepository userPhotoRepository;
 
     @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String adminUserHello(@RequestParam String utf8) {
+    public String adminHello(@RequestParam String utf8) {
         return "account hello 中文測試" + utf8;
     }
 
@@ -57,6 +57,10 @@ public class AdminUserController {
 //        // 新增 Doctor
         try{
             doctorRepository.save(request);
+            int userId = request.getUserId();
+            Optional<User> user = userRepository.findById(userId);
+            user.get().setRole("ROLE_DOCTOR");
+            userRepository.save(user.get());
             return new CommonResponse("success", 200).toString();
         }catch (DataIntegrityViolationException e) {
             response.setStatus(404);
