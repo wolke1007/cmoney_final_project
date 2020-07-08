@@ -33,7 +33,7 @@ public class User {
     private String lastName;
 
     @Column(nullable=false)
-    transient private String password;
+    private String password;
 
     @Column(columnDefinition="nvarchar(255)")
     private String school;
