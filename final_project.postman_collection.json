@@ -1,0 +1,1026 @@
+{
+	"info": {
+		"_postman_id": "191544a1-a2a8-4739-8221-d65ca49e9781",
+		"name": "final_project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "util",
+			"item": [
+				{
+					"name": "get api version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{json}}",
+								"type": "text",
+								"equals": true,
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/version",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "new",
+					"item": [
+						{
+							"name": "create new staff",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"小明\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_STAFF\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-06\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/new/staff",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"new",
+										"staff"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create new pet",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":1,\r\n    \"name\":\"小白\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/new/pet",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"new",
+										"pet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create new doctor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"doctorLicense\":\"license1\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userId\":1,\r\n    \"hospitalId\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/new/doctor",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"new",
+										"doctor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create new hospital",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressLine\":\"文化路blabla\",\r\n    \"name\":\"測試醫院\",\r\n    \"uniSerialId\":12456789,\r\n    \"userId\":1,\r\n    \"phone\":\"02123456789\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/new/hospital",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"new",
+										"hospital"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "beef62f2-b51b-4c96-8fbc-b732e6d56e77",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec0d12d4-abfb-4b30-8c8b-665d9dffca94",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "pet",
+					"item": [
+						{
+							"name": "get pet list",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/pet/list",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"pet",
+										"list"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "regist",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/user/regist",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user",
+										"regist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get info by token",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/user/info",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user",
+										"info"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "medical record",
+					"item": [],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "hospital",
+					"item": [
+						{
+							"name": "booking a reservation",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"equals": true,
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-08\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/hospital/booking",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"hospital",
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get doctor name and roaster",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"equals": true,
+										"key": "Content-Type",
+										"type": "text",
+										"value": "{{json}}",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/hospital/doctor?hospital_id=3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"hospital",
+										"doctor"
+									],
+									"query": [
+										{
+											"key": "hospital_id",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "pet",
+					"item": [
+						{
+							"name": "get pet by token",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"equals": true,
+										"key": "Content-Type",
+										"type": "text",
+										"value": "{{json}}"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/pet",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"pet"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DEBUG",
+			"item": [
+				{
+					"name": "[DEBUG] get API version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{json}}",
+								"type": "text",
+								"equals": true,
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/version",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[DEBUG] get users by role",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"equals": true,
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{json}}",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/user/by/role?role=ROLE_DOCTOR",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"by",
+								"role"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "ROLE_DOCTOR"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[DEBUG] get all user info",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user/all/info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"all",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[DEBUG] setup schedule DB schema",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"equals": true,
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{json}}",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/maintenance/schedule/setup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"maintenance",
+								"schedule",
+								"setup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "test",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "user",
+							"item": [
+								{
+									"name": "regist test 1234",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/user/regist",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"user",
+												"regist"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "regist admin admin",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t\"username\":\"admin\",\r\n\t\"password\":\"admin\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_ADMIN\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/user/regist",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"user",
+												"regist"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "regist root root",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\t\"username\":\"root\",\r\n\t\"password\":\"root\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_ROOT\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/user/regist",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"user",
+												"regist"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "admin",
+					"item": [
+						{
+							"name": "new",
+							"item": [
+								{
+									"name": "0 create new staff",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"username\":\"staff\",\r\n    \"password\":\"staff\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"小明\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_STAFF\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-06\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/admin/new/staff",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"new",
+												"staff"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "1 create new pet",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userId\":1,\r\n    \"name\":\"小白\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/admin/new/pet",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"new",
+												"pet"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2 create new hospital",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressLine\":\"文化路blabla\",\r\n    \"name\":\"測試醫院\",\r\n    \"uniSerialId\":12456789,\r\n    \"userId\":1,\r\n    \"phone\":\"02123456789\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/admin/new/hospital",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"new",
+												"hospital"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3 create new doctor",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"doctorLicense\":\"license1\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userId\":1,\r\n    \"hospitalId\":7\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/admin/new/doctor",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"new",
+												"doctor"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "04d2a136-6a48-4130-a101-c24456a35f27",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "d63c046d-e6e8-44dd-abb7-742e2c42a7db",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "pet",
+							"item": [
+								{
+									"name": "get pet list",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/admin/pet/list",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"pet",
+												"list"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "login (get token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6218e7b6-a4c5-426b-8a3d-8fea0ab1fddf",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"token\", \"Bearer \" + jsonData.jwt);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"test\",\n\t\"password\":\"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
