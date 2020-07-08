@@ -7,7 +7,11 @@ import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
@@ -68,20 +72,25 @@ public class AdminPetController {
         JsonObject json = new JsonObject();
         Gson g = new Gson();
         int pet_cnt = 0;
+        JsonArray petArr = new JsonArray();
         for (Pet pet : pets) {
             JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();
-            System.out.println("DEBUG"+petJson);
+            System.out.println("DEBUG petJson "+petJson);
+            System.out.println("DEBUG user_id "+petJson.get("userId").getAsInt());
             int user_id = petJson.get("userId").getAsInt();
             User user = userRepository.findById(user_id).get();
+            System.out.println("user: " + user);
             String username = user.getUsername();
+            System.out.println("username: " + username);
             String phone = user.getPhone();
             String lastName = user.getLastName();
             String firstName = user.getFirstName();
             petJson.addProperty("owner_email", username);
             petJson.addProperty("owner_phone", phone);
             petJson.addProperty("owner_name", lastName + firstName);
-            json.add(Integer.toString(pet_cnt++), petJson);
+            petArr.add(petJson);
         }
+        json.add("pet_list", petArr);
         return new CommonResponse(json, 200).toString();
     }
 //
