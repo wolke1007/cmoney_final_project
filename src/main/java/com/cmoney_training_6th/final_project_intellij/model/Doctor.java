@@ -1,11 +1,5 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,28 +43,28 @@ public class Doctor {
         this.id = id;
     }
 
-    public int getHospital_id() {
+    public int getHospitalId() {
         return hospitalId;
     }
 
-    public void setHospital_id(int hospital_id) {
-        this.hospitalId = hospital_id;
+    public void setHospitalId(int hospitalId) {
+        this.hospitalId = hospitalId;
     }
 
-    public int getUser_id() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.userId = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getDoctor_license() {
+    public String getDoctorLicense() {
         return doctorLicense;
     }
 
-    public void setDoctor_license(String doctor_license) {
-        this.doctorLicense = doctor_license;
+    public void setDoctorLicense(String doctorLicense) {
+        this.doctorLicense = doctorLicense;
     }
 
     public String getSkill() {
