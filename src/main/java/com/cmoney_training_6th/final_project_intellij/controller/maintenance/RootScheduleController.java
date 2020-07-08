@@ -54,21 +54,21 @@ public class RootScheduleController {
         allTime.add("afternoon");
         allTime.add("night");
         int id = 1;
-//        for(String day : allDay){
-//            for(String time : allTime){
-//                Schedule schedule = new Schedule();
-//                schedule.setId(id++);
-//                schedule.setDay(day);
-//                schedule.setTime(time);
-//                System.out.println("day:"+schedule.getDay());
-//                System.out.println("time:"+schedule.getTime());
-//                try {
-//                    scheduleRepository.save(schedule);
-//                }catch (DataIntegrityViolationException e) {
-//                    return new CommonResponse("exception", 404).toString();
-//                }
-//            }
-//        }
+        for(String day : allDay){
+            for(String time : allTime){
+                Schedule schedule = new Schedule();
+                schedule.setId(id++);
+                schedule.setDay(day);
+                schedule.setTime(time);
+                System.out.println("day:"+schedule.getDay());
+                System.out.println("time:"+schedule.getTime());
+                try {
+                    scheduleRepository.save(schedule);
+                }catch (DataIntegrityViolationException e) {
+                    return new CommonResponse("exception", 404).toString();
+                }
+            }
+        }
         return new CommonResponse("setup done", 200).toString();
     }
 

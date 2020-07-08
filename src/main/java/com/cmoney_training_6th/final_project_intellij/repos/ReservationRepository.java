@@ -13,5 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-
+    List<Reservation> findAllByRoasterIdAndDate(int roasterId, String date);
+    List<Reservation> findAllByRoasterIdAndDateAndUserId(int roasterId, String date, int userId);
 }

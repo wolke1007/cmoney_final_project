@@ -3,22 +3,14 @@ package com.cmoney_training_6th.final_project_intellij.controller.user;
 import com.cmoney_training_6th.final_project_intellij.model.*;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
-import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.json.JSONException;
+import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
+import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import javax.print.Doc;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -41,6 +33,8 @@ public class HospitalController {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
     @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
     public String acHello() {
@@ -52,39 +46,17 @@ public class HospitalController {
     @GetMapping(path = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
                                                        int hospitalId) {
-        JsonObject retJson = new JsonObject();
-        Gson g = new Gson();
-        JsonObject json;
+        Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT).create();
+        JsonObject json = new JsonObject();
         JsonObject doctorJson;
-        JsonObject reservationJson;
-        int cnt = 0;
+        JsonArray doctorArr = new JsonArray();
         List<Doctor> doctor = doctorRepository.findByHospitalId(hospitalId);
-        List<Roaster> roasters;
-        try {
-            for (Doctor doc : doctor) {
-                doctorJson = new JsonObject();
-                json = (JsonObject) g.toJsonTree(doc).getAsJsonObject();
-                doctorJson.addProperty("doctor_id", json.get("id").toString());
-                doctorJson.addProperty("first_name", json.getAsJsonObject("user").get("first_name").getAsString());
-                doctorJson.addProperty("last_name", json.getAsJsonObject("user").get("last_name").getAsString());
-                roasters = roasterRepository.findByDoctorId(json.get("id").getAsInt());
-                JsonObject reservationOfDoctor = new JsonObject();
-                // append 班表
-                int res_cnt = 0;
-                for (Roaster roaster : roasters) {
-                    JsonObject tmp = (JsonObject) g.toJsonTree(roaster).getAsJsonObject();
-                    tmp.remove("doctor");
-                    reservationOfDoctor.add(Integer.toString(res_cnt++), tmp);
-                }
-                doctorJson.add("roasters", reservationOfDoctor);
-                doctorJson.addProperty("skill", json.get("skill").getAsString());
-                doctorJson.addProperty("experience", json.get("experience").getAsString());
-                retJson.add("doctor_" + Integer.toString(cnt++), doctorJson);
-            }
-        } catch (NullPointerException e) {
-            return new CommonResponse("Doctor's user table some field is null cause Null exception", 404).toString();
+        for (Doctor doc : doctor) {
+            doctorJson = (JsonObject) g.toJsonTree(doc).getAsJsonObject();
+            doctorArr.add(doctorJson);
         }
-        return new CommonResponse(retJson, 200).toString();
+        json.add("doctors", doctorArr);
+        return new CommonResponse(json, 200).toString();
     }
 
     @GetMapping(path = "/by/address_area", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
@@ -96,24 +68,29 @@ public class HospitalController {
 
     @PostMapping(path = "/booking", produces = MediaType.APPLICATION_JSON_VALUE)
     public String bookingByDoctorId(
-            @RequestBody Reservation jsonRes) {
-//        int bookingId;
-//        Reservation res = new Reservation();
-//        Optional<Doctor> doctor = doctorRepository.findById(jsonRes.getDoctor().getId());
-//        Optional<User> user = userRepository.findById(jsonRes.getUser().getId());
-//        Optional<Schedule> schedule = scheduleRepository.findById(jsonRes.getSchedule().getId());
-//        try {
-//            res.setUser(user.get());
-//            res.setDoctor(doctor.get());
-//            res.setSchedule(schedule.get());
-//            res.setDate(jsonRes.getDate());
-//            bookingId = reservationRepository.save(res).getId();
-//        } catch (NoSuchElementException e) {
-//            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
-//        } catch (Exception e) {
-//            return new CommonResponse("booking fail because: " + e, 404).toString();
-//        }
-//        return new CommonResponse("reservation_id: " + bookingId, 200).toString();
-        return new CommonResponse("reservation_id: ", 200).toString();
+            @RequestBody Reservation request,
+            @RequestHeader("Authorization") String header) {
+        try {
+            String token = header.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            Optional<User> user = userRepository.findByUsername(username);
+            // 檢查是否已經預約過，若大於 1 則跳 NonUniqueResultException，等於 1 則需要 handle
+            List<Reservation> reservation = reservationRepository.
+                    findAllByRoasterIdAndDateAndUserId(request.getRoasterId(), request.getDate(), user.get().getId());
+            if (reservation.size() >= 1) {
+                int bookingNum = reservation.get(reservation.size() - 1).getNumber();
+                return new CommonResponse("booked before, booking number is:" + bookingNum, 404).toString();
+            }
+            request.setUserId(user.get().getId());
+            System.out.println("DEBUG user_id: " + user.get().getId());
+            int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(request.getRoasterId(), request.getDate()).size();
+            System.out.println("DEBUG reservePatientCnt: " + reservePatientCnt);
+            int bookingNum = reservePatientCnt + 1; // 預約這個班表且為同天的人數
+            request.setNumber(bookingNum);
+            reservationRepository.save(request);
+            return new CommonResponse("reservation_id: " + bookingNum, 200).toString();
+        } catch (NoSuchElementException e) {
+            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
+        }
     }
 }

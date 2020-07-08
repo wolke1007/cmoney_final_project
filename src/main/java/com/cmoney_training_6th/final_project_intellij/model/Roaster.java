@@ -1,5 +1,9 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.gson.annotations.Expose;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +28,7 @@ public class Roaster {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="roaster_id", referencedColumnName = "id")
-    List<Reservation> reservations = new ArrayList<>();
+    transient List<Reservation> reservations = new ArrayList<>();
 
     public int getId() {
         return id;
