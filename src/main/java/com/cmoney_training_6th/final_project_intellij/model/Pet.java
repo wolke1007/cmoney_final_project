@@ -14,7 +14,7 @@ public class Pet {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @JoinColumn(name="user_id")
+    @Column(name="user_id")
     private int userId; //FK
 
     @Column(columnDefinition="nvarchar(255)")
@@ -43,11 +43,11 @@ public class Pet {
     private String ownDate;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecords = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<PetPhoto> petPhotos = new ArrayList<>();
 
     public int getId() {

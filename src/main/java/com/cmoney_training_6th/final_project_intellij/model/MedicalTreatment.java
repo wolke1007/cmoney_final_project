@@ -20,7 +20,7 @@ public class MedicalTreatment {
     private int medicalRecordId; //FK
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="medical_treatment_id", referencedColumnName = "id")
     List<Recipe> recipes = new ArrayList<>();
 
 //    @Column(nullable=false, columnDefinition="nvarchar(20000)")

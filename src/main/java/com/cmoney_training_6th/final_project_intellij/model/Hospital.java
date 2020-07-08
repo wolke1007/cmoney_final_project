@@ -18,6 +18,9 @@ public class Hospital {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
+//    @Column(name="user_id")
+//    private int userId; // FK
+
 //    @Column(nullable=false, unique=true)
     @Column(name="uni_serial_id", unique=true)
     private int uniSerialId;
@@ -38,19 +41,19 @@ public class Hospital {
     private String addressLine;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="hospital_id", referencedColumnName = "id")
     List<Announcement> announcements = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="hospital_id", referencedColumnName = "id")
     List<Doctor> doctors = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="owner_user_id", referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     User user;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="hospital_id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecords = new ArrayList<>();
 
     public int getId() {

@@ -24,7 +24,7 @@ public class MedicalRecord {
     private String createDate;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="medical_record_id", referencedColumnName = "id")
     List<MedicalTreatment> medicalTreatments = new ArrayList<>();
 
     public int getId() {

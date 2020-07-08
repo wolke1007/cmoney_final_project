@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -20,8 +21,8 @@ public class User {
     private int id;
 
     // FK
-    @Column(name="hospital_id")
-    private int hospitalId;
+//    @Column(name="hospital_id")
+//    private int hospitalId;
 
     @Column(name="social_license_id")
     private String socialLicenseId;
@@ -67,23 +68,23 @@ public class User {
     private boolean active = true;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     List<Pet> pets = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecords = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     List<Doctor> doctors = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     List<Reservation> reservations = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     List<UserPhoto> userPhotos = new ArrayList<>();
 
     public int getId() {
@@ -93,14 +94,14 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
-
-    public int getHospitalId() {
-        return hospitalId;
-    }
-
-    public void setHospitalId(int hospitalId) {
-        this.hospitalId = hospitalId;
-    }
+//
+//    public int getHospitalId() {
+//        return hospitalId;
+//    }
+//
+//    public void setHospitalId(int hospitalId) {
+//        this.hospitalId = hospitalId;
+//    }
 
     public String getSocialLicenseId() {
         return socialLicenseId;

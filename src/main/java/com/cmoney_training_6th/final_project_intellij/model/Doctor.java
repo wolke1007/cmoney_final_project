@@ -34,11 +34,11 @@ public class Doctor {
     private String experience;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="doctor_id", referencedColumnName = "id")
     List<Reservation> reservations = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="doctor_id", referencedColumnName = "id")
     List<Roaster> roasters = new ArrayList<>();
 
     public int getId() {

@@ -24,7 +24,7 @@ public class Reservation {
     @Column(name="schedule_id")
     private int scheduleId; //FK
 
-    @JoinColumn(name="date")
+    @Column(name="date")
     private String date;
 
     public int getId() {

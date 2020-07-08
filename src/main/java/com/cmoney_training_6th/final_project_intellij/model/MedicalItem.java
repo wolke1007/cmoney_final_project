@@ -17,7 +17,7 @@ public class MedicalItem {
     private int id;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name="medical_item_id", referencedColumnName = "id")
     List<Recipe> recipes = new ArrayList<>();
 
     @Column(name="item_type", nullable=false)
