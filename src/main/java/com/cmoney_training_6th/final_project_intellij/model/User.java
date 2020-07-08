@@ -24,11 +24,9 @@ public class User {
     @Column(name="join_time", length=50)
     private String joinTime;
 
-//    @Column(nullable=false, columnDefinition="nvarchar(50)")
     @Column(name="first_name", columnDefinition="nvarchar(50)")
     private String firstName;
-
-//    @Column(nullable=false, columnDefinition="nvarchar(50)")
+    
     @Column(name="last_name", columnDefinition="nvarchar(50)")
     private String lastName;
 

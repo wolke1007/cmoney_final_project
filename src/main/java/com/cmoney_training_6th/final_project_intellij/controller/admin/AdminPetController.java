@@ -71,7 +71,6 @@ public class AdminPetController {
         List<User> users = userRepository.findAll();
         JsonObject json = new JsonObject();
         Gson g = new Gson();
-        int pet_cnt = 0;
         JsonArray petArr = new JsonArray();
         for (Pet pet : pets) {
             JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();

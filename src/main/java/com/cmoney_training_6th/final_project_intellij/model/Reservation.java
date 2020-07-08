@@ -15,55 +15,15 @@ public class Reservation {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @Column(name="doctor_id")
-    private int doctorId; //FK
-
     @Column(name="user_id")
     private int userId; //FK
 
-    @Column(name="schedule_id")
-    private int scheduleId; //FK
+    @Column(name="roaster_id")
+    private int roasterId; //FK
 
-    @Column(name="date")
+    @Column(length=50)
     private String date;
 
-    public int getId() {
-        return id;
-    }
+    private int number;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

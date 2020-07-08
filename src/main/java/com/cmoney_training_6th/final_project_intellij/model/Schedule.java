@@ -13,18 +13,13 @@ import java.util.List;
 public class Schedule {
 
     @Id
-//    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-//    @Column(nullable=false, length=50)
     @Column(length=50)
     private String day;
 
     private String time;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="schedule_id", referencedColumnName = "id")
-    List<Reservation> reservations = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="schedule_id", referencedColumnName = "id")
@@ -52,14 +47,6 @@ public class Schedule {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
     }
 
     public List<Roaster> getRoasters() {

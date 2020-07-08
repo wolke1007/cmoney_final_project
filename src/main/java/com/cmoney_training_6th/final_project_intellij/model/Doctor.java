@@ -29,10 +29,6 @@ public class Doctor {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="doctor_id", referencedColumnName = "id")
-    List<Reservation> reservations = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="doctor_id", referencedColumnName = "id")
     List<Roaster> roasters = new ArrayList<>();
 
     public int getId() {
@@ -81,14 +77,6 @@ public class Doctor {
 
     public void setExperience(String experience) {
         this.experience = experience;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
     }
 
     public List<Roaster> getRoasters() {

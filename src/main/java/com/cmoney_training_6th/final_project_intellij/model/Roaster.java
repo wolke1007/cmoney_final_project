@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "roaster")
@@ -19,6 +21,10 @@ public class Roaster {
 
     @Column(name="schedule_id")
     private int scheduleId; //FK
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="roaster_id", referencedColumnName = "id")
+    List<Reservation> reservations = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -42,5 +48,13 @@ public class Roaster {
 
     public void setScheduleId(int scheduleId) {
         this.scheduleId = scheduleId;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
