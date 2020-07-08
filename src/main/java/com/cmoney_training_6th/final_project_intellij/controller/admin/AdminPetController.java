@@ -32,10 +32,10 @@ public class AdminPetController {
     @Autowired
     private UserPhotoRepository userPhotoRepository;
 
-//    @PostMapping(path = "/new/pet", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-//    public String addNewPet(
-//            @RequestBody Pet pet
-//    ) {
+    @PostMapping(path = "/new/pet", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String addNewPet(
+            @RequestBody Pet pet
+    ) {
 //        ValidateParameter checkPassword = new ValidateParameter("password", username);
 //        if(!checkPassword.strLongerThan(50)
 //                .strShorterThan(0)
@@ -43,15 +43,15 @@ public class AdminPetController {
 //            response.setStatus(400);
 //            return new CommonResponse(checkPassword,400);
 //        }
-//        try {
+        try {
 //            Gson g = new Gson();
 //            System.out.println(g.toJsonTree(pet).getAsJsonObject());
-//            petRepository.save(pet);
-//        } catch (DataIntegrityViolationException e) {
-//            return new CommonResponse(e.toString(), 404).toString();
-//        }
-//        return new CommonResponse("success", 200).toString();
-//    }
+            petRepository.save(pet);
+        } catch (DataIntegrityViolationException e) {
+            return new CommonResponse("fail: " + e, 404).toString();
+        }
+        return new CommonResponse("success", 200).toString();
+    }
 
     @GetMapping(path = "/pet/list", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getAllPet() {

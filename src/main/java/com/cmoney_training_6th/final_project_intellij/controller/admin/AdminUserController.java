@@ -45,7 +45,7 @@ public class AdminUserController {
     @PostMapping(path = "/new/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewDoctor(
             HttpServletResponse response,
-            @RequestBody Doctor jsonDoctor
+            @RequestBody Doctor request
     ) {
 //        ValidateParameter checkPassword = new ValidateParameter("password", password);
 //        if(!checkPassword.strLongerThan(50)
@@ -54,29 +54,20 @@ public class AdminUserController {
 //            response.setStatus(400);
 //            return new CommonResponse(checkPassword,400);
 //        }
-//        try {
 //        // 新增 Doctor
-//            System.out.println("getid "+jsonDoctor.getUser());
-//            if(userRepository.findById(jsonDoctor.getUser().getId()).get() == null){
-//                return new CommonResponse("user id not exist", 404).toString();
-//            }
-//            jsonDoctor.setUser(userRepository.findById(jsonDoctor.getUser().getId()).get());
-//            if(hospitalRepository.findById(jsonDoctor.getHospital().getId()).get() == null){
-//                return new CommonResponse("hospital id not exist", 404).toString();
-//            }
-//            jsonDoctor.setHospital(hospitalRepository.findById(jsonDoctor.getHospital().getId()).get());
-            doctorRepository.save(jsonDoctor);
-//            return new CommonResponse("success", 200).toString();
-//        } catch (DataIntegrityViolationException e) {
-//            response.setStatus(404);
-            return new CommonResponse("", 200).toString();
-//        }
+        try{
+            doctorRepository.save(request);
+            return new CommonResponse("success", 200).toString();
+        }catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e, 404).toString();
+        }
     }
 
     @PostMapping(path = "/new/staff", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewStaff(
             HttpServletResponse response,
-            @RequestBody User jsonUser
+            @RequestBody User request
     ) {
 //        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
 //        if(!checkPassword.strLongerThan(50)
@@ -86,36 +77,20 @@ public class AdminUserController {
 //            return new CommonResponse(checkPassword,400);
 //        }
         // 新增 User
-//        try {
-//            User u = new User();
-//            u.setSocial_license_id(jsonUser.getSocial_license_id());
-//            u.setUsername(jsonUser.getUsername());
-//            u.setPassword(jsonUser.getPassword());
-//            u.setPhone(jsonUser.getPhone());
-//            u.setLast_name(jsonUser.getLast_name());
-//            u.setFirst_name(jsonUser.getFirst_name());
-//            u.setRole(jsonUser.getRole());
-//            u.setSchool(jsonUser.getSchool());
-//            u.setBirthday(jsonUser.getBirthday());
-//            u.setJoin_time(jsonUser.getJoin_time());
-//            u.setAddress_city(jsonUser.getAddress_city());
-//            u.setAddress_area(jsonUser.getAddress_area());
-//            if(jsonUser.getAddress_line() != null){
-//                u.setAddress_line(jsonUser.getAddress_line());
-//            }
-//            userRepository.save(u);
-//        } catch (DataIntegrityViolationException e) {
-//            response.setStatus(404);
-//            return new CommonResponse("Key duplicated", 404).toString();
-//        }
+        try {
+            userRepository.save(request);
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e, 404).toString();
+        }
         return new CommonResponse("success", 200).toString();
     }
-//
-//    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
-//    public Iterable<User> getAllUsers() {
-//        return userRepository.findAll();
-//    }
-//
+
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 //    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE)
 //    public String findUserById(@RequestParam int id) {
 //        Optional<User> test = userRepository.findById(id);

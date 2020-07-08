@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.*;
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -19,10 +17,6 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-
-    // FK
-//    @Column(name="hospital_id")
-//    private int hospitalId;
 
     @Column(name="social_license_id")
     private String socialLicenseId;
