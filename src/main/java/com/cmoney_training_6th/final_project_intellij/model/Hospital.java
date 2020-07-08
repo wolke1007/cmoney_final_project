@@ -18,8 +18,8 @@ public class Hospital {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-//    @Column(name="user_id")
-//    private int userId; // FK
+    @Column(name="user_id")
+    private int userId; // FK
 
 //    @Column(nullable=false, unique=true)
     @Column(name="uni_serial_id", unique=true)
@@ -48,9 +48,9 @@ public class Hospital {
     @JoinColumn(name="hospital_id", referencedColumnName = "id")
     List<Doctor> doctors = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
-    User user;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name="user_id", referencedColumnName = "id")
+//    User user;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="hospital_id", referencedColumnName = "id")
@@ -64,12 +64,20 @@ public class Hospital {
         this.id = id;
     }
 
-    public int getUni_serial_id() {
+    public int getUniSerialId() {
         return uniSerialId;
     }
 
-    public void setUni_serial_id(int uni_serial_id) {
-        this.uniSerialId = uni_serial_id;
+    public void setUniSerialId(int uniSerialId) {
+        this.uniSerialId = uniSerialId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -86,14 +94,6 @@ public class Hospital {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public int getUniSerialId() {
-        return uniSerialId;
-    }
-
-    public void setUniSerialId(int uniSerialId) {
-        this.uniSerialId = uniSerialId;
     }
 
     public String getAddressCity() {
@@ -134,14 +134,6 @@ public class Hospital {
 
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<MedicalRecord> getMedicalRecords() {
