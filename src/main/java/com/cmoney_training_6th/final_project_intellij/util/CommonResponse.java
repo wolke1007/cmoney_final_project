@@ -1,53 +1,72 @@
 package com.cmoney_training_6th.final_project_intellij.util;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class CommonResponse{
+public class CommonResponse {
 
-    private int status;
-    private JsonObject newJson;
+    private int statusCode;
+    private Object message;
 
-    public CommonResponse(String message, int status){
-        this.status = status;
-        this.newJson = new JsonObject();
-        this.newJson.addProperty("status", status);
-        setJsonMessage(message);
+    public CommonResponse() {
     }
 
-    public CommonResponse(JsonObject message, int status){
-        this.status = status;
-        this.newJson = new JsonObject();
-        this.newJson.addProperty("status", status);
-        setJsonMessage(message);
+    public CommonResponse(JsonObject json, int statusCode) {
+        this.statusCode = statusCode;
+        this.message = (JsonObject) this.message;
+        this.message = json;
     }
 
-    public CommonResponse(JsonArray message, int status){
-        this.status = status;
-        this.newJson = new JsonObject();
-        this.newJson.addProperty("status", status);
-        setJsonMessage(message);
+    public CommonResponse(String json, int statusCode) {
+        this.statusCode = statusCode;
+        this.message = (String)this.message;
+        this.message = json;
     }
 
-    public void setJsonMessage(String message){
-        System.out.println("message input is not JsonObject");
-        this.newJson.addProperty("message", message.toString());
+    public CommonResponse(Object message, int statusCode) {
+        this.statusCode = statusCode;
+        this.message = message;
     }
 
-    public void setJsonMessage(JsonObject message){
-        System.out.println("message input is JsonObject");
-        this.newJson.add("message", message);
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setJsonMessage(JsonArray message){
-        System.out.println("message input is JsonObject");
-        this.newJson.add("message", message);
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public Object getMessage() {
+        return message;
+    }
+
+    public JsonObject setMessage(JsonObject ret, String str) {
+        ret.addProperty("message", str);
+        return ret;
+    }
+
+    public JsonObject setMessage(JsonObject ret, JsonObject json) {
+        ret.add("message", json);
+        return ret;
+    }
+
+    public JsonObject setMessage(JsonObject ret, Object message) {
+        Gson g = new Gson();
+        ret.add("message", g.toJsonTree(message).getAsJsonObject());
+        return ret;
     }
 
     @Override
     public String toString() {
-        return newJson.toString();
+        JsonObject ret = new JsonObject();
+        ret.addProperty("status", getStatusCode());
+        if (this.message.getClass().equals(String.class)){
+            ret = setMessage(ret, (String)this.message);
+        }else{
+            ret = setMessage(ret, this.message);
+        }
+        return ret.toString();
     }
-
 }
