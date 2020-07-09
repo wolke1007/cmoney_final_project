@@ -3,8 +3,10 @@ package com.cmoney_training_6th.final_project_intellij.controller;
 import com.cmoney_training_6th.final_project_intellij.services.MyUserDetailsService;
 import com.cmoney_training_6th.final_project_intellij.AuthenticationRequest;
 import com.cmoney_training_6th.final_project_intellij.AuthenticationResponse;
+import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,30 +29,28 @@ public class AuthencateController {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String firstPage() {
-        return "Hello World";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public String createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword())
             );
+        } catch (BadCredentialsException e) {
+            return new CommonResponse("Incorrect username or password", 404).toString();
+//            throw new Exception("Incorrect username or password", e);
         }
-        catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
-        }
-
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+//        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return new CommonResponse(jwt, 200).toString();
     }
 
 }
