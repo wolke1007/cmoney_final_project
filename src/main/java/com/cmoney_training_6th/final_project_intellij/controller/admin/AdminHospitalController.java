@@ -7,13 +7,23 @@ import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.HospitalRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.UserPhotoRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.services.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
@@ -21,9 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminHospitalController {
     @Autowired
     private DoctorRepository doctorRepository;
-
     @Autowired
     private HospitalRepository hospitalRepository;
+    @Autowired
+    private DoctorService doctorService;
 
     @PostMapping(path = "/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewHospital(
@@ -46,6 +57,18 @@ public class AdminHospitalController {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
+
+    @GetMapping(path = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
+                                                       int hospitalId) {
+        Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT).create();
+        JsonObject json = new JsonObject();
+        JsonObject doctorJson;
+        JsonArray doctorArr = new JsonArray();
+        JsonIter ji = new JsonIter();
+        List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
+        doctorArr = ji.listInToArray(doctors);
+        json.add("doctors", doctorArr);
+        return new CommonResponse(json, 200).toString();
+    }
 }
-
-

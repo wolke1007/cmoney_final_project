@@ -1,8 +1,6 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
-import com.cmoney_training_6th.final_project_intellij.model.MedicalItem;
 import com.cmoney_training_6th.final_project_intellij.model.MedicalTreatment;
-import com.cmoney_training_6th.final_project_intellij.repos.MedicalItemRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.MedicalTreatmentRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.google.gson.Gson;
@@ -43,28 +41,52 @@ public class AdminMedicalTreatmentController {
         }
     }
 
-//    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-//    public String editMedcalTreatment(
-//            HttpServletResponse response,
-//            @RequestBody MedicalTreatment request
-//    ) {
-////        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
-////        if(!checkPassword.strLongerThan(50)
-////                .strShorterThan(0)
-////                .getResult()){
-////            response.setStatus(400);
-////            return new CommonResponse(checkPassword,400);
-////        }
-//        // 新增 User
-//        try {
-//            medicalTreatmentRepository.findByName(request.getName());
-//            medicalTreatmentRepository.save(request);
-//            return new CommonResponse("success", 200).toString();
-//        } catch (DataIntegrityViolationException e) {
-//            response.setStatus(404);
-//            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String editMedcalTreatment(
+            HttpServletResponse response,
+            @RequestBody MedicalTreatment request
+    ) {
+//        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
 //        }
-//    }
+        // 新增 User
+        try {
+            MedicalTreatment medicalTreatment = medicalTreatmentRepository.findById(request.getId()).get();
+            medicalTreatment.setDescription(request.getDescription());
+            medicalTreatmentRepository.save(medicalTreatment);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
+    }
+
+    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String deleteMedcalTreatment(
+            HttpServletResponse response,
+            @RequestBody MedicalTreatment request
+    ) {
+//        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
+        // 新增 User
+        try {
+            MedicalTreatment target = medicalTreatmentRepository.findById(request.getId()).get();
+            medicalTreatmentRepository.delete(target);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
+    }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
     public String getAllMedcalItems() {

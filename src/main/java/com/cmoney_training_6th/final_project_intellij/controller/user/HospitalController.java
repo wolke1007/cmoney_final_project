@@ -2,6 +2,8 @@ package com.cmoney_training_6th.final_project_intellij.controller.user;
 
 import com.cmoney_training_6th.final_project_intellij.model.*;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
+import com.cmoney_training_6th.final_project_intellij.services.DoctorService;
+import com.cmoney_training_6th.final_project_intellij.services.HospitalService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.google.gson.*;
@@ -34,6 +36,9 @@ public class HospitalController {
     @Autowired
     private ReservationRepository reservationRepository;
     @Autowired
+    private DoctorService doctorService;
+
+    @Autowired
     private JwtUtil jwtTokenUtil;
 
     @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,7 +55,8 @@ public class HospitalController {
         JsonObject json = new JsonObject();
         JsonObject doctorJson;
         JsonArray doctorArr = new JsonArray();
-        List<Doctor> doctor = doctorRepository.findByHospitalId(hospitalId);
+//        List<Doctor> doctor = doctorRepository.findByHospitalId(hospitalId);
+        List<Doctor> doctor = doctorService.findByHospitalId(hospitalId);
         for (Doctor doc : doctor) {
             doctorJson = (JsonObject) g.toJsonTree(doc).getAsJsonObject();
             doctorArr.add(doctorJson);

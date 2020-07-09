@@ -19,6 +19,12 @@ public class MedicalRecord {
     @Column(name="hospital_id")
     private int hospitalId; // FK
 
+    @Column(name="user_id")
+    private int userId; // FK
+
+    @Column(name="pet_id")
+    private int petId; // FK
+
 //    @Column(nullable=false, length=50)
     @Column(name="create_date", length=50)
     private String createDate;
@@ -35,20 +41,36 @@ public class MedicalRecord {
         this.id = id;
     }
 
-    public int getHospital_id() {
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getPetId() {
+        return petId;
+    }
+
+    public void setPetId(int petId) {
+        this.petId = petId;
+    }
+
+    public int getHospitalId() {
         return hospitalId;
     }
 
-    public void setHospital_id(int hospital_id) {
-        this.hospitalId = hospital_id;
+    public void setHospitalId(int hospitalId) {
+        this.hospitalId = hospitalId;
     }
 
-    public String getCreate_date() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreate_date(String create_date) {
-        this.createDate = create_date;
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 
     public List<MedicalTreatment> getMedicalTreatments() {

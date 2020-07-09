@@ -57,9 +57,9 @@ public class AuthencateController {
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-
-//        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-        return new CommonResponse(jwt, 200).toString();
+        JsonObject json = new JsonObject();
+        json.addProperty("token", jwt);
+        return new CommonResponse(json, 200).toString();
     }
 
     @RequestMapping(value = "/login/admin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
