@@ -83,7 +83,7 @@ public class AuthencateController {
             Hospital hospital = hospitalRepository.findByUniSerialId(authenticationRequest.getUniSerialId()).get();
             JsonObject json = new JsonObject();
             json.addProperty("token", jwt);
-            json.addProperty("hospital_id", hospital.getUniSerialId());
+            json.addProperty("hospital_id", hospital.getId());
             return new CommonResponse(json, 200).toString();
         }catch(NoSuchElementException e){
             return new CommonResponse(
