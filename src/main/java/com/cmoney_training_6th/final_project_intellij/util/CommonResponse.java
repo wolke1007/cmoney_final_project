@@ -23,7 +23,6 @@ public class CommonResponse {
 //        System.out.println("json obj construct");
         this.statusCode = statusCode;
         this.message = (JsonObject) this.message;
-        this.message = this.message.getClass();
         this.message = json;
     }
 
