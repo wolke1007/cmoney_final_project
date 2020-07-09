@@ -65,7 +65,7 @@ public class RootScheduleController {
                 try {
                     scheduleRepository.save(schedule);
                 }catch (DataIntegrityViolationException e) {
-                    return new CommonResponse("exception", 404).toString();
+                    return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
                 }
             }
         }

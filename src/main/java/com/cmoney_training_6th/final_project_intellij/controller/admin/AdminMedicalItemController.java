@@ -7,6 +7,7 @@ import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
@@ -40,11 +41,11 @@ public class AdminMedicalItemController {
             medicalItemRepository.save(request);
             return new CommonResponse("success", 200).toString();
         }catch (DataIntegrityViolationException e) {
-            return new CommonResponse("fail: " + e, 404).toString();
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
 
-    @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String editMedcalItem(
             HttpServletResponse response,
             @RequestBody MedicalItem request
@@ -63,7 +64,7 @@ public class AdminMedicalItemController {
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
-            return new CommonResponse("fail: " + e, 404).toString();
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
 

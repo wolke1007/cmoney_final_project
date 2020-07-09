@@ -46,7 +46,7 @@ public class MedicalRecordController {
 //            return new CommonResponse("Saved", 200);
 //        } catch (DataIntegrityViolationException e) {
 //            response.setStatus(400);
-//            return new CommonResponse("Key duplicated", 400);
+//            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 400);
 //        }
         return new CommonResponse("Key duplicated", 400);
     }

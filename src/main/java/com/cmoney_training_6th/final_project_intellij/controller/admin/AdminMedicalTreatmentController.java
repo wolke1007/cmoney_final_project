@@ -39,32 +39,32 @@ public class AdminMedicalTreatmentController {
             medicalTreatmentRepository.save(request);
             return new CommonResponse("success", 200).toString();
         }catch (DataIntegrityViolationException e) {
-            return new CommonResponse("fail: " + e, 404).toString();
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
 
-    @UpdateMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String editMedcalTreatment(
-            HttpServletResponse response,
-            @RequestBody MedicalTreatment request
-    ) {
-//        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
+//    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+//    public String editMedcalTreatment(
+//            HttpServletResponse response,
+//            @RequestBody MedicalTreatment request
+//    ) {
+////        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
+////        if(!checkPassword.strLongerThan(50)
+////                .strShorterThan(0)
+////                .getResult()){
+////            response.setStatus(400);
+////            return new CommonResponse(checkPassword,400);
+////        }
+//        // 新增 User
+//        try {
+//            medicalTreatmentRepository.findByName(request.getName());
+//            medicalTreatmentRepository.save(request);
+//            return new CommonResponse("success", 200).toString();
+//        } catch (DataIntegrityViolationException e) {
+//            response.setStatus(404);
+//            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
 //        }
-        // 新增 User
-        try {
-            medicalTreatmentRepository.findByName(request.getName());
-            medicalTreatmentRepository.save(request);
-            return new CommonResponse("success", 200).toString();
-        } catch (DataIntegrityViolationException e) {
-            response.setStatus(404);
-            return new CommonResponse("fail: " + e, 404).toString();
-        }
-    }
+//    }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
     public String getAllMedcalItems() {

@@ -43,7 +43,7 @@ public class AdminHospitalController {
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
-            return new CommonResponse("fail: " + e, 404).toString();
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
 }

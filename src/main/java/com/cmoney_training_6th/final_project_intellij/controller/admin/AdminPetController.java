@@ -52,7 +52,7 @@ public class AdminPetController {
 //            System.out.println(g.toJsonTree(pet).getAsJsonObject());
             petRepository.save(pet);
         } catch (DataIntegrityViolationException e) {
-            return new CommonResponse("fail: " + e, 404).toString();
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
         return new CommonResponse("success", 200).toString();
     }

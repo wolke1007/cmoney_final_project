@@ -64,7 +64,7 @@ public class AdminUserController {
             return new CommonResponse("success", 200).toString();
         }catch (DataIntegrityViolationException e) {
             response.setStatus(404);
-            return new CommonResponse("fail: " + e, 404).toString();
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
 
@@ -85,7 +85,7 @@ public class AdminUserController {
             userRepository.save(request);
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
-            return new CommonResponse("fail: " + e, 404).toString();
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
         return new CommonResponse("success", 200).toString();
     }
