@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
@@ -62,9 +63,12 @@ public class AdminUserController {
             user.get().setRole("ROLE_DOCTOR");
             userRepository.save(user.get());
             return new CommonResponse("success", 200).toString();
-        }catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (NoSuchElementException e) {
+            response.setStatus(404);
+            return new CommonResponse("id " + request.getUserId() + " not found: " + e.getMessage(), 404).toString();
         }
     }
 
