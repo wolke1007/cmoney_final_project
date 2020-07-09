@@ -13,7 +13,7 @@ import java.util.List;
 public class MedicalRecord {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="hospital_id")

@@ -17,7 +17,7 @@ import java.util.List;
 public class Roaster {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="doctor_id")

@@ -13,7 +13,7 @@ import java.util.Optional;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="user_id")

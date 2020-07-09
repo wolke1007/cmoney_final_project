@@ -9,6 +9,8 @@ import com.cmoney_training_6th.final_project_intellij.model.MedicalItem;
 import com.cmoney_training_6th.final_project_intellij.model.MedicalRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MedicalItemRepository extends JpaRepository<MedicalItem, Integer> {
+import java.util.Optional;
 
+public interface MedicalItemRepository extends JpaRepository<MedicalItem, Integer> {
+    Optional<MedicalItem> findByName(String name);
 }

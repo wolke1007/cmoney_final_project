@@ -11,7 +11,7 @@ import java.util.List;
 public class Pet {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="user_id")

@@ -17,10 +17,10 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="social_license_id")
+    @Column(name="social_license_id", unique = true)
     private String socialLicenseId;
 
     @Column(name="join_time", length=50)

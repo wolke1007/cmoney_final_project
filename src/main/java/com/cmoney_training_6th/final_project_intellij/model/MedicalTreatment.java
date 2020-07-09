@@ -13,19 +13,19 @@ import java.util.List;
 public class MedicalTreatment {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="medical_record_id")
     private int medicalRecordId; //FK
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="medical_treatment_id", referencedColumnName = "id")
-    List<Recipe> recipes = new ArrayList<>();
-
 //    @Column(nullable=false, columnDefinition="nvarchar(20000)")
     @Column(columnDefinition="nvarchar(20000)")
     private String description;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="medical_treatment_id", referencedColumnName = "id")
+    List<Recipe> recipes = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -35,12 +35,12 @@ public class MedicalTreatment {
         this.id = id;
     }
 
-    public int getMedical_record_id() {
+    public int getMedicalRecordId() {
         return medicalRecordId;
     }
 
-    public void setMedical_record_id(int medical_record_id) {
-        this.medicalRecordId = medical_record_id;
+    public void setMedicalRecordId(int medicalRecordId) {
+        this.medicalRecordId = medicalRecordId;
     }
 
     public List<Recipe> getRecipes() {

@@ -74,7 +74,6 @@ public class HospitalController {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
             Optional<User> user = userRepository.findByUsername(username);
-            // 檢查是否已經預約過，若大於 1 則跳 NonUniqueResultException，等於 1 則需要 handle
             List<Reservation> reservation = reservationRepository.
                     findAllByRoasterIdAndDateAndUserId(request.getRoasterId(), request.getDate(), user.get().getId());
             if (reservation.size() >= 1) {

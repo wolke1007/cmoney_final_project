@@ -13,21 +13,21 @@ import java.util.List;
 public class MedicalItem {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
+
+    @Column(name="item_type", nullable=false, columnDefinition="nvarchar(255)")
+    private String itemType;
+
+    @Column(nullable=false, unique = true, columnDefinition="nvarchar(255)")
+    private String name;
+
+    @Column(columnDefinition="nvarchar(20000)")
+    private String description;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="medical_item_id", referencedColumnName = "id")
     List<Recipe> recipes = new ArrayList<>();
-
-    @Column(name="item_type", nullable=false)
-    private String itemType;
-
-    @Column(nullable=false, columnDefinition="nvarchar(255)")
-    private String name;
-
-    @Column(nullable=false, columnDefinition="nvarchar(20000)")
-    private String description;
 
     public int getId() {
         return id;
@@ -45,12 +45,12 @@ public class MedicalItem {
         this.recipes = recipes;
     }
 
-    public String getItem_type() {
+    public String getItemType() {
         return itemType;
     }
 
-    public void setItem_type(String item_type) {
-        this.itemType = item_type;
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
     }
 
     public String getName() {

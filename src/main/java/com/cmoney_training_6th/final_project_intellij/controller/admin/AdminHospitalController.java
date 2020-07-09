@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
-@RequestMapping(path = "/admin")
+@RequestMapping(path = "/admin/hospital")
 public class AdminHospitalController {
     @Autowired
     private DoctorRepository doctorRepository;
@@ -25,7 +25,7 @@ public class AdminHospitalController {
     @Autowired
     private HospitalRepository hospitalRepository;
 
-    @PostMapping(path = "/new/hospital", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewHospital(
             HttpServletResponse response,
             @RequestBody Hospital request

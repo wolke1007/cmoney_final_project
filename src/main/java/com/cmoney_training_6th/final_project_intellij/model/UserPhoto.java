@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class UserPhoto {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     private int user_id; //FK
