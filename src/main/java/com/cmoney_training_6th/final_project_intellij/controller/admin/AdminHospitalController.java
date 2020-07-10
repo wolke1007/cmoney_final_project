@@ -67,7 +67,7 @@ public class AdminHospitalController {
         JsonArray doctorArr = new JsonArray();
         JsonIter ji = new JsonIter();
         List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
-        doctorArr = ji.listInToArray(doctors);
+        doctorArr = ji.listIntoArray(doctors);
         json.add("doctors", doctorArr);
         return new CommonResponse(json, 200).toString();
     }

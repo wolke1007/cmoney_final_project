@@ -5,6 +5,7 @@ import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.services.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.services.HospitalService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +49,13 @@ public class HospitalController {
         return new CommonResponse("heeehehehee", 200).toString();
     }
 
-    @GetMapping(path = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @GetMapping(path = "/doctors", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
                                                        int hospitalId) {
         Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT).create();
-        JsonObject json = new JsonObject();
-        JsonObject doctorJson;
-        JsonArray doctorArr = new JsonArray();
-//        List<Doctor> doctor = doctorRepository.findByHospitalId(hospitalId);
-        List<Doctor> doctor = doctorService.findByHospitalId(hospitalId);
-        for (Doctor doc : doctor) {
-            doctorJson = (JsonObject) g.toJsonTree(doc).getAsJsonObject();
-            doctorArr.add(doctorJson);
-        }
-        json.add("doctors", doctorArr);
-        return new CommonResponse(json, 200).toString();
+        List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
+        JsonIter ji = new JsonIter();
+        return new CommonResponse(ji.listIntoArray(doctors), 200).toString();
     }
 
     @GetMapping(path = "/by/address_area", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests

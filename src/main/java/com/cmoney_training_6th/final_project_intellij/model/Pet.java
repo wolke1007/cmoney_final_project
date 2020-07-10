@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "pet")
@@ -12,6 +13,7 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Column(name="user_id")
@@ -42,13 +44,24 @@ public class Pet {
     @Column(name="own_date", length=50)
     private String ownDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="pet_id", referencedColumnName = "id")
-    List<MedicalRecord> medicalRecords = new ArrayList<>();
+//    @OneToOne
+//    @JoinColumn(name = "medical_record_id", unique = true)
+//    private MedicalRecord medicalRecord;
+
+    @OneToOne(mappedBy = "pet")
+    private MedicalRecord medicalRecord;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<PetPhoto> petPhotos = new ArrayList<>();
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
+    }
 
     public int getId() {
         return id;
@@ -144,14 +157,6 @@ public class Pet {
 
     public void setOwnDate(String ownDate) {
         this.ownDate = ownDate;
-    }
-
-    public List<MedicalRecord> getMedicalRecords() {
-        return medicalRecords;
-    }
-
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-        this.medicalRecords = medicalRecords;
     }
 
     public List<PetPhoto> getPetPhotos() {

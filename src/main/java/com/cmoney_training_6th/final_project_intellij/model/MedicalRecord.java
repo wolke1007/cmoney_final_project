@@ -1,5 +1,6 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ public class MedicalRecord {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
     @Column(name="hospital_id")
@@ -22,16 +24,28 @@ public class MedicalRecord {
     @Column(name="user_id")
     private int userId; // FK
 
-    @Column(name="pet_id")
-    private int petId; // FK
-
 //    @Column(nullable=false, length=50)
     @Column(name="create_date", length=50)
     private String createDate;
 
+//    @OneToOne(mappedBy = "medicalRecord")
+//    private Pet pet;
+
+    @OneToOne
+    @JoinColumn(name = "pet_id", unique = true)
+    protected Pet pet;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="medical_record_id", referencedColumnName = "id")
     List<MedicalTreatment> medicalTreatments = new ArrayList<>();
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
 
     public int getId() {
         return id;
@@ -47,14 +61,6 @@ public class MedicalRecord {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getPetId() {
-        return petId;
-    }
-
-    public void setPetId(int petId) {
-        this.petId = petId;
     }
 
     public int getHospitalId() {

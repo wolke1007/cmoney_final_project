@@ -5,11 +5,9 @@ import com.cmoney_training_6th.final_project_intellij.model.Pet;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -38,7 +37,8 @@ public class AdminPetController {
 
     @PostMapping(path = "/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewPet(
-            @RequestBody Pet pet
+            HttpServletResponse response,
+            @RequestBody Pet request
     ) {
 //        ValidateParameter checkPassword = new ValidateParameter("password", username);
 //        if(!checkPassword.strLongerThan(50)
@@ -50,15 +50,64 @@ public class AdminPetController {
         try {
 //            Gson g = new Gson();
 //            System.out.println(g.toJsonTree(pet).getAsJsonObject());
-            petRepository.save(pet);
+            petRepository.save(request);
+            return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
-        return new CommonResponse("success", 200).toString();
+    }
+
+    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String editPet(
+            HttpServletResponse response,
+            @RequestBody Pet request
+    ) {
+//        ValidateParameter checkPassword = new ValidateParameter("password", username);
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
+        try {
+            petRepository.findById(request.getId()).get();
+            petRepository.save(request);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (NoSuchElementException e) {
+            response.setStatus(404);
+            return new CommonResponse("id " + request.getId() + " not found: " + e.getMessage(), 404).toString();
+        }
+    }
+
+    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String deletePet(
+            HttpServletResponse response,
+            @RequestBody Pet request
+    ) {
+//        ValidateParameter checkPassword = new ValidateParameter("password", username);
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
+        try {
+            petRepository.findById(request.getId()).get();
+            petRepository.delete(request);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (NoSuchElementException e) {
+            response.setStatus(404);
+            return new CommonResponse("id " + request.getId() + " not found: " + e.getMessage(), 404).toString();
+        }
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String getAllPet() {
+    public String getAllPet() throws Exception {
 //        ValidateParameter checkPassword = new ValidateParameter("password", username);
 //        if(!checkPassword.strLongerThan(50)
 //                .strShorterThan(0)
@@ -70,17 +119,15 @@ public class AdminPetController {
         List<Pet> pets = petRepository.findAll();
         List<User> users = userRepository.findAll();
         JsonObject json = new JsonObject();
-        Gson g = new Gson();
+        Gson g = new GsonBuilder()
+                .excludeFieldsWithModifiers(Modifier.PROTECTED)
+                .create();
         JsonArray petArr = new JsonArray();
         for (Pet pet : pets) {
             JsonObject petJson = g.toJsonTree(pet).getAsJsonObject();
-            System.out.println("DEBUG petJson "+petJson);
-            System.out.println("DEBUG user_id "+petJson.get("userId").getAsInt());
             int user_id = petJson.get("userId").getAsInt();
             User user = userRepository.findById(user_id).get();
-            System.out.println("user: " + user);
             String username = user.getUsername();
-            System.out.println("username: " + username);
             String phone = user.getPhone();
             String lastName = user.getLastName();
             String firstName = user.getFirstName();
