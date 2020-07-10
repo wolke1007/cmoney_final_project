@@ -24,27 +24,26 @@ public class MedicalRecord {
     @Column(name="user_id")
     private int userId; // FK
 
-//    @Column(nullable=false, length=50)
+    @Column(name="pet_id")
+    private int petId; // FK
+
     @Column(name="create_date", length=50)
     private String createDate;
 
-//    @OneToOne(mappedBy = "medicalRecord")
-//    private Pet pet;
-
-    @OneToOne
-    @JoinColumn(name = "pet_id", unique = true)
-    protected Pet pet;
+//    @OneToOne
+//    @JoinColumn(name = "pet_id", unique = true)
+//    protected Pet pet;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="medical_record_id", referencedColumnName = "id")
     List<MedicalTreatment> medicalTreatments = new ArrayList<>();
 
-    public Pet getPet() {
-        return pet;
+    public int getPetId() {
+        return petId;
     }
 
-    public void setPet(Pet pet) {
-        this.pet = pet;
+    public void setPetId(int petId) {
+        this.petId = petId;
     }
 
     public int getId() {

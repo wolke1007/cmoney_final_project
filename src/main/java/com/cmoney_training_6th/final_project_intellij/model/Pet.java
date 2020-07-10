@@ -44,22 +44,22 @@ public class Pet {
     @Column(name="own_date", length=50)
     private String ownDate;
 
-//    @OneToOne
-//    @JoinColumn(name = "medical_record_id", unique = true)
+//    @OneToOne(mappedBy = "pet")
 //    private MedicalRecord medicalRecord;
 
-    @OneToOne(mappedBy = "pet")
-    private MedicalRecord medicalRecord;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="pet_id", referencedColumnName = "id")
+    List<MedicalRecord> medicalRecord;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<PetPhoto> petPhotos = new ArrayList<>();
 
-    public MedicalRecord getMedicalRecord() {
+    public List<MedicalRecord> getMedicalRecord() {
         return medicalRecord;
     }
 
-    public void setMedicalRecord(MedicalRecord medicalRecord) {
+    public void setMedicalRecord(List<MedicalRecord> medicalRecord) {
         this.medicalRecord = medicalRecord;
     }
 

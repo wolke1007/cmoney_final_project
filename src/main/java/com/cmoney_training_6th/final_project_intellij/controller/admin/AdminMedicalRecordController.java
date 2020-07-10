@@ -31,8 +31,7 @@ public class AdminMedicalRecordController {
     @PostMapping(path = "/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewMedicalRecord(
             HttpServletResponse response,
-            @RequestBody MedicalRecord request,
-            @RequestParam int petId
+            @RequestBody MedicalRecord request
     ) {
 //        ValidateParameter checkPassword = new ValidateParameter("password", password);
 //        if(!checkPassword.strLongerThan(50)
@@ -41,11 +40,7 @@ public class AdminMedicalRecordController {
 //            response.setStatus(400);
 //            return new CommonResponse(checkPassword,400);
 //        }
-        // 新增 Doctor
         try{
-            System.out.println("DEBUG:"+petId);
-//            petRepository.findById(request.getPet().getId());
-            request.setPet(petRepository.findById(petId).get());
             medicalRecordRepository.save(request);
             return new CommonResponse("success", 200).toString();
         }catch (DataIntegrityViolationException e) {
@@ -68,8 +63,7 @@ public class AdminMedicalRecordController {
         // 新增 User
         try {
             MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getId()).get();
-            medicalRecord.setCreateDate(request.getCreateDate());
-            medicalRecordRepository.save(medicalRecord);
+            medicalRecordRepository.save(request);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
