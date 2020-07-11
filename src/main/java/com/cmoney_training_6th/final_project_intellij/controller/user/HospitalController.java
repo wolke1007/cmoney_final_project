@@ -65,7 +65,7 @@ public class HospitalController {
         return new CommonResponse("", 200).toString();
     }
 
-    @PostMapping(path = "/booking", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/reservation/booking", produces = MediaType.APPLICATION_JSON_VALUE)
     public String bookingByDoctorId(
             @RequestBody Reservation request,
             @RequestHeader("Authorization") String header) {
@@ -90,5 +90,45 @@ public class HospitalController {
         } catch (NoSuchElementException e) {
             return new CommonResponse("booking fail because wrong value is given.", 404).toString();
         }
+    }
+
+    @GetMapping(path = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String userGetAllReservationsByHostpitalId(@RequestParam(value = "hospital_id")
+                                                          int hospitalId) {
+        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+        JsonIter ji = new JsonIter();
+        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+        for(Reservation res : reservations){
+            int roaId = res.getRoasterId();
+            Roaster roaster = roasterRepository.findById(roaId).get();
+            int scheduleId = roaster.getScheduleId();
+            Schedule schedule = scheduleRepository.findById(scheduleId).get();
+            String time = schedule.getDay() + " " + schedule.getTime();
+            for(JsonElement je : arr){
+                je.getAsJsonObject().addProperty("time", time);
+            }
+        }
+        return new CommonResponse(arr, 200).toString();
+    }
+
+    @GetMapping(path = "/reservation", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String getAllReservationsByHostpitalId(@RequestParam(value = "hospital_id")
+                                                          int hospitalId) {
+        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+        JsonIter ji = new JsonIter();
+        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+
+        for(Reservation res : reservations){
+            int roaId = res.getRoasterId();
+            Roaster roaster = roasterRepository.findById(roaId).get();
+            int scheduleId = roaster.getScheduleId();
+            Schedule schedule = scheduleRepository.findById(scheduleId).get();
+            String time = schedule.getDay() + " " + schedule.getTime();
+            for(JsonElement je : arr){
+                je.getAsJsonObject().addProperty("time", time);
+            }
+        }
+
+        return new CommonResponse(arr, 200).toString();
     }
 }

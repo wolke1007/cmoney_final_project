@@ -7,6 +7,7 @@ import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.PetRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.google.gson.Gson;
@@ -49,11 +50,10 @@ public class PetController {
         String username = jwtTokenUtil.getUserNameFromJwtToken(token);
         Optional<User> user = userRepository.findByUsername(username);
         List<Pet> pets = petRepository.findByUserId(user.get().getId());
-        JsonArray jsonArr = new JsonArray();
-        Gson g = new Gson();
-        for(Pet pet : pets){
-            jsonArr.add(g.toJsonTree(pet).getAsJsonObject());
-        }
+        JsonArray jsonArr;
+        JsonIter ji = new JsonIter();
+//        jsonArr = ji.listIntoArrayWithoutKey(pets, "medicalRecord");
+        jsonArr = ji.listIntoArray(pets);
         return new CommonResponse(jsonArr, 200).toString();
     }
 

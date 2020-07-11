@@ -48,14 +48,6 @@ public class AdminUserController {
             HttpServletResponse response,
             @RequestBody Doctor request
     ) {
-//        ValidateParameter checkPassword = new ValidateParameter("password", password);
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
-//        }
-//        // 新增 Doctor
         try{
             doctorRepository.save(request);
             int userId = request.getUserId();
@@ -77,13 +69,13 @@ public class AdminUserController {
             HttpServletResponse response,
             @RequestBody User request
     ) {
-//        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
-//        }
+        ValidateParameter checkRole = new ValidateParameter("role", request.getRole());
+        if(!checkRole.stringShouldNotBe("ROLE_ADMIN")
+                .stringShouldNotBe("ROLE_DOCTOR")
+                .getResult()){
+            response.setStatus(404);
+            return new CommonResponse("role of this regist method is wrong.",404).toString();
+        }
         // 新增 User
         try {
             userRepository.save(request);

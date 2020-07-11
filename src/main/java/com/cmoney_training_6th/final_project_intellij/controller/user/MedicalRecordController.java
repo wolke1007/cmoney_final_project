@@ -8,6 +8,7 @@ import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.MedicalRecordRepository;
 import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -19,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
@@ -63,6 +65,13 @@ public class MedicalRecordController {
 //        }
 //        return new ErrorResponse(userRepository.findByUsernameContaining(username).stream(), 200);
 //    }
+
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
+    public String getAllMedicalItems() {
+        List<MedicalRecord> medicalRecords = medicalRecordRepository.findAll();
+        JsonIter ji = new JsonIter();
+        return new CommonResponse(ji.listIntoArray(medicalRecords), 200).toString();
+    }
 
     @GetMapping(path = "/pet/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<MedicalRecord> findRecordById(@PathVariable(value = "id") int pet_id) {

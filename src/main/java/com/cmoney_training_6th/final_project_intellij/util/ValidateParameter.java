@@ -32,6 +32,20 @@ public class ValidateParameter {
         return this;
     }
 
+    public ValidateParameter stringShouldBe(String targetStr){
+        if(!this.str.equals(targetStr)){
+            this.result = false;
+        }
+        return this;
+    }
+
+    public ValidateParameter stringShouldNotBe(String targetStr){
+        if(this.str.equals(targetStr)){
+            this.result = false;
+        }
+        return this;
+    }
+
     public boolean getResult(){
         return this.result;
     }

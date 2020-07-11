@@ -13,4 +13,5 @@ import java.util.List;
 
 public interface RoasterRepository extends JpaRepository<Roaster, Integer> {
     List<Roaster> findByDoctorId(int doctorId);
+    List<Roaster> findByScheduleId(int doctorId);
 }

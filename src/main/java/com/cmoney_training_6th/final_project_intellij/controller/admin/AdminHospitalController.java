@@ -60,7 +60,8 @@ public class AdminHospitalController {
 
     @GetMapping(path = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
-                                                       int hospitalId) {
+                                                       int hospitalId,
+                                               @RequestBody User user) {
         Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT).create();
         JsonObject json = new JsonObject();
         JsonObject doctorJson;

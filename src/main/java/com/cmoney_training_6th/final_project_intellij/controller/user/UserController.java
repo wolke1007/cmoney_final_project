@@ -44,32 +44,6 @@ public class UserController {
         return "account hello 中文測試" + utf8;
     }
 
-    @PostMapping(path = "/regist", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String addNewUser(
-            HttpServletResponse response,
-            @RequestBody User jsonUser
-    ) throws Exception {
-        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
-//        }
-        try {
-            User n = new User();
-            n.setUsername(jsonUser.getUsername());
-            n.setPassword(jsonUser.getPassword());
-            n.setJoinTime(jsonUser.getJoinTime());
-            n.setRole(jsonUser.getRole());
-            userRepository.save(n);
-            return new CommonResponse("Saved", 200).toString();
-        } catch (DataIntegrityViolationException e) {
-            response.setStatus(404);
-            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
-        }
-    }
-
     @GetMapping(path = "/all/info", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
