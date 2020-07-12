@@ -57,7 +57,7 @@ public class Hospital {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="hospital_id", referencedColumnName = "id")
-    List<MedicalRecord> medicalRecords = new ArrayList<>();
+    protected List<MedicalRecord> medicalRecords = new ArrayList<>();
 
     public int getId() {
         return id;

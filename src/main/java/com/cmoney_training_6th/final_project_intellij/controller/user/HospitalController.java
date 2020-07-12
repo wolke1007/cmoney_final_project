@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -42,17 +43,21 @@ public class HospitalController {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
-    @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String acHello() {
-        JsonObject newJson = new JsonObject();
-        newJson.addProperty("new json test", 123456789);
-        return new CommonResponse("heeehehehee", 200).toString();
+    @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String getAllHospitals() {
+        Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).create();
+        List<Hospital> hospitals = hospitalRepository.findAll();
+        JsonIter ji = new JsonIter();
+        JsonArray jsonArr = new JsonArray();
+        jsonArr = ji.listIntoArrayWithKeys(hospitals,
+                Arrays.asList("id", "name", "phone"));
+        return new CommonResponse(jsonArr, 200).toString();
     }
 
     @GetMapping(path = "/doctors", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
                                                        int hospitalId) {
-        Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT).create();
+        Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).create();
         List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
         JsonIter ji = new JsonIter();
         return new CommonResponse(ji.listIntoArray(doctors), 200).toString();
@@ -92,19 +97,19 @@ public class HospitalController {
         }
     }
 
-    @GetMapping(path = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String userGetAllReservationsByHostpitalId(@RequestParam(value = "hospital_id")
-                                                          int hospitalId) {
-        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+    @GetMapping(path = "/roasters", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String userGetRoastersByHostpitalId(@RequestParam(value = "hospital_id")
+                                                              int hospitalId) {
+        List<Roaster> roasters = roasterRepository.findByHospitalId(hospitalId);
         JsonIter ji = new JsonIter();
-        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
-        for(Reservation res : reservations){
-            int roaId = res.getRoasterId();
-            Roaster roaster = roasterRepository.findById(roaId).get();
+        JsonArray arr = ji.listIntoArrayWithoutKeys(roasters,
+                Arrays.asList("scheduleId", "reservations"));
+        for (Roaster roaster : roasters) {
+            int roaId = roaster.getId();
             int scheduleId = roaster.getScheduleId();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
             String time = schedule.getDay() + " " + schedule.getTime();
-            for(JsonElement je : arr){
+            for (JsonElement je : arr) {
                 je.getAsJsonObject().addProperty("time", time);
             }
         }
@@ -113,18 +118,22 @@ public class HospitalController {
 
     @GetMapping(path = "/reservation", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getAllReservationsByHostpitalId(@RequestParam(value = "hospital_id")
-                                                          int hospitalId) {
-        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+                                                          int hospitalId,
+                                                  @RequestHeader("Authorization") String header) {
+        String token = header.substring(7);
+        String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+        User user = userRepository.findByUsername(username).get();
+        int userId = user.getId();
+        List<Reservation> reservations = reservationRepository.findReservationByUserIdAndHospitalId(userId, hospitalId);
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
-
-        for(Reservation res : reservations){
+        for (Reservation res : reservations) {
             int roaId = res.getRoasterId();
             Roaster roaster = roasterRepository.findById(roaId).get();
             int scheduleId = roaster.getScheduleId();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
             String time = schedule.getDay() + " " + schedule.getTime();
-            for(JsonElement je : arr){
+            for (JsonElement je : arr) {
                 je.getAsJsonObject().addProperty("time", time);
             }
         }

@@ -56,6 +56,19 @@ public class JsonIter <T>{
         return this.arr;
     }
 
+    public JsonArray listIntoArrayWithKeys(List<T> list, List<String> keys){ // 可這樣的方式代入 Arrays.asList("roasters", "skill")
+        JsonObject json;
+        for(T obj : list){
+            json = (JsonObject) g.toJsonTree(obj).getAsJsonObject();
+            JsonObject newJson = new JsonObject();
+            for(String key : keys){
+                newJson.add(key, json.get(key));
+            }
+            this.arr.add(newJson);
+        }
+        return this.arr;
+    }
+
     public JsonArray listIntoArray(List<T> list, Callable<T> func) throws Exception {
         for(T obj : list){
             this.arr.add((JsonObject) g.toJsonTree(obj).getAsJsonObject());
