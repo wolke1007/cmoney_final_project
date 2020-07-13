@@ -9,6 +9,9 @@ import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.google.gson.JsonArray;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -149,8 +152,11 @@ public class PetController {
         }
     }
 
+    @ApiResponses(value = {@ApiResponse(code=200,message = "照片上傳成功")})
+    @ApiOperation("上傳寵物照片")
     @PostMapping(path = "/upload/photo", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String uploadFile(@RequestParam("file") MultipartFile file,
+    public String uploadFile(HttpServletResponse response,
+                             @RequestParam("file") MultipartFile file,
                              @RequestParam("petId") int petId,
                             @RequestHeader("Authorization") String jwt){
 
@@ -182,12 +188,13 @@ public class PetController {
         } catch (Exception e) {
             System.out.println(e);
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            response.setStatus(404);
             return new CommonResponse(message, 404).toString();
         }
     }
 
     @GetMapping(path = "/getfiles", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getListFiles() {
+    public String getListFiles(HttpServletResponse response) {
 
         List<PetPhoto> fileInfos = filesStorageService.loadAll().map(path -> {
             String filename = path.getFileName().toString();

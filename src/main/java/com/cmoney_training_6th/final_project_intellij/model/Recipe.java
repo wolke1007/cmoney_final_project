@@ -1,9 +1,5 @@
 package com.cmoney_training_6th.final_project_intellij.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
