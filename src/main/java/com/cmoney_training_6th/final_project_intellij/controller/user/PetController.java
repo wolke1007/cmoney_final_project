@@ -20,9 +20,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
@@ -56,5 +58,125 @@ public class PetController {
         jsonArr = ji.listIntoArray(pets);
         return new CommonResponse(jsonArr, 200).toString();
     }
+
+    @PostMapping(path = "/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String addNewPet(
+            HttpServletResponse response,
+            @RequestHeader("Authorization") String jwt,
+            @RequestBody Pet request
+    ) {
+//        ValidateParameter checkPassword = new ValidateParameter("password", username);
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
+        try {
+            String token = jwt.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            Optional<User> user = userRepository.findByUsername(username);
+            request.setUserId(user.get().getId());
+            petRepository.save(request);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
+    }
+
+    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String editPet(
+            HttpServletResponse response,
+            @RequestHeader("Authorization") String jwt,
+            @RequestBody Pet request
+    ) {
+//        ValidateParameter checkPassword = new ValidateParameter("password", username);
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
+        try {
+            String token = jwt.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            Optional<User> user = userRepository.findByUsername(username);
+            request.setUserId(user.get().getId());
+            petRepository.findById(request.getId()).get();
+            petRepository.save(request);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (NoSuchElementException e) {
+            response.setStatus(404);
+            return new CommonResponse("id " + request.getId() + " not found: " + e.getMessage(), 404).toString();
+        }
+    }
+
+    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String deletePet(
+            HttpServletResponse response,
+            @RequestHeader("Authorization") String jwt,
+            @RequestBody Pet request
+    ) {
+//        ValidateParameter checkPassword = new ValidateParameter("password", username);
+//        if(!checkPassword.strLongerThan(50)
+//                .strShorterThan(0)
+//                .getResult()){
+//            response.setStatus(400);
+//            return new CommonResponse(checkPassword,400);
+//        }
+        try {
+            String token = jwt.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            Optional<User> user = userRepository.findByUsername(username);
+            request.setUserId(user.get().getId());
+            petRepository.findById(request.getId()).get();
+            petRepository.delete(request);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (NoSuchElementException e) {
+            response.setStatus(404);
+            return new CommonResponse("id " + request.getId() + " not found: " + e.getMessage(), 404).toString();
+        }
+    }
+
+//    @PostMapping("/upload/photo")
+//    public String uploadFile(@RequestParam("file") MultipartFile file,
+//                                                      @RequestHeader("Authorization") String jwt){
+//
+//        System.out.println("upload-------------");
+//        String a = jwt.substring(7);
+//        String username = jwtTokenUtil.extractUsername(a);
+//        User existingUser = userRepository.findByUsername(username).orElse(null);
+//
+//        if (file.isEmpty()) {
+//            System.out.println("file is Empty");
+//            return null;
+//        }
+//
+//        String message = "";
+//        try {
+//            SimpleDateFormat date = new SimpleDateFormat("yyyy/MMM/d/E_HH:mm:ss" , Locale.ENGLISH);
+//            Date now = new Date();
+//            FileInfo fileInfo = new FileInfo();
+//            long starttime = System.currentTimeMillis();
+//            filesStorageService.save(file, starttime);
+//            fileInfo.setName(starttime + file.getOriginalFilename());
+//            fileInfo.setTime(starttime);
+//            fileInfo.setDate(date.format(now));
+//            fileInfo.setUrl("./uploads");
+//            fileRepository.save(fileInfo);
+//            message = "Uploaded the file successfully: " + file.getOriginalFilename();
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(200, message));
+//
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(404, message));
+//        }
+//    }
 
 }

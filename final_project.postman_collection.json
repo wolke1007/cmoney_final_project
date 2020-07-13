@@ -220,7 +220,7 @@
 							"response": []
 						},
 						{
-							"name": "edit pet Copy",
+							"name": "delete pet",
 							"request": {
 								"method": "DELETE",
 								"header": [
@@ -1848,20 +1848,19 @@
 							"response": []
 						},
 						{
-							"name": "user create new pet",
+							"name": "create new pet",
 							"request": {
 								"method": "POST",
 								"header": [
 									{
-										"key": "",
+										"key": "Authorization",
 										"type": "text",
-										"value": "",
-										"disabled": true
+										"value": "{{token}}"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"userId\":1,\r\n    \"name\":\"小白\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
+									"raw": "{\r\n    \"name\":\"使用者自己新增寵物\",\r\n    \"species\":\"貓\",\r\n    \"breed\":\"米克斯\",\r\n    \"age\":5,\r\n    \"weight\":300,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"catcatcat\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1869,12 +1868,11 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/user/pet/new",
+									"raw": "{{url}}/pet/new",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
-										"user",
 										"pet",
 										"new"
 									]
@@ -1883,20 +1881,19 @@
 							"response": []
 						},
 						{
-							"name": "user edit pet",
+							"name": "edit pet",
 							"request": {
 								"method": "PUT",
 								"header": [
 									{
-										"key": "",
+										"key": "Authorization",
 										"type": "text",
-										"value": "",
-										"disabled": true
+										"value": "{{token}}"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"id\": 2,\r\n    \"userId\":1,\r\n    \"name\":\"小白\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
+									"raw": "{\r\n    \"id\": 4,\r\n    \"name\":\"使用者自己更改寵物姓名\",\r\n    \"species\":\"貓\",\r\n    \"breed\":\"米克斯\",\r\n    \"age\":6,\r\n    \"weight\":50,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1904,14 +1901,46 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/user/pet/edit",
+									"raw": "{{url}}/pet/edit",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
-										"user",
 										"pet",
 										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete pet",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/pet/delete",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"pet",
+										"delete"
 									]
 								}
 							},
@@ -1967,7 +1996,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-13_17:11",
+					"name": "2020-07-13_17:32",
 					"item": [],
 					"event": [
 						{
