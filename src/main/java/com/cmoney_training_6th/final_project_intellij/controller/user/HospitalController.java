@@ -134,15 +134,18 @@ public class HospitalController {
             List<Reservation> reservations = reservationRepository.findReservationByUserIdAndHospitalId(userId, hospitalId);
             JsonIter ji = new JsonIter();
             JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+            int index = 0;
+            System.out.println("DEBUG reservation size:"+reservations.size());
             for (Reservation res : reservations) {
                 int roaId = res.getRoasterId();
                 Roaster roaster = roasterRepository.findById(roaId).get();
                 int scheduleId = roaster.getScheduleId();
                 Schedule schedule = scheduleRepository.findById(scheduleId).get();
                 String time = schedule.getDay() + " " + schedule.getTime();
-                for (JsonElement je : arr) {
-                    je.getAsJsonObject().addProperty("time", time);
-                }
+                int doctorId = roaster.getDoctorId();
+                arr.get(index).getAsJsonObject().addProperty("time", time);
+                arr.get(index).getAsJsonObject().addProperty("doctorId", doctorId);
+                index++;
             }
             return new CommonResponse(arr, 200).toString();
         } catch (ExpiredJwtException e) {
