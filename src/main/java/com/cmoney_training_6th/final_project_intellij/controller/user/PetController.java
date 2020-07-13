@@ -1,31 +1,28 @@
 package com.cmoney_training_6th.final_project_intellij.controller.user;
 
-import com.cmoney_training_6th.final_project_intellij.model.Doctor;
+import com.cmoney_training_6th.final_project_intellij.model.PetPhoto;
 import com.cmoney_training_6th.final_project_intellij.model.Pet;
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.PetRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.repos.*;
+import com.cmoney_training_6th.final_project_intellij.services.FilesStorageService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
-import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
@@ -37,6 +34,15 @@ public class PetController {
 
     @Autowired
     private PetRepository petRepository;
+
+    @Autowired
+    private PetPhotoRepository petPhotoRepository;
+
+    @Autowired
+    private FilesStorageService filesStorageService;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     @Autowired
     private JwtUtil jwtTokenUtil;
@@ -143,40 +149,65 @@ public class PetController {
         }
     }
 
-//    @PostMapping("/upload/photo")
-//    public String uploadFile(@RequestParam("file") MultipartFile file,
-//                                                      @RequestHeader("Authorization") String jwt){
-//
-//        System.out.println("upload-------------");
-//        String a = jwt.substring(7);
-//        String username = jwtTokenUtil.extractUsername(a);
-//        User existingUser = userRepository.findByUsername(username).orElse(null);
-//
-//        if (file.isEmpty()) {
-//            System.out.println("file is Empty");
-//            return null;
-//        }
-//
-//        String message = "";
-//        try {
-//            SimpleDateFormat date = new SimpleDateFormat("yyyy/MMM/d/E_HH:mm:ss" , Locale.ENGLISH);
-//            Date now = new Date();
-//            FileInfo fileInfo = new FileInfo();
-//            long starttime = System.currentTimeMillis();
-//            filesStorageService.save(file, starttime);
-//            fileInfo.setName(starttime + file.getOriginalFilename());
-//            fileInfo.setTime(starttime);
-//            fileInfo.setDate(date.format(now));
-//            fileInfo.setUrl("./uploads");
-//            fileRepository.save(fileInfo);
-//            message = "Uploaded the file successfully: " + file.getOriginalFilename();
-//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(200, message));
-//
-//        } catch (Exception e) {
-//            System.out.println(e);
-//            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(404, message));
-//        }
-//    }
+    @PostMapping(path = "/upload/photo", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String uploadFile(@RequestParam("file") MultipartFile file,
+                             @RequestParam("petId") int petId,
+                            @RequestHeader("Authorization") String jwt){
+
+        System.out.println("upload-------------");
+        String a = jwt.substring(7);
+        String username = jwtTokenUtil.getUserNameFromJwtToken(a);
+        User existingUser = userRepository.findByUsername(username).orElse(null);
+
+        if (file.isEmpty()) {
+            System.out.println("file is Empty");
+            return null;
+        }
+
+        String message = "";
+        try {
+            SimpleDateFormat date = new SimpleDateFormat("yyyy/MMM/d/E_HH:mm:ss" , Locale.ENGLISH);
+            Date now = new Date();
+            PetPhoto fileInfo = new PetPhoto();
+            long starttime = System.currentTimeMillis();
+            filesStorageService.save(file, starttime);
+            fileInfo.setName(starttime + file.getOriginalFilename());
+            fileInfo.setTime(starttime);
+            fileInfo.setDate(date.format(now));
+            fileInfo.setUrl("./uploads");
+            fileInfo.setPetId(petId);
+            fileRepository.save(fileInfo);
+            message = "Uploaded the file successfully: " + file.getName();
+            return new CommonResponse(message, 200).toString();
+        } catch (Exception e) {
+            System.out.println(e);
+            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            return new CommonResponse(message, 404).toString();
+        }
+    }
+
+    @GetMapping(path = "/getfiles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getListFiles() {
+
+        List<PetPhoto> fileInfos = filesStorageService.loadAll().map(path -> {
+            String filename = path.getFileName().toString();
+            String url = MvcUriComponentsBuilder
+                    .fromMethodName(PetController.class, "getFile", path.getFileName().toString()).build().toString();
+
+            return new PetPhoto(filename, url);
+        }).collect(Collectors.toList());
+        JsonIter ji = new JsonIter();
+        JsonArray arr = ji.listIntoArray(fileInfos);
+        return new CommonResponse(arr, 200).toString();
+    }
+
+    @GetMapping(value = "/download/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE) //解析JPG檔
+    @ResponseBody
+    public ResponseEntity<Resource>  getFile(@PathVariable String filename) {
+
+        Resource file = filesStorageService.load(filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
 
 }
