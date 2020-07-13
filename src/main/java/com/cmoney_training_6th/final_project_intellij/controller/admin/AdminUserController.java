@@ -6,6 +6,7 @@ import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.model.UserPhoto;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -38,6 +39,9 @@ public class AdminUserController {
     @Autowired
     private UserPhotoRepository userPhotoRepository;
 
+    @Autowired
+    private JwtUtil jwtTokenUtil;
+
     @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
     public String adminHello(@RequestParam String utf8) {
         return "account hello 中文測試" + utf8;
@@ -49,6 +53,7 @@ public class AdminUserController {
             @RequestBody Doctor request
     ) {
         try{
+            System.out.println("debug doctor userID:"+request.getUserId());
             doctorRepository.save(request);
             int userId = request.getUserId();
             Optional<User> user = userRepository.findById(userId);
@@ -86,9 +91,92 @@ public class AdminUserController {
         return new CommonResponse("success", 200).toString();
     }
 
+    @PutMapping(path = "/staff/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String adminEditStaffByUsername(
+            HttpServletResponse response,
+            @RequestBody User request
+    ) {
+        ValidateParameter checkRole = new ValidateParameter("role", request.getRole());
+        if(!checkRole.stringShouldNotBe("ROLE_ADMIN")
+                .stringShouldNotBe("ROLE_DOCTOR")
+                .stringShouldBe("ROLE_STAFF")
+                .getResult()){
+            response.setStatus(404);
+            return new CommonResponse("role of this edit method is wrong.",404).toString();
+        }
+        try {
+            User user = userRepository.findByUsername(request.getUsername()).get();
+            request.setId(user.getId());
+            userRepository.save(request);
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
+        return new CommonResponse("success", 200).toString();
+    }
+
+    @PutMapping(path = "/staff/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String adminDeleteStaffByUsernameAndId(
+            HttpServletResponse response,
+            @RequestBody User request
+    ) {
+        try {
+            // id 與 username 各取一次比對 id 是否為同一個人
+            User user = userRepository.findByUsername(request.getUsername()).get();
+            User checkUser = userRepository.findById(request.getId()).get();
+            if(user.getId() != checkUser.getId()){
+                return new CommonResponse("fail, user id and user_name can not match.", 404).toString();
+            }
+            // 確認刪除的帳號身分是否為 STAFF
+            ValidateParameter checkRole = new ValidateParameter("role", user.getRole());
+            if(!checkRole.stringShouldNotBe("ROLE_ADMIN")
+                    .stringShouldNotBe("ROLE_DOCTOR")
+                    .stringShouldBe("ROLE_STAFF")
+                    .getResult()){
+                response.setStatus(404);
+                return new CommonResponse("role of this delete method is wrong.",404).toString();
+            }
+            // 取消登入權，不真實刪除資料
+            user.setActive(false);
+            userRepository.save(user);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (NoSuchElementException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getMessage(), 404).toString();
+        }
+    }
+
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @GetMapping(path = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getAdminInfo(@RequestHeader("Authorization") String header) {
+        try {
+            String token = header.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            Optional<User> user = userRepository.findByUsername(username);
+            Gson g = new Gson();
+            JsonObject json = g.toJsonTree(user).getAsJsonObject().get("value").getAsJsonObject();
+            json.remove("password"); // 不能讓前端看到密碼
+            json.remove("reservations");
+            json.remove("doctors");
+            json.remove("medicalRecords");
+            json.remove("pets");
+            json.remove("role");
+            json.remove("active");
+            System.out.println("user id: " + user.get().getId());
+            System.out.println(hospitalRepository.findByUserId(user.get().getId()));
+            int hospitalId = hospitalRepository.findByUserId(user.get().getId()).get().getId();
+            json.addProperty("hospitalId", hospitalId);
+            return new CommonResponse(json, 200).toString();
+        } catch (NoSuchElementException e) {
+            return new CommonResponse("wrong token was given.", 404).toString();
+        }
     }
 
 //    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE)

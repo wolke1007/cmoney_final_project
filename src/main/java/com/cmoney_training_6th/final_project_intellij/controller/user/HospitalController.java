@@ -8,11 +8,13 @@ import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.google.gson.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +57,7 @@ public class HospitalController {
     }
 
     @GetMapping(path = "/doctors", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
+    public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospitalId")
                                                        int hospitalId) {
         Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).create();
         List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
@@ -64,7 +66,7 @@ public class HospitalController {
     }
 
     @GetMapping(path = "/by/address_area", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String getHospitalByAddressArea(@RequestParam(value = "address_area")
+    public String getHospitalByAddressArea(@RequestParam(value = "addressArea")
                                                    String address_area) {
 //        hospitalRepository.findBy
         return new CommonResponse("", 200).toString();
@@ -72,6 +74,7 @@ public class HospitalController {
 
     @PostMapping(path = "/reservation/booking", produces = MediaType.APPLICATION_JSON_VALUE)
     public String bookingByDoctorId(
+            HttpServletResponse response,
             @RequestBody Reservation request,
             @RequestHeader("Authorization") String header) {
         try {
@@ -94,11 +97,14 @@ public class HospitalController {
             return new CommonResponse("reservation_id: " + bookingNum, 200).toString();
         } catch (NoSuchElementException e) {
             return new CommonResponse("booking fail because wrong value is given.", 404).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
     @GetMapping(path = "/roasters", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String userGetRoastersByHostpitalId(@RequestParam(value = "hospital_id")
+    public String userGetRoastersByHostpitalId(@RequestParam(value = "hospitalId")
                                                               int hospitalId) {
         List<Roaster> roasters = roasterRepository.findByHospitalId(hospitalId);
         JsonIter ji = new JsonIter();
@@ -117,27 +123,31 @@ public class HospitalController {
     }
 
     @GetMapping(path = "/reservation", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String getAllReservationsByHostpitalId(@RequestParam(value = "hospital_id")
-                                                          int hospitalId,
+    public String getAllReservationsByHostpitalId(HttpServletResponse response,
+                                                  @RequestParam(value = "hospitalId") int hospitalId,
                                                   @RequestHeader("Authorization") String header) {
-        String token = header.substring(7);
-        String username = jwtTokenUtil.getUserNameFromJwtToken(token);
-        User user = userRepository.findByUsername(username).get();
-        int userId = user.getId();
-        List<Reservation> reservations = reservationRepository.findReservationByUserIdAndHospitalId(userId, hospitalId);
-        JsonIter ji = new JsonIter();
-        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
-        for (Reservation res : reservations) {
-            int roaId = res.getRoasterId();
-            Roaster roaster = roasterRepository.findById(roaId).get();
-            int scheduleId = roaster.getScheduleId();
-            Schedule schedule = scheduleRepository.findById(scheduleId).get();
-            String time = schedule.getDay() + " " + schedule.getTime();
-            for (JsonElement je : arr) {
-                je.getAsJsonObject().addProperty("time", time);
+        try {
+            String token = header.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            User user = userRepository.findByUsername(username).get();
+            int userId = user.getId();
+            List<Reservation> reservations = reservationRepository.findReservationByUserIdAndHospitalId(userId, hospitalId);
+            JsonIter ji = new JsonIter();
+            JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+            for (Reservation res : reservations) {
+                int roaId = res.getRoasterId();
+                Roaster roaster = roasterRepository.findById(roaId).get();
+                int scheduleId = roaster.getScheduleId();
+                Schedule schedule = scheduleRepository.findById(scheduleId).get();
+                String time = schedule.getDay() + " " + schedule.getTime();
+                for (JsonElement je : arr) {
+                    je.getAsJsonObject().addProperty("time", time);
+                }
             }
+            return new CommonResponse(arr, 200).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
-
-        return new CommonResponse(arr, 200).toString();
     }
 }

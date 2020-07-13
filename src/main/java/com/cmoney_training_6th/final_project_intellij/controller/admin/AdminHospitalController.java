@@ -58,17 +58,15 @@ public class AdminHospitalController {
         }
     }
 
-    @GetMapping(path = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospital_id")
-                                                       int hospitalId,
-                                               @RequestBody User user) {
-        Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.TRANSIENT).create();
+//    @GetMapping(path = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @GetMapping(path = "/crews", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospitalId")
+                                                       int hospitalId) {
         JsonObject json = new JsonObject();
-        JsonObject doctorJson;
         JsonArray doctorArr = new JsonArray();
         JsonIter ji = new JsonIter();
         List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
-        doctorArr = ji.listIntoArray(doctors);
+        doctorArr = ji.listIntoArrayWithKeys(doctors, Arrays.asList("id", "name", "skill", "experience"));
         json.add("doctors", doctorArr);
         return new CommonResponse(json, 200).toString();
     }

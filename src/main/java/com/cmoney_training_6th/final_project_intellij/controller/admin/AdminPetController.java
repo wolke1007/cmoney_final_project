@@ -131,9 +131,9 @@ public class AdminPetController {
             String phone = user.getPhone();
             String lastName = user.getLastName();
             String firstName = user.getFirstName();
-            petJson.addProperty("owner_email", username);
-            petJson.addProperty("owner_phone", phone);
-            petJson.addProperty("owner_name", lastName + firstName);
+            petJson.addProperty("ownerEmail", username);
+            petJson.addProperty("ownerPhone", phone);
+            petJson.addProperty("ownerName", lastName + firstName);
             petArr.add(petJson);
         }
         json.add("pet_list", petArr);
@@ -145,20 +145,23 @@ public class AdminPetController {
 //        return userRepository.findAll();
 //    }
 //
-//    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public String findUserById(@RequestParam int id) {
-//        Optional<User> test = userRepository.findById(id);
-//        Gson g = new Gson();
-//        JsonElement je = g.toJsonTree(test).getAsJsonObject().get("value");
-//        JsonObject json = (JsonObject) g.toJsonTree(test).getAsJsonObject().get("value");
-//        json.remove("role");
-//        json.add("je", je);
-//        System.out.println(json);
-//        JsonObject newJson = new JsonObject();
-//        newJson.addProperty("status", 200);
-//        newJson.add("message", json);
-//        return new CommonResponse(newJson, 200).toString();
-//    }
+    @GetMapping(path = "/by/userId", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String findByUserId(@RequestParam int userId) {
+        List<Pet> pets = petRepository.findByUserId(userId);
+        JsonIter ji = new JsonIter();
+        JsonArray arr = new JsonArray();
+        arr = ji.listIntoArrayWithoutKey(pets, "medicalRecord");
+        return new CommonResponse(arr, 200).toString();
+    }
+
+    @GetMapping(path = "/by/hospitalId", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String findByHospitalId(@RequestParam int hospitalId) {
+        List<Pet> pets = petRepository.findByUserId(hospitalId);
+        JsonIter ji = new JsonIter();
+        JsonArray arr = new JsonArray();
+        arr = ji.listIntoArrayWithoutKey(pets, "medicalRecord");
+        return new CommonResponse(arr, 200).toString();
+    }
 //
 //    @GetMapping(path = "/by/role", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
 //    public Iterable<User> findUsersByRole(HttpServletResponse response, @RequestParam String role) {

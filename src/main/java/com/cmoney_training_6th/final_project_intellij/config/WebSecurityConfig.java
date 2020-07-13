@@ -46,7 +46,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/maintenance/**").hasRole("ROOT")
+//                .antMatchers("/maintenance/**").hasRole("ROOT")
 //                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/version").permitAll()

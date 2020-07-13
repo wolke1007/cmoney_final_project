@@ -16,6 +16,8 @@ public class MedicalTreatment {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
+    private int weight;
+
     @Column(name="medical_record_id")
     private int medicalRecordId; //FK
 
@@ -57,5 +59,13 @@ public class MedicalTreatment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }
