@@ -1,6 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.controller.user;
 
 import com.cmoney_training_6th.final_project_intellij.model.*;
+import com.cmoney_training_6th.final_project_intellij.model.dto.DtoReservation;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.services.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.services.HospitalService;
@@ -75,32 +76,63 @@ public class HospitalController {
     @PostMapping(path = "/reservation/booking", produces = MediaType.APPLICATION_JSON_VALUE)
     public String bookingByDoctorId(
             HttpServletResponse response,
-            @RequestBody Reservation request,
+            @RequestBody DtoReservation request,
             @RequestHeader("Authorization") String header) {
         try {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
             Optional<User> user = userRepository.findByUsername(username);
-            List<Reservation> reservation = reservationRepository.
-                    findAllByRoasterIdAndDateAndUserId(request.getRoasterId(), request.getDate(), user.get().getId());
-            if (reservation.size() >= 1) {
-                int bookingNum = reservation.get(reservation.size() - 1).getNumber();
+            int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
+            int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
+            List<Reservation> reservations = reservationRepository.
+                    findAllByRoasterIdAndDateAndUserId(roasterId, request.getDate(), user.get().getId());
+            if (reservations.size() >= 1) {
+                int bookingNum = reservations.get(reservations.size() - 1).getNumber();
                 return new CommonResponse("booked before, booking number is:" + bookingNum, 404).toString();
             }
-            request.setUserId(user.get().getId());
+            Reservation newRes = new Reservation();
+            newRes.setUserId(user.get().getId());
+            // 這邊考慮改成用 username 來做，前端會比較好傳值進來
             System.out.println("DEBUG user_id: " + user.get().getId());
-            int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(request.getRoasterId(), request.getDate()).size();
+            int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(roasterId, request.getDate()).size();
             System.out.println("DEBUG reservePatientCnt: " + reservePatientCnt);
             int bookingNum = reservePatientCnt + 1; // 預約這個班表且為同天的人數
-            request.setNumber(bookingNum);
-            reservationRepository.save(request);
+            newRes.setNumber(bookingNum);
+            newRes.setDate(request.getDate());
+            newRes.setRoasterId(roasterId);
+            newRes.setPetId(request.getPetId());
+            reservationRepository.save(newRes);
             return new CommonResponse("reservation_id: " + bookingNum, 200).toString();
-        } catch (NoSuchElementException e) {
-            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        } catch (NoSuchElementException e) {
+            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
         }
+//        try {
+//            String token = header.substring(7);
+//            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+//            Optional<User> user = userRepository.findByUsername(username);
+//            List<Reservation> reservation = reservationRepository.
+//                    findAllByRoasterIdAndDateAndUserId(request.getRoasterId(), request.getDate(), user.get().getId());
+//            if (reservation.size() >= 1) {
+//                int bookingNum = reservation.get(reservation.size() - 1).getNumber();
+//                return new CommonResponse("booked before, booking number is:" + bookingNum, 404).toString();
+//            }
+//            request.setUserId(user.get().getId());
+//            System.out.println("DEBUG user_id: " + user.get().getId());
+//            int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(request.getRoasterId(), request.getDate()).size();
+//            System.out.println("DEBUG reservePatientCnt: " + reservePatientCnt);
+//            int bookingNum = reservePatientCnt + 1; // 預約這個班表且為同天的人數
+//            request.setNumber(bookingNum);
+//            reservationRepository.save(request);
+//            return new CommonResponse("reservation_id: " + bookingNum, 200).toString();
+//        } catch (NoSuchElementException e) {
+//            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
+//        } catch (ExpiredJwtException e) {
+//            response.setStatus(403);
+//            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+//        }
     }
 
     @GetMapping(path = "/roasters", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests

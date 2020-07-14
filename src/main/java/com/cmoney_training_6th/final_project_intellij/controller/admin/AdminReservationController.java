@@ -43,9 +43,11 @@ public class AdminReservationController {
             HttpServletResponse response,
             @RequestBody DtoReservation request) {
         try {
+            int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
+            int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
             Optional<User> user = userRepository.findById(request.getUserId());
             List<Reservation> reservations = reservationRepository.
-                    findAllByRoasterIdAndDateAndUserId(request.getRoasterId(), request.getDate(), user.get().getId());
+                    findAllByRoasterIdAndDateAndUserId(roasterId, request.getDate(), user.get().getId());
             if (reservations.size() >= 1) {
                 int bookingNum = reservations.get(reservations.size() - 1).getNumber();
                 return new CommonResponse("booked before, booking number is:" + bookingNum, 404).toString();
@@ -54,12 +56,12 @@ public class AdminReservationController {
             newRes.setUserId(user.get().getId());
             // 這邊考慮改成用 username 來做，前端會比較好傳值進來
             System.out.println("DEBUG user_id: " + user.get().getId());
-            int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(request.getRoasterId(), request.getDate()).size();
+            int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(roasterId, request.getDate()).size();
             System.out.println("DEBUG reservePatientCnt: " + reservePatientCnt);
             int bookingNum = reservePatientCnt + 1; // 預約這個班表且為同天的人數
             newRes.setNumber(bookingNum);
             newRes.setDate(request.getDate());
-            newRes.setRoasterId(request.getRoasterId());
+            newRes.setRoasterId(roasterId);
             newRes.setPetId(request.getPetId());
             reservationRepository.save(newRes);
             return new CommonResponse("reservation_id: " + bookingNum, 200).toString();

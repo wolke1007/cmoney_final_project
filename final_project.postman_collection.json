@@ -1111,7 +1111,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"userId\":2,\r\n    \"petId\":1,\r\n    \"hospitalId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
+									"raw": "{\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"hospitalId\":1,\r\n    \"doctorId\":1,\r\n    \"day\":\"Monday\",\r\n    \"time\":\"Afternoon\",\r\n    \"date\":\"2020-07-22\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1703,7 +1703,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
+									"raw": "{\r\n    \"petId\":1,\r\n    \"hospitalId\":1,\r\n    \"doctorId\":1,\r\n    \"day\":\"Monday\",\r\n    \"time\":\"Afternoon\",\r\n    \"date\":\"2020-07-22\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2113,7 +2113,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-14_11:11",
+					"name": "2020-07-14_11:51",
 					"item": [],
 					"event": [
 						{

@@ -7,8 +7,18 @@ public class DtoReservation {
     public int hospitalId;
     public int userId;
     public int petId;
-    public int roasterId;
+    public String day;
+    public String time;
     public String date;
+    public int doctorId;
+
+    public int getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
+    }
 
     public int getHospitalId() {
         return hospitalId;
@@ -34,12 +44,20 @@ public class DtoReservation {
         this.userId = userId;
     }
 
-    public int getRoasterId() {
-        return roasterId;
+    public String getDay() {
+        return day;
     }
 
-    public void setRoasterId(int roasterId) {
-        this.roasterId = roasterId;
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getDate() {

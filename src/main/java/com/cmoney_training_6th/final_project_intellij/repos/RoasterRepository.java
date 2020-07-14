@@ -10,14 +10,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoasterRepository extends JpaRepository<Roaster, Integer> {
     List<Roaster> findByDoctorId(int doctorId);
 
-    List<Roaster> findByScheduleId(int doctorId);
+    @Query(value = "SELECT * FROM newdatabase.roaster WHERE doctor_id = any(" +
+            "SELECT id FROM newdatabase.doctor WHERE hospital_id = ?1)",
+            nativeQuery = true)
+    Optional<Roaster> findByDoctorIdAndScheduleId(int doctorId, int scheduleId);
 
     @Query(value = "SELECT * FROM newdatabase.roaster WHERE doctor_id = any(" +
             "SELECT id FROM newdatabase.doctor WHERE hospital_id = ?1)",
             nativeQuery = true)
     List<Roaster> findByHospitalId(int hospitalId);
+
 }

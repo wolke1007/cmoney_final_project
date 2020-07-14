@@ -50,9 +50,9 @@ public class RootScheduleController {
         allDay.add("Saturday");
         allDay.add("Sunday");
         allTime = new ArrayList<String>();
-        allTime.add("day");
-        allTime.add("afternoon");
-        allTime.add("night");
+        allTime.add("Day");
+        allTime.add("Afternoon");
+        allTime.add("Night");
         int id = 1;
         for(String day : allDay){
             for(String time : allTime){
