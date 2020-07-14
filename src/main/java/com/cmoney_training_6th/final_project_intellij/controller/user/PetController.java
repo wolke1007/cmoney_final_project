@@ -163,13 +163,11 @@ public class PetController {
                              @RequestParam("petId") int petId,
                              @RequestHeader("Authorization") String jwt) {
 
-        System.out.println("upload-------------");
         String a = jwt.substring(7);
         String username = jwtTokenUtil.getUserNameFromJwtToken(a);
         User existingUser = userRepository.findByUsername(username).orElse(null);
 
         if (file.isEmpty()) {
-            System.out.println("file is Empty");
             return null;
         }
 
@@ -189,7 +187,6 @@ public class PetController {
             message = "Uploaded the file successfully: " + file.getName();
             return new CommonResponse(message, 200).toString();
         } catch (Exception e) {
-            System.out.println(e);
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
             response.setStatus(404);
             return new CommonResponse(message, 404).toString();
@@ -199,28 +196,23 @@ public class PetController {
     @GetMapping(path = "/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPhotoByPetId(HttpServletResponse response,
                                   @RequestParam int petId) throws IOException {
-        JsonArray arr = new JsonArray();
-        List<PetPhoto> petPhotos = petPhotoRepository.findAllByPetId(petId);
-        for (PetPhoto petphoto : petPhotos) {
-            JsonObject json = new JsonObject();
-            Resource r = filesStorageService.load(petphoto.getName());
-            json.addProperty("petId", petId);
-            json.addProperty("URL", MvcUriComponentsBuilder
-                    .fromMethodName(PetController.class, "getFile",
-                            r.getFile().toPath().getFileName().toString()).build().toString());
-            arr.add(json);
+        try {
+            JsonArray arr = new JsonArray();
+            List<PetPhoto> petPhotos = petPhotoRepository.findAllByPetId(petId);
+            for (PetPhoto petphoto : petPhotos) {
+                JsonObject json = new JsonObject();
+                Resource r = filesStorageService.load(petphoto.getName());
+                json.addProperty("petId", petId);
+                json.addProperty("URL", MvcUriComponentsBuilder
+                        .fromMethodName(PetController.class, "getFile",
+                                r.getFile().toPath().getFileName().toString()).build().toString());
+                arr.add(json);
+            }
+            return new CommonResponse(arr, 200).toString();
+        } catch (IOException e) {
+            response.setStatus(404);
+            return new CommonResponse("no such file", 404).toString();
         }
-//        List<PetPhoto> fileInfos = filesStorageService.loadAll().map(path -> {
-//            String filename = path.getFileName().toString();
-//            String url = MvcUriComponentsBuilder
-//                    .fromMethodName(PetController.class, "getFile", path.getFileName().toString()).build().toString();
-//            int petId = petPhotos.iterator().next().getPetId();
-//            System.out.println("pet id:" + petId);
-//            return new PetPhoto(filename, url, petId);
-//        }).collect(Collectors.toList());
-//        JsonIter ji = new JsonIter();
-//        JsonArray arr = ji.listIntoArray(fileInfos);
-        return new CommonResponse(arr, 200).toString();
     }
 
     @GetMapping(path = "/getfiles", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -231,7 +223,6 @@ public class PetController {
             String url = MvcUriComponentsBuilder
                     .fromMethodName(PetController.class, "getFile", path.getFileName().toString()).build().toString();
             int petId = petPhotos.iterator().next().getPetId();
-            System.out.println("pet id:" + petId);
             return new PetPhoto(filename, url, petId);
         }).collect(Collectors.toList());
         JsonIter ji = new JsonIter();
