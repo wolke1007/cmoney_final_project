@@ -101,11 +101,30 @@ public class AdminMedicalRecordController {
     }
 
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
-    public String getAllMedicalItems() {
-        List<MedicalRecord> medicalRecords = medicalRecordRepository.findAll();
-        JsonIter ji = new JsonIter();
-        return new CommonResponse(ji.listIntoArray(medicalRecords), 200).toString();
+    public String getAllMedicalRecords(HttpServletResponse response) {
+        try{
+            List<MedicalRecord> medicalRecords = medicalRecordRepository.findAll();
+            JsonIter ji = new JsonIter();
+            return new CommonResponse(ji.listIntoArray(medicalRecords), 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
     }
+
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
+    public String getMedicalRecordByUserIdAndPetId(HttpServletResponse response,
+                                                   @RequestParam int userId,
+                                                   @RequestParam int petId) {
+        try {
+            MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(userId, petId).get();
+            return new CommonResponse(medicalRecord, 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
+    }
+
 
 //    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE)
 //    public String findUserById(@RequestParam int id) {

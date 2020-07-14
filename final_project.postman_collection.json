@@ -831,6 +831,42 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "get all medical record by user id and pet id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/medical_record/all?userId=1&petId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"medical_record",
+												"all"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "1"
+												},
+												{
+													"key": "petId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -2077,7 +2113,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-14_10:52",
+					"name": "2020-07-14_11:11",
 					"item": [],
 					"event": [
 						{

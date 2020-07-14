@@ -14,5 +14,5 @@ import java.util.Optional;
 
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Integer> {
     List<MedicalRecord> findByUserId(int userId);
-//    List<MedicalRecord> findByPetId(int petId);
+    Optional<MedicalRecord> findByUserIdAndPetId(int userId, int petId);
 }
