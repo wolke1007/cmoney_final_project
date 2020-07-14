@@ -12,10 +12,14 @@ import com.google.gson.JsonElement;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
@@ -39,10 +43,10 @@ public class AdminMedicalItemController {
 //            return new CommonResponse(checkPassword,400);
 //        }
 //        // 新增 Doctor
-        try{
+        try {
             medicalItemRepository.save(request);
             return new CommonResponse("success", 200).toString();
-        }catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
@@ -95,35 +99,23 @@ public class AdminMedicalItemController {
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
     public String getAllMedcalItems() {
         JsonIter ji = new JsonIter();
-        JsonArray jsonArr = ji.listIntoArrayWithoutKey(medicalItemRepository.findAll(),"recipes");
+        JsonArray jsonArr = ji.listIntoArrayWithoutKey(medicalItemRepository.findAll(), "recipes");
         return new CommonResponse(jsonArr, 200).toString();
     }
 
-//    @GetMapping(path = "/by/id", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public String findUserById(@RequestParam int id) {
-//        Optional<User> test = userRepository.findById(id);
-//        Gson g = new Gson();
-//        JsonElement je = g.toJsonTree(test).getAsJsonObject().get("value");
-//        JsonObject json = (JsonObject) g.toJsonTree(test).getAsJsonObject().get("value");
-//        json.remove("role");
-//        json.add("je", je);
-//        System.out.println(json);
-//        JsonObject newJson = new JsonObject();
-//        newJson.addProperty("status", 200);
-//        newJson.add("message", json);
-//        return new CommonResponse(newJson, 200).toString();
-//    }
-//
-//    @GetMapping(path = "/by/role", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
-//    public Iterable<User> findUsersByRole(HttpServletResponse response, @RequestParam String role) {
-//        System.out.println(userRepository.findAllByRoleOrderByUsername(role));
-//        return userRepository.findAllByRoleOrderByUsername(role);
-//    }
-
-//    @PersistenceContext
-//    public User loadUserById(EntityManager entityManager, int id){
-//        return entityManager.getReference(User.class, id);
-//    }
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE) // debug 用
+    public String getPageMedcalItems(HttpServletResponse response,
+                                     @RequestParam int page,
+                                     @RequestParam int size) {
+        Page<MedicalItem> pageResult = medicalItemRepository.findAll(
+                PageRequest.of(page,  // 查詢的頁數，從0起算
+                        size, // 查詢的每頁筆數
+                        Sort.by("itemType").descending())); // 依itemType欄位降冪排序
+        List<MedicalItem> medicalItems =  pageResult.getContent();
+        JsonIter ji = new JsonIter();
+        JsonArray jsonArr = ji.listIntoArrayWithoutKey(medicalItems, "recipes");
+        return new CommonResponse(jsonArr, 200).toString();
+    }
 
 }
 
