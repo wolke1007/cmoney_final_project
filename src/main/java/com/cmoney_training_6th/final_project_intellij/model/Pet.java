@@ -46,11 +46,23 @@ public class Pet {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="pet_id", referencedColumnName = "id")
+    List<Reservation> reservation;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecord;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<PetPhoto> petPhotos = new ArrayList<>();
+
+    public List<Reservation> getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(List<Reservation> reservation) {
+        this.reservation = reservation;
+    }
 
     public List<MedicalRecord> getMedicalRecord() {
         return medicalRecord;

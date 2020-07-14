@@ -79,13 +79,16 @@ public class AdminReservationController {
         for(Reservation res : reservations){
             int roaId = res.getRoasterId();
             Roaster roaster = roasterRepository.findById(roaId).get();
+            int doctorId = roaster.getDoctorId();
             int scheduleId = roaster.getScheduleId();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
             String time = schedule.getDay() + " " + schedule.getTime();
             for(JsonElement je : arr){
                 Optional<User> u = userRepository.findById(je.getAsJsonObject().get("userId").getAsInt());
+                je.getAsJsonObject().addProperty("doctorId", doctorId);
                 je.getAsJsonObject().addProperty("userName", u.get().getUsername());
-                je.getAsJsonObject().addProperty("time", time);
+                je.getAsJsonObject().addProperty("day", schedule.getDay());
+                je.getAsJsonObject().addProperty("time", schedule.getTime());
             }
         }
         return new CommonResponse(arr, 200).toString();

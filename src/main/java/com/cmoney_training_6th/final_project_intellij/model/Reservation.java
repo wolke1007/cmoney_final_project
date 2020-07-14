@@ -13,6 +13,9 @@ public class Reservation {
     @Column(name="user_id")
     private int userId; //FK
 
+    @Column(name="pet_id")
+    private int petId; //FK
+
     @Column(name="roaster_id")
     private int roasterId; //FK
 
