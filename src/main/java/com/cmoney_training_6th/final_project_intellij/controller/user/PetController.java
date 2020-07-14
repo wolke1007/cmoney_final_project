@@ -8,7 +8,9 @@ import com.cmoney_training_6th.final_project_intellij.services.FilesStorageServi
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -152,13 +155,13 @@ public class PetController {
         }
     }
 
-    @ApiResponses(value = {@ApiResponse(code=200,message = "照片上傳成功")})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "照片上傳成功")})
     @ApiOperation("上傳寵物照片")
     @PostMapping(path = "/upload/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public String uploadFile(HttpServletResponse response,
                              @RequestParam("file") MultipartFile file,
                              @RequestParam("petId") int petId,
-                            @RequestHeader("Authorization") String jwt){
+                             @RequestHeader("Authorization") String jwt) {
 
         System.out.println("upload-------------");
         String a = jwt.substring(7);
@@ -172,7 +175,7 @@ public class PetController {
 
         String message = "";
         try {
-            SimpleDateFormat date = new SimpleDateFormat("yyyy/MMM/d/E_HH:mm:ss" , Locale.ENGLISH);
+            SimpleDateFormat date = new SimpleDateFormat("yyyy/MMM/d/E_HH:mm:ss", Locale.ENGLISH);
             Date now = new Date();
             PetPhoto fileInfo = new PetPhoto();
             long starttime = System.currentTimeMillis();
@@ -193,15 +196,43 @@ public class PetController {
         }
     }
 
+    @GetMapping(path = "/photo", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getPhotoByPetId(HttpServletResponse response,
+                                  @RequestParam int petId) throws IOException {
+        JsonArray arr = new JsonArray();
+        List<PetPhoto> petPhotos = petPhotoRepository.findAllByPetId(petId);
+        for (PetPhoto petphoto : petPhotos) {
+            JsonObject json = new JsonObject();
+            Resource r = filesStorageService.load(petphoto.getName());
+            json.addProperty("petId", petId);
+            json.addProperty("URL", MvcUriComponentsBuilder
+                    .fromMethodName(PetController.class, "getFile",
+                            r.getFile().toPath().getFileName().toString()).build().toString());
+            arr.add(json);
+        }
+//        List<PetPhoto> fileInfos = filesStorageService.loadAll().map(path -> {
+//            String filename = path.getFileName().toString();
+//            String url = MvcUriComponentsBuilder
+//                    .fromMethodName(PetController.class, "getFile", path.getFileName().toString()).build().toString();
+//            int petId = petPhotos.iterator().next().getPetId();
+//            System.out.println("pet id:" + petId);
+//            return new PetPhoto(filename, url, petId);
+//        }).collect(Collectors.toList());
+//        JsonIter ji = new JsonIter();
+//        JsonArray arr = ji.listIntoArray(fileInfos);
+        return new CommonResponse(arr, 200).toString();
+    }
+
     @GetMapping(path = "/getfiles", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getListFiles(HttpServletResponse response) {
-
+        Iterable<PetPhoto> petPhotos = petPhotoRepository.findAll();
         List<PetPhoto> fileInfos = filesStorageService.loadAll().map(path -> {
             String filename = path.getFileName().toString();
             String url = MvcUriComponentsBuilder
                     .fromMethodName(PetController.class, "getFile", path.getFileName().toString()).build().toString();
-
-            return new PetPhoto(filename, url);
+            int petId = petPhotos.iterator().next().getPetId();
+            System.out.println("pet id:" + petId);
+            return new PetPhoto(filename, url, petId);
         }).collect(Collectors.toList());
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArray(fileInfos);
@@ -210,7 +241,7 @@ public class PetController {
 
     @GetMapping(value = "/download/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE) //解析JPG檔
     @ResponseBody
-    public ResponseEntity<Resource>  getFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
 
         Resource file = filesStorageService.load(filename);
         return ResponseEntity.ok()

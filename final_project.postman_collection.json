@@ -2062,6 +2062,42 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "get pet photos by pet id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"equals": true,
+										"key": "Content-Type",
+										"type": "text",
+										"value": "{{json}}"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/pet/photo?petId=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"pet",
+										"photo"
+									],
+									"query": [
+										{
+											"key": "petId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -2113,7 +2149,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-14_11:51",
+					"name": "2020-07-14_12:58",
 					"item": [],
 					"event": [
 						{

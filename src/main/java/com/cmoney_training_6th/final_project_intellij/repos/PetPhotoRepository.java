@@ -13,5 +13,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PetPhotoRepository extends JpaRepository<PetPhoto, Integer> {
-
+    List<PetPhoto> findAllByPetId(int petId);
 }

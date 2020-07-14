@@ -33,9 +33,10 @@ public class PetPhoto implements Serializable {
 
     public PetPhoto(){}
 
-    public PetPhoto(String filename, String url){
+    public PetPhoto(String filename, String url, int petId){
         this.name = filename;
         this.url = url;
+        this.petId = petId;
     }
 
     public int getPetId() {
