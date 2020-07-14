@@ -1075,7 +1075,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"userId\":1,\r\n    \"hospitalId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
+									"raw": "{\r\n    \"userId\":2,\r\n    \"petId\":1,\r\n    \"hospitalId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1109,7 +1109,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"id\":1,\r\n    \"userId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-13\"\r\n}",
+									"raw": "{\r\n    \"id\":1,\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-13\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1667,7 +1667,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-08\"\r\n}",
+									"raw": "{\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1945,6 +1945,87 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "upload pet photo",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/Cloud-Razer/OneDrive/圖片/1_efUvc7EHRuyVrmjNujR5SQ.jpeg"
+										},
+										{
+											"key": "petId",
+											"value": "1",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/pet/upload/photo",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"pet",
+										"upload",
+										"photo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get pet photos",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"equals": true,
+										"key": "Content-Type",
+										"type": "text",
+										"value": "{{json}}"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/pet/getfiles?petId=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"pet",
+										"getfiles"
+									],
+									"query": [
+										{
+											"key": "petId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -1996,7 +2077,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-13_17:32",
+					"name": "2020-07-14_10:52",
 					"item": [],
 					"event": [
 						{
@@ -2757,7 +2838,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\":3,\r\n    \"hospitalId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
+							"raw": "{\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"hospitalId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2791,7 +2872,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\":1,\r\n    \"userId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-20\"\r\n}",
+							"raw": "{\r\n    \"id\":1,\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-13\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2902,7 +2983,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-08\"\r\n}",
+							"raw": "{\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-08\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
