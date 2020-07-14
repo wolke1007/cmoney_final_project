@@ -143,7 +143,8 @@ public class HospitalController {
                 Schedule schedule = scheduleRepository.findById(scheduleId).get();
                 String time = schedule.getDay() + " " + schedule.getTime();
                 int doctorId = roaster.getDoctorId();
-                arr.get(index).getAsJsonObject().addProperty("time", time);
+                arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
+                arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
                 arr.get(index).getAsJsonObject().addProperty("doctorId", doctorId);
                 index++;
             }

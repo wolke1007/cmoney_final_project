@@ -60,6 +60,7 @@ public class AdminReservationController {
             newRes.setNumber(bookingNum);
             newRes.setDate(request.getDate());
             newRes.setRoasterId(request.getRoasterId());
+            newRes.setPetId(request.getPetId());
             reservationRepository.save(newRes);
             return new CommonResponse("reservation_id: " + bookingNum, 200).toString();
         } catch (ExpiredJwtException e) {

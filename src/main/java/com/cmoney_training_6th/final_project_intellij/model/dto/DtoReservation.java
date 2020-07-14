@@ -6,6 +6,7 @@ import com.cmoney_training_6th.final_project_intellij.model.User;
 public class DtoReservation {
     public int hospitalId;
     public int userId;
+    public int petId;
     public int roasterId;
     public String date;
 
@@ -15,6 +16,14 @@ public class DtoReservation {
 
     public void setHospitalId(int hospitalId) {
         this.hospitalId = hospitalId;
+    }
+
+    public int getPetId() {
+        return petId;
+    }
+
+    public void setPetId(int petId) {
+        this.petId = petId;
     }
 
     public int getUserId() {

@@ -14,7 +14,7 @@ public class Reservation {
     private int userId; //FK
 
     @Column(name="pet_id")
-    private int petId; //FK
+    private int petId; // FK
 
     @Column(name="roaster_id")
     private int roasterId; //FK
@@ -23,6 +23,14 @@ public class Reservation {
     private String date;
 
     private int number;
+
+    public int getPetId() {
+        return petId;
+    }
+
+    public void setPetId(int petId) {
+        this.petId = petId;
+    }
 
     public int getId() {
         return id;
