@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -154,7 +155,6 @@ public class AdminReservationController {
             System.out.println("userid:"+user.getId()+" petid:"+ pet.getId());
             MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
             for(JsonElement je : arr){
-                Optional<User> u = userRepository.findById(je.getAsJsonObject().get("userId").getAsInt());
                 je.getAsJsonObject().addProperty("doctorName", doctorName);
                 je.getAsJsonObject().addProperty("userName", userName);
                 je.getAsJsonObject().addProperty("userPhone", userPhone);
@@ -165,10 +165,14 @@ public class AdminReservationController {
                 je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
                 je.getAsJsonObject().addProperty("day", schedule.getDay());
                 je.getAsJsonObject().addProperty("time", schedule.getTime());
-                JsonObject j = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject();
-                je.getAsJsonObject().add("medicalRecord", j);
+                JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                JsonIter jii = new JsonIter();
+                JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
+                je.getAsJsonObject().add("medicalTreatments", descriptions);
             }
+            System.out.println("DEBUG8");
         }
+        System.out.println("DEBUG9");
         return new CommonResponse(arr, 200).toString();
     }
 }
