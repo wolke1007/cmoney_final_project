@@ -4,6 +4,7 @@ import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.PetPhoto;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.model.UserPhoto;
+import com.cmoney_training_6th.final_project_intellij.model.dto.DtoDoctor;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
@@ -51,22 +52,32 @@ public class AdminUserController {
     @PostMapping(path = "/doctor/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewDoctor(
             HttpServletResponse response,
-            @RequestBody Doctor request
+            @RequestBody DtoDoctor request
     ) {
         try{
-            System.out.println("debug doctor userID:"+request.getUserId());
-            doctorRepository.save(request);
-            int userId = request.getUserId();
-            Optional<User> user = userRepository.findById(userId);
-            user.get().setRole("ROLE_DOCTOR");
-            userRepository.save(user.get());
+            Doctor doctor = new Doctor();
+            User user = userRepository.findByUsername(request.getUserName()).orElse(null);
+            if(doctorRepository.findByUserId(user.getId()).orElse(null) != null &&
+                    doctorRepository.findByHospitalId(request.getHospitalId()).size() > 0){
+                response.setStatus(404);
+                return new CommonResponse("this user already was a doctor.", 404).toString();
+            }
+            System.out.println("debug doctor userID:"+user.getId());
+            doctor.setSkill(request.getSkill());
+            doctor.setExperience(request.getExperience());
+            doctor.setDoctorLicense(request.getDoctorLicense());
+            doctor.setUserId(user.getId());
+            doctor.setHospitalId(request.getHospitalId());
+            doctorRepository.save(doctor);
+            user.setRole("ROLE_DOCTOR");
+            userRepository.save(user);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         } catch (NoSuchElementException e) {
             response.setStatus(404);
-            return new CommonResponse("id " + request.getUserId() + " not found: " + e.getMessage(), 404).toString();
+            return new CommonResponse("NoSuchElementException: " + e.getMessage(), 404).toString();
         }
     }
 
