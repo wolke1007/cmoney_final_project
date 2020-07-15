@@ -182,6 +182,10 @@ public class User {
         this.birthday = birthday;
     }
 
+    public String getName(){
+        return this.lastName.toString() + this.firstName.toString();
+    }
+
     public String getUsername() {
         return username;
     }

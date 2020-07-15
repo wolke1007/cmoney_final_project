@@ -20,10 +20,12 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.Option;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
@@ -50,6 +52,11 @@ public class AdminHospitalController {
 //        }
 //        // 新增 Doctor
         try {
+            Optional<Hospital> hospital = hospitalRepository.findByUserId(request.getUserId());
+            if(hospital.get().equals(Hospital.class)){
+                int ownerId = hospital.get().getUserId();
+                new CommonResponse("user already have a hospital:" + ownerId, 200).toString();
+            }
             hospitalRepository.save(request);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
@@ -117,11 +118,14 @@ public class AdminMedicalRecordController {
                                                    @RequestParam int userId,
                                                    @RequestParam int petId) {
         try {
-            MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(userId, petId).get();
-            return new CommonResponse(medicalRecord, 200).toString();
+            Optional<MedicalRecord> medicalRecord = medicalRecordRepository.findByUserIdAndPetId(userId, petId);
+            return new CommonResponse(medicalRecord.get(), 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (NoSuchElementException e) {
+            response.setStatus(404);
+            return new CommonResponse("cant find data this userId or petId.", 404).toString();
         }
     }
 

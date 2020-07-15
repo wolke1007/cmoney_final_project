@@ -93,7 +93,8 @@ public class CommonResponse {
                 ret = setMessage(ret, this.message);
                 break;
             default:
-                ret = setMessage(ret, "not supported data type: " + cls);
+                System.out.println("input type is: " + cls + " using object method to transform");
+                ret = setMessage(ret, this.message);
                 break;
         }
         return ret.toString();

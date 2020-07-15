@@ -28,4 +28,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             "SELECT id FROM newdatabase.doctor WHERE hospital_id = ?1))",
             nativeQuery = true)
     List<Reservation> findReservationByHospitalId(int hospitalId);
+
+    List<Reservation> findReservationByUserId(int userId);
 }

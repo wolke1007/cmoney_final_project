@@ -548,6 +548,41 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "get medical item by page and size",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/medical_item?page=1&size=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"medical_item"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "size",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -845,23 +880,22 @@
 											}
 										],
 										"url": {
-											"raw": "{{url}}/admin/medical_record/all?userId=1&petId=1",
+											"raw": "{{url}}/admin/medical_record?userId=3&petId=4",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"admin",
-												"medical_record",
-												"all"
+												"medical_record"
 											],
 											"query": [
 												{
 													"key": "userId",
-													"value": "1"
+													"value": "3"
 												},
 												{
 													"key": "petId",
-													"value": "1"
+													"value": "4"
 												}
 											]
 										}
@@ -1271,6 +1305,38 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "get all reservations and other info by hospital id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/reservation/all?hospitalId=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"reservation",
+										"all"
+									],
+									"query": [
+										{
+											"key": "hospitalId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -1553,7 +1619,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\"\r\n}",
+									"raw": "{\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\",\r\n\t\"socialLicenseId\":\"Z123456789\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"老闆\",\r\n    \"lastName\":\"王\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2149,7 +2215,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-14_12:58",
+					"name": "2020-07-14_18:20",
 					"item": [],
 					"event": [
 						{

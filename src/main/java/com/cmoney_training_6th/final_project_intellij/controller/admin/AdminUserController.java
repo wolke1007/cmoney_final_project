@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
@@ -169,13 +170,13 @@ public class AdminUserController {
             json.remove("pets");
             json.remove("role");
             json.remove("active");
-            System.out.println("user id: " + user.get().getId());
-            System.out.println(hospitalRepository.findByUserId(user.get().getId()));
             int hospitalId = hospitalRepository.findByUserId(user.get().getId()).get().getId();
             json.addProperty("hospitalId", hospitalId);
             return new CommonResponse(json, 200).toString();
         } catch (NoSuchElementException e) {
             return new CommonResponse("wrong token was given.", 404).toString();
+        } catch (NonUniqueResultException e) {
+            return new CommonResponse(" query did not return a unique result.", 500).toString();
         }
     }
 

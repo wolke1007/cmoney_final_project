@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -35,6 +36,12 @@ public class AdminReservationController {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
+    @Autowired
+    private PetRepository petRepository;
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
     @Autowired
     private JwtUtil jwtTokenUtil;
 
@@ -73,29 +80,29 @@ public class AdminReservationController {
         }
     }
 
-    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String adminGetAllReservationsByHostpitalId(@RequestParam(value = "hospitalId")
-                                                       int hospitalId) {
-        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
-        JsonIter ji = new JsonIter();
-        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
-        for(Reservation res : reservations){
-            int roaId = res.getRoasterId();
-            Roaster roaster = roasterRepository.findById(roaId).get();
-            int doctorId = roaster.getDoctorId();
-            int scheduleId = roaster.getScheduleId();
-            Schedule schedule = scheduleRepository.findById(scheduleId).get();
-            String time = schedule.getDay() + " " + schedule.getTime();
-            for(JsonElement je : arr){
-                Optional<User> u = userRepository.findById(je.getAsJsonObject().get("userId").getAsInt());
-                je.getAsJsonObject().addProperty("doctorId", doctorId);
-                je.getAsJsonObject().addProperty("userName", u.get().getUsername());
-                je.getAsJsonObject().addProperty("day", schedule.getDay());
-                je.getAsJsonObject().addProperty("time", schedule.getTime());
-            }
-        }
-        return new CommonResponse(arr, 200).toString();
-    }
+//    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+//    public String adminGetAllReservationsByHostpitalId(@RequestParam(value = "hospitalId")
+//                                                       int hospitalId) {
+//        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+//        JsonIter ji = new JsonIter();
+//        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+//        for(Reservation res : reservations){
+//            int roaId = res.getRoasterId();
+//            Roaster roaster = roasterRepository.findById(roaId).get();
+//            int doctorId = roaster.getDoctorId();
+//            int scheduleId = roaster.getScheduleId();
+//            Schedule schedule = scheduleRepository.findById(scheduleId).get();
+//            String time = schedule.getDay() + " " + schedule.getTime();
+//            for(JsonElement je : arr){
+//                Optional<User> u = userRepository.findById(je.getAsJsonObject().get("userId").getAsInt());
+//                je.getAsJsonObject().addProperty("doctorId", doctorId);
+//                je.getAsJsonObject().addProperty("userName", u.get().getUsername());
+//                je.getAsJsonObject().addProperty("day", schedule.getDay());
+//                je.getAsJsonObject().addProperty("time", schedule.getTime());
+//            }
+//        }
+//        return new CommonResponse(arr, 200).toString();
+//    }
 
     @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditReservation(@RequestBody Reservation request) {
@@ -123,4 +130,45 @@ public class AdminReservationController {
         }
     }
 
+    // 有效能問題需要改善
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String adminGetAllReservationsByHostpitalId(@RequestParam(value = "hospitalId")
+                                                               int hospitalId) {
+        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+        JsonIter ji = new JsonIter();
+        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+        Gson g = new Gson();
+        for(Reservation res : reservations){
+            int roaId = res.getRoasterId();
+            Roaster roaster = roasterRepository.findById(roaId).get();
+            int doctorId = roaster.getDoctorId();
+            Doctor doctor = doctorRepository.findById(doctorId).get();
+            String doctorName = userRepository.findById(doctor.getUserId()).get().getName();
+            User user = userRepository.findById(res.getUserId()).get();
+            String userPhone = user.getPhone();
+            String userName = user.getName();
+            Pet pet = petRepository.findById(res.getPetId()).get();
+            int scheduleId = roaster.getScheduleId();
+            Schedule schedule = scheduleRepository.findById(scheduleId).get();
+            String time = schedule.getDay() + " " + schedule.getTime();
+            System.out.println("userid:"+user.getId()+" petid:"+ pet.getId());
+            MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
+            for(JsonElement je : arr){
+                Optional<User> u = userRepository.findById(je.getAsJsonObject().get("userId").getAsInt());
+                je.getAsJsonObject().addProperty("doctorName", doctorName);
+                je.getAsJsonObject().addProperty("userName", userName);
+                je.getAsJsonObject().addProperty("userPhone", userPhone);
+                je.getAsJsonObject().addProperty("petName", pet.getName());
+                je.getAsJsonObject().addProperty("petAge", pet.getAge());
+                je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
+                je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
+                je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
+                je.getAsJsonObject().addProperty("day", schedule.getDay());
+                je.getAsJsonObject().addProperty("time", schedule.getTime());
+                JsonObject j = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject();
+                je.getAsJsonObject().add("medical_treatments", j);
+            }
+        }
+        return new CommonResponse(arr, 200).toString();
+    }
 }
