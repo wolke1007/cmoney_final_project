@@ -1065,7 +1065,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"doctorLicense\":\"license1\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userId\":2,\r\n    \"hospitalId\":1\r\n}",
+									"raw": "{\r\n    \"doctorLicense\":\"license11\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userName\":\"test\",\r\n    \"hospitalId\":1\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2215,7 +2215,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-14_18:20",
+					"name": "2020-07-15_12:12",
 					"item": [],
 					"event": [
 						{
