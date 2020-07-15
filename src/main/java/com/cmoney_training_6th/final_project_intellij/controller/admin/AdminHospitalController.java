@@ -6,6 +6,7 @@ import com.cmoney_training_6th.final_project_intellij.model.Hospital;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.services.DoctorService;
+import com.cmoney_training_6th.final_project_intellij.services.UserService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.google.gson.Gson;
@@ -34,9 +35,11 @@ public class AdminHospitalController {
     @Autowired
     private HospitalRepository hospitalRepository;
     @Autowired
+    private CrewRepository crewRepository;
+    @Autowired
     private DoctorService doctorService;
     @Autowired
-    private CrewRepository crewRepository;
+    private UserService userService;
 
     @PostMapping(path = "/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewHospital(
@@ -77,12 +80,8 @@ public class AdminHospitalController {
     @GetMapping(path = "/crews", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospitalId")
                                                        int hospitalId) {
-        JsonObject json = new JsonObject();
-        JsonArray doctorArr = new JsonArray();
-        JsonIter ji = new JsonIter();
-        List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
-        doctorArr = ji.listIntoArrayWithKeys(doctors, Arrays.asList("id", "name", "skill", "experience"));
-        json.add("doctors", doctorArr);
+        JsonObject json;
+        json = userService.findCrewByHospitalId(hospitalId);
         return new CommonResponse(json, 200).toString();
     }
 }

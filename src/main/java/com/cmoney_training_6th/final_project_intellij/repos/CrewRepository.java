@@ -9,8 +9,10 @@ import com.cmoney_training_6th.final_project_intellij.model.Crew;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CrewRepository extends JpaRepository<Crew, Integer> {
     Optional<Crew> findByUserIdAndHospitalId(int userId, int hospitalId);
+    List<Crew> findByHospitalId(int hospitalId);
 }

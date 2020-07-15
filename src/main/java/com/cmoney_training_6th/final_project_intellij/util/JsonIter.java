@@ -56,6 +56,16 @@ public class JsonIter <T>{
         return this.arr;
     }
 
+    public JsonObject objIntoJsonWithoutKeys(T obj, List<String> removeKeys){ // 可這樣的方式代入 Arrays.asList("roasters", "skill")
+        JsonObject json;
+        json = (JsonObject) g.toJsonTree(obj).getAsJsonObject();
+        for(String removeKey : removeKeys){
+            System.out.println("remove: " + removeKey);
+            json.remove(removeKey);
+        }
+        return json;
+    }
+
     public JsonArray listIntoArrayWithKeys(List<T> list, List<String> keys){ // 可這樣的方式代入 Arrays.asList("roasters", "skill")
         JsonObject json;
         for(T obj : list){
@@ -93,6 +103,7 @@ public class JsonIter <T>{
         }
         return this.arr;
     }
+
 //
 //    public JsonIter remove(String key){
 //        json.remove(key);
