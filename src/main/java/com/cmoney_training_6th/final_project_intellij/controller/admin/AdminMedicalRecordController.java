@@ -42,9 +42,16 @@ public class AdminMedicalRecordController {
 //            return new CommonResponse(checkPassword,400);
 //        }
         try{
+            if(medicalRecordRepository.findByUserIdAndPetIdAndHospitalId(request.getUserId(),
+                    request.getPetId(),
+                    request.getHospitalId()).orElse(null) != null){
+                response.setStatus(404);
+                return new CommonResponse("medical record already exist.", 404).toString();
+            }
             medicalRecordRepository.save(request);
             return new CommonResponse("success", 200).toString();
         }catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
