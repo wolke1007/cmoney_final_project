@@ -166,7 +166,7 @@ public class AdminReservationController {
                 je.getAsJsonObject().addProperty("day", schedule.getDay());
                 je.getAsJsonObject().addProperty("time", schedule.getTime());
                 JsonObject j = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject();
-                je.getAsJsonObject().add("medical_treatments", j);
+                je.getAsJsonObject().add("medicalRecord", j);
             }
         }
         return new CommonResponse(arr, 200).toString();

@@ -1,12 +1,10 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
+import com.cmoney_training_6th.final_project_intellij.model.Crew;
 import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.Hospital;
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.HospitalRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserPhotoRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.services.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
@@ -37,6 +35,8 @@ public class AdminHospitalController {
     private HospitalRepository hospitalRepository;
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private CrewRepository crewRepository;
 
     @PostMapping(path = "/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewHospital(
@@ -52,12 +52,20 @@ public class AdminHospitalController {
 //        }
 //        // 新增 Doctor
         try {
-            Optional<Hospital> hospital = hospitalRepository.findByUserId(request.getUserId());
-            if(hospital.get().equals(Hospital.class)){
-                int ownerId = hospital.get().getUserId();
+            Crew crew = new Crew();
+            Hospital hospital = hospitalRepository.findByUserId(request.getUserId()).orElse(null);
+            if(hospital != null){
+                int ownerId = hospital.getUserId();
                 new CommonResponse("user already have a hospital:" + ownerId, 200).toString();
             }
             hospitalRepository.save(request);
+            if(crewRepository.findByUserIdAndHospitalId(hospital.getUserId(),
+                    hospital.getId()).orElse(null) != null){
+                new CommonResponse("user already is crew of this hospital", 200).toString();
+            }
+            crew.setUserId(hospital.getUserId());
+            crew.setHospitalId(hospital.getId());
+            crewRepository.save(crew);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);

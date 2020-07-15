@@ -1,9 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
-import com.cmoney_training_6th.final_project_intellij.model.Doctor;
-import com.cmoney_training_6th.final_project_intellij.model.PetPhoto;
-import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.model.UserPhoto;
+import com.cmoney_training_6th.final_project_intellij.model.*;
+import com.cmoney_training_6th.final_project_intellij.model.dto.DtoCrewUser;
 import com.cmoney_training_6th.final_project_intellij.model.dto.DtoDoctor;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
@@ -42,6 +40,9 @@ public class AdminUserController {
     private UserPhotoRepository userPhotoRepository;
 
     @Autowired
+    private CrewRepository crewRepository;
+
+    @Autowired
     private JwtUtil jwtTokenUtil;
 
     @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,6 +58,11 @@ public class AdminUserController {
         try{
             Doctor doctor = new Doctor();
             User user = userRepository.findByUsername(request.getUserName()).orElse(null);
+            if(user == null){
+                response.setStatus(404);
+                return new CommonResponse("this user not exist.", 404).toString();
+            }
+            Crew crew = new Crew();
             if(doctorRepository.findByUserId(user.getId()).orElse(null) != null &&
                     doctorRepository.findByHospitalId(request.getHospitalId()).size() > 0){
                 response.setStatus(404);
@@ -71,6 +77,12 @@ public class AdminUserController {
             doctorRepository.save(doctor);
             user.setRole("ROLE_DOCTOR");
             userRepository.save(user);
+            crew.setHospitalId(request.getHospitalId());
+            crew.setUserId(user.getId());
+            if(crewRepository.findByUserIdAndHospitalId(crew.getId(), crew.getHospitalId()).orElse(null) != null){
+                return new CommonResponse("this user already is staff of this hospital.", 200).toString();
+            }
+            crewRepository.save(crew);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
@@ -84,9 +96,9 @@ public class AdminUserController {
     @PostMapping(path = "/staff/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewStaff(
             HttpServletResponse response,
-            @RequestBody User request
+            @RequestBody DtoCrewUser request
     ) {
-        ValidateParameter checkRole = new ValidateParameter("role", request.getRole());
+        ValidateParameter checkRole = new ValidateParameter("role", request.getUser().getRole());
         if(!checkRole.stringShouldNotBe("ROLE_ADMIN")
                 .stringShouldNotBe("ROLE_DOCTOR")
                 .getResult()){
@@ -95,12 +107,19 @@ public class AdminUserController {
         }
         // 新增 User
         try {
-            userRepository.save(request);
+            userRepository.save(request.getUser());
+            Crew crew = new Crew();
+            crew.setHospitalId(request.getHospitalId());
+            crew.setUserId(request.getUser().getId());
+            if(crewRepository.findByUserIdAndHospitalId(crew.getId(), crew.getHospitalId()).orElse(null) != null){
+                return new CommonResponse("this user already is staff of this hospital.", 200).toString();
+            }
+            crewRepository.save(crew);
+            return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
-        return new CommonResponse("success", 200).toString();
     }
 
     @PutMapping(path = "/staff/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
