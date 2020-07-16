@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,18 +52,24 @@ public class UserController {
     }
 
     @GetMapping(path = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getUser(@RequestHeader("Authorization") String header) {
-        String token = header.substring(7);
-        String username = jwtTokenUtil.getUserNameFromJwtToken(token);
-        Optional<User> user = userRepository.findByUsername(username);
-        Gson g = new Gson();
-        JsonObject json = g.toJsonTree(user).getAsJsonObject().get("value").getAsJsonObject();
-        json.remove("password"); // 不能讓前端看到密碼
-        return new CommonResponse(json, 200).toString();
+    public String getUser(HttpServletResponse response,
+                                  @RequestHeader("Authorization") String header) {
+        try {
+            String token = header.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            Optional<User> user = userRepository.findByUsername(username);
+            Gson g = new Gson();
+            JsonObject json = g.toJsonTree(user).getAsJsonObject().get("value").getAsJsonObject();
+            json.remove("password"); // 不能讓前端看到密碼
+            return new CommonResponse(json, 200).toString();
+        }catch (ExpiredJwtException e){
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        }
     }
 
-    @PostMapping(path = "/edit") // Map ONLY POST Requests
-    public CommonResponse userEditAccount(
+    @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String userEditAccount(
             HttpServletResponse response,
             @RequestHeader("Authorization") String header,
             @RequestBody User request
@@ -71,15 +78,14 @@ public class UserController {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
             User user = userRepository.findByUsername(username).get();
-            request.setId(user.getId());
-            request.setUsername(user.getUsername());
-            request.setPassword(user.getPassword());
-            request.setSocialLicenseId(user.getSocialLicenseId());
-            userRepository.save(request);
-            return new CommonResponse("Saved", 200);
+            user.setPassword(request.getPassword());
+            userRepository.save(user);
+            return new CommonResponse("Saved", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
-            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (ExpiredJwtException e){
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 

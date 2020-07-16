@@ -10,6 +10,7 @@ import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
@@ -186,7 +187,8 @@ public class AdminUserController {
     }
 
     @GetMapping(path = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getAdminInfo(@RequestHeader("Authorization") String header) {
+    public String getAdminInfo(HttpServletResponse response,
+                               @RequestHeader("Authorization") String header) {
         try {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
@@ -207,6 +209,9 @@ public class AdminUserController {
             return new CommonResponse("wrong token was given.", 404).toString();
         } catch (NonUniqueResultException e) {
             return new CommonResponse(" query did not return a unique result.", 500).toString();
+        }catch (ExpiredJwtException e){
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
