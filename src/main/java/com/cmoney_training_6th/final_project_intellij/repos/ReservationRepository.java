@@ -29,5 +29,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             nativeQuery = true)
     List<Reservation> findReservationByHospitalId(int hospitalId);
 
+    Optional<Reservation> findByUserIdAndPetIdAndRoasterIdAndDate(
+            int userId, int petId, int roasterId, String date);
+
     List<Reservation> findReservationByUserId(int userId);
 }

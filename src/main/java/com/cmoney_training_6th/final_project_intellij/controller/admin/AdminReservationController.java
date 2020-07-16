@@ -54,11 +54,14 @@ public class AdminReservationController {
             int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
             int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
             Optional<User> user = userRepository.findById(request.getUserId());
-            List<Reservation> reservations = reservationRepository.
-                    findAllByRoasterIdAndDateAndUserId(roasterId, request.getDate(), user.get().getId());
-            if (reservations.size() >= 1) {
-                int bookingNum = reservations.get(reservations.size() - 1).getNumber();
-                return new CommonResponse("booked before, booking number is:" + bookingNum, 404).toString();
+            Reservation reservation = reservationRepository.findByUserIdAndPetIdAndRoasterIdAndDate(
+                    request.getUserId(),
+                    request.getPetId(),
+                    roasterId,
+                    request.getDate()
+            ).orElse(null);
+            if (reservation != null){ // 同飼主 同寵物 同醫院 同天 同時段 的預約已經存在，不準預約
+                return new CommonResponse("booked before, booking number is:" + reservation.getNumber(), 404).toString();
             }
             Reservation newRes = new Reservation();
             newRes.setUserId(user.get().getId());
@@ -81,35 +84,14 @@ public class AdminReservationController {
         }
     }
 
-//    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-//    public String adminGetAllReservationsByHostpitalId(@RequestParam(value = "hospitalId")
-//                                                       int hospitalId) {
-//        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
-//        JsonIter ji = new JsonIter();
-//        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
-//        for(Reservation res : reservations){
-//            int roaId = res.getRoasterId();
-//            Roaster roaster = roasterRepository.findById(roaId).get();
-//            int doctorId = roaster.getDoctorId();
-//            int scheduleId = roaster.getScheduleId();
-//            Schedule schedule = scheduleRepository.findById(scheduleId).get();
-//            String time = schedule.getDay() + " " + schedule.getTime();
-//            for(JsonElement je : arr){
-//                Optional<User> u = userRepository.findById(je.getAsJsonObject().get("userId").getAsInt());
-//                je.getAsJsonObject().addProperty("doctorId", doctorId);
-//                je.getAsJsonObject().addProperty("userName", u.get().getUsername());
-//                je.getAsJsonObject().addProperty("day", schedule.getDay());
-//                je.getAsJsonObject().addProperty("time", schedule.getTime());
-//            }
-//        }
-//        return new CommonResponse(arr, 200).toString();
-//    }
-
     @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditReservation(@RequestBody Reservation request) {
         Reservation reservation = reservationRepository.findById(request.getId()).get();
-        request.setId(reservation.getId());
-        reservationRepository.save(request);
+        reservation.setUserId(request.getUserId());
+        reservation.setPetId(request.getPetId());
+        reservation.setRoasterId(request.getRoasterId());
+        reservation.setDate(request.getDate());
+        reservationRepository.save(reservation);
         return new CommonResponse("success", 200).toString();
     }
 
@@ -119,8 +101,8 @@ public class AdminReservationController {
             @RequestBody Reservation request
     ) {
         try {
-            reservationRepository.findById(request.getId()).get(); // 確認 id 是否可以找到東西，沒找到會噴掉被 catch
-            reservationRepository.delete(request);
+            Reservation res = reservationRepository.findById(request.getId()).get(); // 確認 id 是否可以找到東西，沒找到會噴掉被 catch
+            reservationRepository.delete(res);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);

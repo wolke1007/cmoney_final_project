@@ -137,7 +137,10 @@ public class AdminUserController {
             return new CommonResponse("this method is to edit staff, role of this query should be ROLE_STAFF.",404).toString();
         }
         try {
-            User user = userRepository.findByUsername(request.getUsername()).get();
+            User user = userRepository.findByUsername(request.getUsername()).orElse(null);
+            if(user == null){
+                return new CommonResponse("this username does not exist.",404).toString();
+            }
             user.setSocialLicenseId(request.getSocialLicenseId());
             user.setJoinTime(request.getJoinTime());
             user.setFirstName(request.getFirstName());
