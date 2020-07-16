@@ -97,7 +97,7 @@ public class PetController {
         }
     }
 
-    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String editPet(
             HttpServletResponse response,
             @RequestHeader("Authorization") String jwt,
@@ -126,7 +126,7 @@ public class PetController {
         }
     }
 
-    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String deletePet(
             HttpServletResponse response,
             @RequestHeader("Authorization") String jwt,

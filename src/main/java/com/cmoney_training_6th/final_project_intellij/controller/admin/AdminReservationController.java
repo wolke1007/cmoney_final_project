@@ -105,7 +105,7 @@ public class AdminReservationController {
 //        return new CommonResponse(arr, 200).toString();
 //    }
 
-    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditReservation(@RequestBody Reservation request) {
         Reservation reservation = reservationRepository.findById(request.getId()).get();
         request.setId(reservation.getId());
@@ -113,7 +113,7 @@ public class AdminReservationController {
         return new CommonResponse("success", 200).toString();
     }
 
-    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminDeleteReservation(
             HttpServletResponse response,
             @RequestBody Reservation request

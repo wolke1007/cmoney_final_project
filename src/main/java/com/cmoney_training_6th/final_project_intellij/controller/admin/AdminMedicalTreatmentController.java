@@ -54,7 +54,7 @@ public class AdminMedicalTreatmentController {
         }
     }
 
-    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String editMedcalTreatment(
             HttpServletResponse response,
             @RequestBody MedicalTreatment request
@@ -81,7 +81,7 @@ public class AdminMedicalTreatmentController {
         }
     }
 
-    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String deleteMedcalTreatment(
             HttpServletResponse response,
             @RequestBody MedicalTreatment request

@@ -58,7 +58,7 @@ public class AdminPetController {
         }
     }
 
-    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String editPet(
             HttpServletResponse response,
             @RequestBody Pet request
@@ -82,7 +82,7 @@ public class AdminPetController {
         }
     }
 
-    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String deletePet(
             HttpServletResponse response,
             @RequestBody Pet request

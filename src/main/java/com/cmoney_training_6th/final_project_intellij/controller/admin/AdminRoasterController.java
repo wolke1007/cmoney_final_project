@@ -78,7 +78,7 @@ public class AdminRoasterController {
         return new CommonResponse(arr, 200).toString();
     }
 
-    @PutMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditReservation(@RequestBody DtoRoaster request) {
         Roaster roaster = roasterRepository.findById(request.getId()).get();
         int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
@@ -88,7 +88,7 @@ public class AdminRoasterController {
         return new CommonResponse("success", 200).toString();
     }
 
-    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminDeleteRoaster(@RequestBody DtoRoaster request) {
         Roaster roaster = roasterRepository.findById(request.getId()).get();
         roasterRepository.delete(roaster);

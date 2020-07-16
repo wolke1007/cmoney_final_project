@@ -122,7 +122,7 @@ public class AdminUserController {
         }
     }
 
-    @PutMapping(path = "/staff/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/staff/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditStaffByUsername(
             HttpServletResponse response,
             @RequestBody User request
@@ -146,7 +146,7 @@ public class AdminUserController {
         return new CommonResponse("success", 200).toString();
     }
 
-    @PutMapping(path = "/staff/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/staff/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminDeleteStaffByUsernameAndId(
             HttpServletResponse response,
             @RequestBody User request

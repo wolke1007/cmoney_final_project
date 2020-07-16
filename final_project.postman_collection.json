@@ -49,7 +49,7 @@
 						{
 							"name": "edit staff",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -84,7 +84,7 @@
 						{
 							"name": "delete staff",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -187,7 +187,7 @@
 						{
 							"name": "edit pet",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -222,7 +222,7 @@
 						{
 							"name": "delete pet",
 							"request": {
-								"method": "DELETE",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -456,7 +456,7 @@
 								{
 									"name": "edit medical item",
 									"request": {
-										"method": "PUT",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -517,7 +517,7 @@
 								{
 									"name": "delete medical item",
 									"request": {
-										"method": "DELETE",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -629,7 +629,7 @@
 								{
 									"name": "edit new medical treatment",
 									"request": {
-										"method": "PUT",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -664,7 +664,7 @@
 								{
 									"name": "delete new medical treatment",
 									"request": {
-										"method": "DELETE",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -774,7 +774,7 @@
 								{
 									"name": "edit new medical record",
 									"request": {
-										"method": "PUT",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -809,7 +809,7 @@
 								{
 									"name": "delete new medical record",
 									"request": {
-										"method": "DELETE",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -947,7 +947,7 @@
 								{
 									"name": "edit recipe",
 									"request": {
-										"method": "PUT",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -1008,7 +1008,7 @@
 								{
 									"name": "delete recipe",
 									"request": {
-										"method": "DELETE",
+										"method": "POST",
 										"header": [
 											{
 												"key": "",
@@ -1168,7 +1168,7 @@
 						{
 							"name": "edit reservation",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -1234,7 +1234,7 @@
 						{
 							"name": "delete reservation",
 							"request": {
-								"method": "DELETE",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -1381,7 +1381,7 @@
 						{
 							"name": "edit roaster",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -1447,7 +1447,7 @@
 						{
 							"name": "delete roaster",
 							"request": {
-								"method": "DELETE",
+								"method": "POST",
 								"header": [
 									{
 										"key": "",
@@ -1673,7 +1673,7 @@
 						{
 							"name": "edit account",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
@@ -1985,7 +1985,7 @@
 						{
 							"name": "edit pet",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
@@ -2018,7 +2018,7 @@
 						{
 							"name": "delete pet",
 							"request": {
-								"method": "DELETE",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
@@ -2215,7 +2215,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-15_15:09",
+					"name": "2020-07-16_09:53",
 					"item": [],
 					"event": [
 						{
@@ -2586,7 +2586,7 @@
 				{
 					"name": "ADMIN edit staff",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "",
@@ -2726,7 +2726,7 @@
 				{
 					"name": "ADMIN edit pet",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "",
@@ -2761,7 +2761,7 @@
 				{
 					"name": "ADMIN edit pet",
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [
 							{
 								"key": "",
@@ -2999,7 +2999,7 @@
 				{
 					"name": "ADMIN edit reservation",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "",

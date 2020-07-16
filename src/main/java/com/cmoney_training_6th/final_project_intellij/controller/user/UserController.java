@@ -61,7 +61,7 @@ public class UserController {
         return new CommonResponse(json, 200).toString();
     }
 
-    @PutMapping(path = "/edit") // Map ONLY POST Requests
+    @PostMapping(path = "/edit") // Map ONLY POST Requests
     public CommonResponse userEditAccount(
             HttpServletResponse response,
             @RequestHeader("Authorization") String header,
