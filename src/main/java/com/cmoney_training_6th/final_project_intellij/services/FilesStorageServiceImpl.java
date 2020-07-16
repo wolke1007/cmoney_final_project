@@ -20,7 +20,6 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public void init() {
         try {
-            System.out.println("DEBUG inside");
             //若有一樣的folder則不再創建
             if(!Files.exists(root)){
                 System.out.println("DEBUG Create dir");

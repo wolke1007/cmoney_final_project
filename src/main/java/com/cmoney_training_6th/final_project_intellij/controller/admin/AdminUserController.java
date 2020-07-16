@@ -56,20 +56,20 @@ public class AdminUserController {
             HttpServletResponse response,
             @RequestBody DtoDoctor request
     ) {
-        try{
+        try {
             Doctor doctor = new Doctor();
             User user = userRepository.findByUsername(request.getUserName()).orElse(null);
-            if(user == null){
+            if (user == null) {
                 response.setStatus(404);
                 return new CommonResponse("this user not exist.", 404).toString();
             }
             Crew crew = new Crew();
-            if(doctorRepository.findByUserId(user.getId()).orElse(null) != null &&
-                    doctorRepository.findByHospitalId(request.getHospitalId()).size() > 0){
+            if (doctorRepository.findByUserId(user.getId()).orElse(null) != null &&
+                    doctorRepository.findByHospitalId(request.getHospitalId()).size() > 0) {
                 response.setStatus(404);
                 return new CommonResponse("this user already was a doctor.", 404).toString();
             }
-            System.out.println("debug doctor userID:"+user.getId());
+            System.out.println("debug doctor userID:" + user.getId());
             doctor.setSkill(request.getSkill());
             doctor.setExperience(request.getExperience());
             doctor.setDoctorLicense(request.getDoctorLicense());
@@ -80,7 +80,7 @@ public class AdminUserController {
             userRepository.save(user);
             crew.setHospitalId(request.getHospitalId());
             crew.setUserId(user.getId());
-            if(crewRepository.findByUserIdAndHospitalId(crew.getId(), crew.getHospitalId()).orElse(null) != null){
+            if (crewRepository.findByUserIdAndHospitalId(crew.getId(), crew.getHospitalId()).orElse(null) != null) {
                 return new CommonResponse("this user already is staff of this hospital.", 200).toString();
             }
             crewRepository.save(crew);
@@ -94,17 +94,17 @@ public class AdminUserController {
         }
     }
 
-    @PostMapping(path = "/staff/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String addNewStaff(
+    @PostMapping(path = "/staff/new", produces = MediaType.APPLICATION_JSON_VALUE) // 員工沒有帳號，admin 幫創帳號用
+    public String addNewStaffWithNoUserAccount(
             HttpServletResponse response,
             @RequestBody DtoCrewUser request
     ) {
         ValidateParameter checkRole = new ValidateParameter("role", request.getUser().getRole());
-        if(!checkRole.stringShouldNotBe("ROLE_ADMIN")
+        if (!checkRole.stringShouldNotBe("ROLE_ADMIN")
                 .stringShouldNotBe("ROLE_DOCTOR")
-                .getResult()){
+                .getResult()) {
             response.setStatus(404);
-            return new CommonResponse("role of this regist method is wrong.",404).toString();
+            return new CommonResponse("role of this regist method is wrong.", 404).toString();
         }
         // 新增 User
         try {
@@ -112,7 +112,7 @@ public class AdminUserController {
             Crew crew = new Crew();
             crew.setHospitalId(request.getHospitalId());
             crew.setUserId(request.getUser().getId());
-            if(crewRepository.findByUserIdAndHospitalId(crew.getId(), crew.getHospitalId()).orElse(null) != null){
+            if (crewRepository.findByUserIdAndHospitalId(crew.getId(), crew.getHospitalId()).orElse(null) != null) {
                 return new CommonResponse("this user already is staff of this hospital.", 200).toString();
             }
             crewRepository.save(crew);
@@ -123,23 +123,61 @@ public class AdminUserController {
         }
     }
 
-    @PostMapping(path = "/staff/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String adminEditStaffByUsername(
+    @PostMapping(path = "/staff/add", produces = MediaType.APPLICATION_JSON_VALUE) // 從現有 user 中新增至醫院 crew 中
+    public String addCrewFromExistUserAccount(
+            HttpServletResponse response,
+            @RequestBody User request,
+            @RequestHeader("Authorization") String header) {
+        try {
+            String token = header.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            User userAdmin = userRepository.findByUsername(username).orElse(null);
+            Hospital hospital = hospitalRepository.findByUserId(userAdmin.getId()).orElse(null);
+            if (hospital == null) {
+                response.setStatus(403);
+                return new CommonResponse("this admin user don't own any hospital.", 403).toString();
+            }
+            if (crewRepository.findByUserId(request.getId()).orElse(null) != null) {
+                return new CommonResponse("this user already is staff of other hospital, should delete first.", 403).toString();
+            }
+            Crew crew = new Crew();
+            crew.setHospitalId(hospital.getId());
+            crew.setUserId(request.getId());
+            crewRepository.save(crew);
+            User user = userRepository.findById(request.getId()).orElse(null);
+            Doctor doctor = doctorRepository.findByUserId(user.getId()).orElse(null);
+            if( doctor != null){
+                doctor.setHospitalId(hospital.getId());
+                doctorRepository.save(doctor);
+            }else{
+                user.setRole("ROLE_STAFF");
+                userRepository.save(user);
+            }
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
+    }
+
+    @PostMapping(path = "/crew/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String adminEditCrewByUsername(
             HttpServletResponse response,
             @RequestBody User request
     ) {
-        ValidateParameter checkRole = new ValidateParameter("role", request.getRole());
-        if(!checkRole.stringShouldNotBe("ROLE_ADMIN")
-                .stringShouldNotBe("ROLE_DOCTOR")
-                .stringShouldBe("ROLE_STAFF")
-                .getResult()){
-            response.setStatus(404);
-            return new CommonResponse("this method is to edit staff, role of this query should be ROLE_STAFF.",404).toString();
-        }
         try {
             User user = userRepository.findByUsername(request.getUsername()).orElse(null);
-            if(user == null){
-                return new CommonResponse("this username does not exist.",404).toString();
+            if (user == null) {
+                return new CommonResponse("this username does not exist.", 404).toString();
+            }
+            if(user.getRole().equals("ROLE_USER")){
+                response.setStatus(403);
+                return new CommonResponse("this method is to edit crew, " +
+                        " only crews of ADMIN or STAFF or DOCTOR can be edit by hospital owner.", 404).toString();
+            }
+            if(crewRepository.findByUserId(user.getId()).orElse(null) == null){
+                response.setStatus(403);
+                return new CommonResponse("this user is not crew of your hospital.", 404).toString();
             }
             user.setSocialLicenseId(request.getSocialLicenseId());
             user.setJoinTime(request.getJoinTime());
@@ -152,7 +190,6 @@ public class AdminUserController {
             user.setAddressLine(request.getAddressLine());
             user.setPhone(request.getPhone());
             user.setBirthday(request.getBirthday());
-            user.setRole(request.getRole());
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
@@ -161,30 +198,57 @@ public class AdminUserController {
         return new CommonResponse("success", 200).toString();
     }
 
-    @PostMapping(path = "/staff/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @PostMapping(path = "/crew/delete", produces = MediaType.APPLICATION_JSON_VALUE) // 從醫院中除職的概念
     public String adminDeleteStaffByUsernameAndId(
             HttpServletResponse response,
-            @RequestBody User request
-    ) {
+            @RequestBody User request,
+            @RequestHeader("Authorization") String header) {
         try {
+            String token = header.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            User userAdmin = userRepository.findByUsername(username).orElse(null);
+            if (!userAdmin.getRole().equals("ROLE_ADMIN")) {
+                response.setStatus(403);
+                return new CommonResponse("reject this operation because token of this user is not ADMIN.", 403).toString();
+            }
+            Hospital hospital = hospitalRepository.findByUserId(userAdmin.getId()).orElse(null);
+            if (hospital == null) {
+                response.setStatus(403);
+                return new CommonResponse("this admin user don't own any hospital.", 403).toString();
+            }
             // id 與 username 各取一次比對 id 是否為同一個人
-            User user = userRepository.findByUsername(request.getUsername()).get();
-            User checkUser = userRepository.findById(request.getId()).get();
-            if(user.getId() != checkUser.getId()){
-                return new CommonResponse("fail, user id and user_name can not match.", 404).toString();
+            User userCrew = userRepository.findByUsername(request.getUsername()).orElse(null);
+            Crew crew = crewRepository.findByUserIdAndHospitalId(userCrew.getId(), hospital.getId()).orElse(null);
+            if (crew == null) {
+                return new CommonResponse(
+                        "not authorized to delete this staff, who is not belong to hospital[" + hospital.getId() + "].",
+                        404).toString();
             }
-            // 確認刪除的帳號身分是否為 STAFF
-            ValidateParameter checkRole = new ValidateParameter("role", user.getRole());
-            if(!checkRole.stringShouldNotBe("ROLE_ADMIN")
-                    .stringShouldNotBe("ROLE_DOCTOR")
-                    .stringShouldBe("ROLE_STAFF")
-                    .getResult()){
+            // 確認刪除的帳號身分不為 ADMIN or USER
+            ValidateParameter checkRole = new ValidateParameter("role", userCrew.getRole());
+            if (!checkRole.stringShouldNotBe("ROLE_ADMIN")
+                    .stringShouldNotBe("ROLE_USER")
+                    .getResult()) {
                 response.setStatus(404);
-                return new CommonResponse("role of this delete method is wrong.",404).toString();
+                return new CommonResponse("role of this delete method is wrong.", 404).toString();
             }
-            // 取消登入權，不真實刪除資料
-            user.setActive(false);
-            userRepository.save(user);
+            // 刪除 staff 的概念是將該人員 role 改回 ROLE_USER 然後從 crew table 中剔除
+            System.out.println("delete crew");
+            crewRepository.delete(crew);
+            System.out.println("delete over");
+            // 如果對象是醫生，則需要從 doctor table 中將 hospital id 給改成 0
+            if(userCrew.getRole().equals("ROLE_DOCTOR")){
+                Doctor doctor = doctorRepository.findByUserId(userCrew.getId()).orElse(null);
+                if(doctor != null){
+                    doctor.setHospitalId(0);
+                    doctorRepository.save(doctor);
+                    // 醫生退出醫院了還是醫生，所以不用更改 user role
+                }
+            }else{
+                // 員工預期只會待在一家醫院，如果除職則恢復成 user 身份
+                userCrew.setRole("ROLE_USER");
+                userRepository.save(userCrew);
+            }
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
@@ -223,7 +287,7 @@ public class AdminUserController {
             return new CommonResponse("wrong token was given.", 404).toString();
         } catch (NonUniqueResultException e) {
             return new CommonResponse(" query did not return a unique result.", 500).toString();
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }

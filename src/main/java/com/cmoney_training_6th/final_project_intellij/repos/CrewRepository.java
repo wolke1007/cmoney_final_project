@@ -15,4 +15,5 @@ import java.util.Optional;
 public interface CrewRepository extends JpaRepository<Crew, Integer> {
     Optional<Crew> findByUserIdAndHospitalId(int userId, int hospitalId);
     List<Crew> findByHospitalId(int hospitalId);
+    Optional<Crew> findByUserId(int userId);
 }
