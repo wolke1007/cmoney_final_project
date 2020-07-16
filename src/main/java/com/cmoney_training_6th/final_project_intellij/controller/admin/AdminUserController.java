@@ -134,12 +134,23 @@ public class AdminUserController {
                 .stringShouldBe("ROLE_STAFF")
                 .getResult()){
             response.setStatus(404);
-            return new CommonResponse("role of this edit method is wrong.",404).toString();
+            return new CommonResponse("this method is to edit staff, role of this query should be ROLE_STAFF.",404).toString();
         }
         try {
             User user = userRepository.findByUsername(request.getUsername()).get();
-            request.setId(user.getId());
-            userRepository.save(request);
+            user.setSocialLicenseId(request.getSocialLicenseId());
+            user.setJoinTime(request.getJoinTime());
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setPassword(request.getPassword());
+            user.setSchool(request.getSchool());
+            user.setAddressCity(request.getAddressCity());
+            user.setAddressArea(request.getAddressArea());
+            user.setAddressLine(request.getAddressLine());
+            user.setPhone(request.getPhone());
+            user.setBirthday(request.getBirthday());
+            user.setRole(request.getRole());
+            userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();

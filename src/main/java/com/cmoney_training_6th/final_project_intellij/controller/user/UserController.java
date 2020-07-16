@@ -78,7 +78,18 @@ public class UserController {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
             User user = userRepository.findByUsername(username).get();
+            user.setSocialLicenseId(request.getSocialLicenseId());
+            user.setJoinTime(request.getJoinTime());
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
             user.setPassword(request.getPassword());
+            user.setSchool(request.getSchool());
+            user.setAddressCity(request.getAddressCity());
+            user.setAddressArea(request.getAddressArea());
+            user.setAddressLine(request.getAddressLine());
+            user.setPhone(request.getPhone());
+            user.setBirthday(request.getBirthday());
+            user.setRole(request.getRole());
             userRepository.save(user);
             return new CommonResponse("Saved", 200).toString();
         } catch (DataIntegrityViolationException e) {

@@ -60,7 +60,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"小明\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_STAFF\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-06\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
+									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"joinTime\":\"2020-07-12\",\r\n    \"firstName\":\"測試\",\r\n    \"lastName\":\"王\",\r\n    \"password\":\"1234\",\r\n    \"school\":\"school_name\",\r\n    \"addressCity\":\"新北市\",\r\n    \"addressArea\":\"大安區\",\r\n    \"addressLine\":\"文化路120段\",\r\n    \"phone\":\"test_phone\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"role\":\"ROLE_STAFF\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1683,7 +1683,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"phone\":\"test_phone\",\r\n    \"firstName\":\"測試\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_USER\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-12\",\r\n    \"addressCity\":\"新北市\",\r\n    \"addressArea\":\"大安區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
+									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"joinTime\":\"2020-07-12\",\r\n    \"firstName\":\"測試\",\r\n    \"lastName\":\"王\",\r\n    \"password\":\"1234\",\r\n    \"school\":\"school_name\",\r\n    \"addressCity\":\"新北市\",\r\n    \"addressArea\":\"大安區\",\r\n    \"addressLine\":\"文化路120段\",\r\n    \"phone\":\"test_phone\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"role\":\"ROLE_USER\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2215,7 +2215,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-16_09:53",
+					"name": "2020-07-16_14:20",
 					"item": [],
 					"event": [
 						{
