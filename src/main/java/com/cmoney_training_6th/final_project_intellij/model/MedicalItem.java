@@ -13,13 +13,13 @@ public class MedicalItem {
     private int id;
 
     @Column(name="item_type", nullable=false, columnDefinition="nvarchar(255)")
-    private String itemType;
+    private String itemType = "";
 
     @Column(nullable=false, unique = true, columnDefinition="nvarchar(255)")
     private String name;
 
     @Column(columnDefinition="nvarchar(20000)")
-    private String description;
+    private String description = "";
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="medical_item_id", referencedColumnName = "id")

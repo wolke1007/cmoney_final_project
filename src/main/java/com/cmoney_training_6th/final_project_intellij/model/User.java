@@ -21,34 +21,34 @@ public class User {
     private String socialLicenseId;
 
     @Column(name="join_time", length=50)
-    private String joinTime;
+    private String joinTime = "";
 
     @Column(name="first_name", columnDefinition="nvarchar(50)")
-    private String firstName;
+    private String firstName = "";
 
     @Column(name="last_name", columnDefinition="nvarchar(50)")
-    private String lastName;
+    private String lastName = "";
 
     @Column(nullable=false)
-    private String password;
+    private String password = "";
 
     @Column(columnDefinition="nvarchar(255)")
-    private String school;
+    private String school = "";
 
     @Column(name="address_city", columnDefinition="nvarchar(255)")
-    private String addressCity;
+    private String addressCity = "";
 
     @Column(name="address_area", columnDefinition="nvarchar(255)")
-    private String addressArea;
+    private String addressArea = "";
 
     @Column(name="address_line", columnDefinition="nvarchar(255)")
-    private String addressLine;
+    private String addressLine = "";
 
 //    @Column(nullable=false)
-    private String phone;
+    private String phone = "";
 
     @Column(length=50)
-    private String birthday;
+    private String birthday = "";
 
     @Column(nullable=false, unique=true)
     private String username;

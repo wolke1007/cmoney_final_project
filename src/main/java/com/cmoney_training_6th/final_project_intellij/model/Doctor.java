@@ -23,14 +23,14 @@ public class Doctor {
     @Column(name="user_id")
     private int userId; //FK
 
-    @Column(name="doctor_license")
+    @Column(name="doctor_license", unique = true)
     private String doctorLicense;
 
     @Column(columnDefinition="nvarchar(255)")
-    private String skill;
+    private String skill = "";
 
     @Column(columnDefinition="nvarchar(1000)")
-    private String experience;
+    private String experience = "";
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="doctor_id", referencedColumnName = "id")

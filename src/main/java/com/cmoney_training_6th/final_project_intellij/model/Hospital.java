@@ -21,18 +21,18 @@ public class Hospital {
 
 //    @Column(nullable=false, columnDefinition="nvarchar(255)")
     @Column(columnDefinition="nvarchar(255)")
-    private String name;
+    private String name = "";
 
-    private String phone;
+    private String phone = "";
 
     @Column(name="address_city", columnDefinition="nvarchar(255)")
-    private String addressCity;
+    private String addressCity = "";
 
     @Column(name="address_area", columnDefinition="nvarchar(255)")
-    private String addressArea;
+    private String addressArea = "";
 
     @Column(name="address_line", columnDefinition="nvarchar(255)")
-    private String addressLine;
+    private String addressLine = "";
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="hospital_id", referencedColumnName = "id")

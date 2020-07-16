@@ -12,14 +12,14 @@ public class MedicalTreatment {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
-    private int weight;
+    private int weight = 0;
 
     @Column(name="medical_record_id")
     private int medicalRecordId; //FK
 
 //    @Column(nullable=false, columnDefinition="nvarchar(20000)")
     @Column(columnDefinition="nvarchar(20000)")
-    private String description;
+    private String description = "";
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="medical_treatment_id", referencedColumnName = "id")

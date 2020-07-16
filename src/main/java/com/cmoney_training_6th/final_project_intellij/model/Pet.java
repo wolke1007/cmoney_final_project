@@ -17,29 +17,29 @@ public class Pet {
     private int userId; //FK
 
     @Column(columnDefinition="nvarchar(255)")
-    private String name;
+    private String name = "";
 
-    private int age;
+    private int age = 0;
 
-    private int weight;
+    private int weight = 0;
 
-    private int gender;
-
-    @Column(columnDefinition="nvarchar(255)")
-    private String breed;
+    private int gender = 0;
 
     @Column(columnDefinition="nvarchar(255)")
-    private String species;
+    private String breed = "";
 
-    private String chip;
+    @Column(columnDefinition="nvarchar(255)")
+    private String species = "";
+
+    private String chip = "";
 
     @Column(name="allergic_with", columnDefinition="nvarchar(255)")
-    private String allergicWith;
+    private String allergicWith = "";
 
-    private boolean neutered;
+    private boolean neutered = false;
 
     @Column(name="own_date", length=50)
-    private String ownDate;
+    private String ownDate = "";
 
 //    @OneToOne(mappedBy = "pet")
 //    private MedicalRecord medicalRecord;

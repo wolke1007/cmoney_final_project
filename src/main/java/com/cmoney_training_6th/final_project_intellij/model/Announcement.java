@@ -12,11 +12,11 @@ public class Announcement {
 
     //    @Column(nullable=false, columnDefinition="nvarchar(255)")
     @Column(columnDefinition = "nvarchar(255)")
-    private String title;
+    private String title = "";
 
     //    @Column(nullable=false, columnDefinition="nvarchar(20000)")
     @Column(columnDefinition = "nvarchar(20000)")
-    private String description;
+    private String description = "";
 
     @Column(name="hospital_id")
     private int hospitalId;

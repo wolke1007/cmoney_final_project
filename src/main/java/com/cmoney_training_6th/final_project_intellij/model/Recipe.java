@@ -19,7 +19,7 @@ public class Recipe {
     private int medicalTreatmentId; //FK
 
 //    @Column(nullable=false)
-    private int quantity;
+    private int quantity = 0;
 
     public int getId() {
         return id;
