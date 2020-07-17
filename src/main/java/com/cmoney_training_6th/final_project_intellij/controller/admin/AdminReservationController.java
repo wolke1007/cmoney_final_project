@@ -140,7 +140,11 @@ public class AdminReservationController {
             @RequestBody Reservation request
     ) {
         try {
-            Reservation res = reservationRepository.findById(request.getId()).get(); // 確認 id 是否可以找到東西，沒找到會噴掉被 catch
+            Reservation res = reservationRepository.findById(request.getId()).orElse(null); // 確認 id 是否可以找到東西
+            if( res == null ){
+                response.setStatus(404);
+                return new CommonResponse("reservation " + request.getId() + " not found", 404).toString();
+            }
             reservationRepository.delete(res);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {

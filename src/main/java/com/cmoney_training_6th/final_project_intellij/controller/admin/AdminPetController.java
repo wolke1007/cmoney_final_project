@@ -1,6 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
 import com.cmoney_training_6th.final_project_intellij.model.Doctor;
+import com.cmoney_training_6th.final_project_intellij.model.MedicalItem;
 import com.cmoney_training_6th.final_project_intellij.model.Pet;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
@@ -110,8 +111,12 @@ public class AdminPetController {
 //            return new CommonResponse(checkPassword,400);
 //        }
         try {
-            petRepository.findById(request.getId()).get();
-            petRepository.delete(request);
+            Pet pet = petRepository.findById(request.getId()).orElse(null);
+            if(pet == null){
+                response.setStatus(404);
+                return new CommonResponse("pet " + request.getId() + " not found", 404).toString();
+            }
+            petRepository.delete(pet);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();

@@ -53,7 +53,7 @@ public class AdminMedicalItemController {
             MedicalItem medicalItem = medicalItemRepository.findByName(request.getName()).orElse(null); // 確認 name 是否可以找到東西
             if(medicalItem == null){
                 response.setStatus(404);
-                return new CommonResponse("medical item " + request.getId() + " not found: ", 404).toString();
+                return new CommonResponse("medical item " + request.getId() + " not found", 404).toString();
             }
             medicalItem.setDescription(request.getDescription());
             medicalItem.setItemType(request.getItemType());
@@ -72,7 +72,12 @@ public class AdminMedicalItemController {
             @RequestBody MedicalItem request
     ) {
         try {
-            medicalItemRepository.delete(request);
+            MedicalItem medicalItem = medicalItemRepository.findById(request.getId()).orElse(null);
+            if(medicalItem == null){
+                response.setStatus(404);
+                return new CommonResponse("medical item " + request.getId() + " not found", 404).toString();
+            }
+            medicalItemRepository.delete(medicalItem);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);

@@ -71,10 +71,9 @@ public class AdminMedicalRecordController {
         // 新增 User
         try {
             MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getId()).orElse(null);
-            // TODO BUG here
             if(medicalRecord == null){
                 response.setStatus(404);
-                return new CommonResponse("medical record " + request.getId() + " not found: ", 404).toString();
+                return new CommonResponse("medical record " + request.getId() + " not found", 404).toString();
             }
             medicalRecord.setCreateDate(request.getCreateDate());
             medicalRecord.setHospitalId(request.getHospitalId());

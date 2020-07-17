@@ -85,8 +85,12 @@ public class AdminRecipeController {
 //        }
         // 新增 User
         try {
-            recipeRepository.findById(request.getId()).get(); // 確認 id 是否可以找到東西，沒找到會噴掉被 catch
-            recipeRepository.delete(request);
+            Recipe recipe = recipeRepository.findById(request.getId()).orElse(null); // 確認 id 是否可以找到東西，沒找到會噴掉被 catch
+            if(recipe == null){
+                response.setStatus(404);
+                return new CommonResponse("recipe " + request.getId() + " not found", 404).toString();
+            }
+            recipeRepository.delete(recipe);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);

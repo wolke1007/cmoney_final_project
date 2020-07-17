@@ -11,6 +11,7 @@ import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -156,16 +157,22 @@ public class PetController {
         try {
             String token = jwt.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
-            Optional<User> user = userRepository.findByUsername(username);
-            request.setUserId(user.get().getId());
-            petRepository.findById(request.getId()).get();
-            petRepository.delete(request);
+            User user = userRepository.findByUsername(username).orElse(null);
+            Pet pet = petRepository.findById(request.getId()).orElse(null);
+            if(pet == null){
+                response.setStatus(404);
+                return new CommonResponse("pet " + request.getId() + " not found", 404).toString();
+            }
+            petRepository.delete(pet);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         } catch (NoSuchElementException e) {
             response.setStatus(404);
             return new CommonResponse("id " + request.getId() + " not found: " + e.getMessage(), 404).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -177,9 +184,14 @@ public class PetController {
                              @RequestParam("petId") int petId,
                              @RequestHeader("Authorization") String jwt) {
 
-        String a = jwt.substring(7);
-        String username = jwtTokenUtil.getUserNameFromJwtToken(a);
-        User existingUser = userRepository.findByUsername(username).orElse(null);
+        try{
+            String a = jwt.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(a);
+            User existingUser = userRepository.findByUsername(username).orElse(null);
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        }
 
         if (file.isEmpty()) {
             return null;
