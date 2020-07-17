@@ -176,6 +176,7 @@ public class AdminUserController {
         try {
             User user = userRepository.findByUsername(request.getUsername()).orElse(null);
             if (user == null) {
+                response.setStatus(404);
                 return new CommonResponse("this username does not exist.", 404).toString();
             }
             if(user.getRole().equals("ROLE_USER")){

@@ -13,6 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,22 +26,14 @@ import java.util.Optional;
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
 @RequestMapping(path = "/admin/roaster")
 public class AdminRoasterController {
-    @Autowired
-    private ReservationRepository reservationRepository;
-    @Autowired
-    private HospitalRepository hospitalRepository;
-    @Autowired
-    private DoctorService doctorService;
+
     @Autowired
     private RoasterRepository roasterRepository;
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private DoctorRepository doctorRepository;
-    @Autowired
-    private JwtUtil jwtTokenUtil;
+
 
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public String adminAddRoaster(
@@ -49,26 +42,28 @@ public class AdminRoasterController {
         try {
             Doctor doctor = doctorRepository.findById(request.getDoctorId()).get();
             Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get();
-            Roaster roaster = new Roaster();
-            roaster.setDoctorId(doctor.getId());
-            roaster.setScheduleId(schedule.getId());
-            roasterRepository.save(roaster);
+            Roaster roaster = roasterRepository.findByDoctorIdAndScheduleId(doctor.getId(), schedule.getId()).orElse(null);
+            if (roaster != null) {
+                return new CommonResponse("fail, this roaster already exist", 404).toString();
+            }
+            Roaster newRoaster = new Roaster();
+            newRoaster.setDoctorId(doctor.getId());
+            newRoaster.setScheduleId(schedule.getId());
+            roasterRepository.save(newRoaster);
             return new CommonResponse("success", 200).toString();
-        } catch (ExpiredJwtException e) {
-            response.setStatus(403);
-            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
-        } catch (NoSuchElementException e) {
-            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
+        }  catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
     }
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminGetRoaster(@RequestParam(value = "doctorId")
-                                                       int doctorId) {
+                                          int doctorId) {
         List<Roaster> roasters = roasterRepository.findByDoctorId(doctorId);
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKey(roasters, "reservations");
-        for(JsonElement json : arr){
+        for (JsonElement json : arr) {
             int scheduleId = json.getAsJsonObject().get("scheduleId").getAsInt();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
             String time = schedule.getDay() + " " + schedule.getTime();
@@ -79,19 +74,45 @@ public class AdminRoasterController {
     }
 
     @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String adminEditReservation(@RequestBody DtoRoaster request) {
-        Roaster roaster = roasterRepository.findById(request.getId()).get();
-        int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
-        roaster.setScheduleId(scheduleId);
-        roaster.setDoctorId(request.getDoctorId());
-        roasterRepository.save(roaster);
-        return new CommonResponse("success", 200).toString();
+    public String adminEditReservation(HttpServletResponse response,
+                                       @RequestBody DtoRoaster request) {
+        try {
+            Roaster roaster = roasterRepository.findById(request.getId()).orElse(null);
+            if (roaster == null) {
+                response.setStatus(404);
+                return new CommonResponse("this roaster id" + request.getId() + " does not exist.", 404).toString();
+            }
+            Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).orElse(null);
+            if (schedule == null) {
+                response.setStatus(404);
+                return new CommonResponse("this schedule with day:" + request.getDay()
+                        + ",time:" + request.getTime() + " does not exist.", 404).toString();
+            }
+            roaster.setScheduleId(schedule.getId());
+            roaster.setDoctorId(request.getDoctorId());
+            roasterRepository.save(roaster);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
     }
 
     @PostMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String adminDeleteRoaster(@RequestBody DtoRoaster request) {
-        Roaster roaster = roasterRepository.findById(request.getId()).get();
-        roasterRepository.delete(roaster);
-        return new CommonResponse("success", 200).toString();
+    public String adminDeleteRoaster(HttpServletResponse response,
+                                     @RequestBody DtoRoaster request) {
+        try {
+            Roaster roaster = roasterRepository.findById(request.getId()).orElse(null);
+            if (roaster == null) {
+                response.setStatus(404);
+                return new CommonResponse("this roaster id" + request.getId() + " does not exist.", 404).toString();
+            }
+
+            roasterRepository.delete(roaster);
+            return new CommonResponse("success", 200).toString();
+        } catch (DataIntegrityViolationException e) {
+            response.setStatus(404);
+            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        }
     }
 }
