@@ -54,7 +54,6 @@ public class JsonIter <T>{
         for(T obj : list){
             json = (JsonObject) g.toJsonTree(obj).getAsJsonObject();
             for(String removeKey : removeKeys){
-                System.out.println("remove: " + removeKey);
                 json.remove(removeKey);
             }
             arr.add(json);
@@ -66,7 +65,6 @@ public class JsonIter <T>{
         JsonObject json;
         json = (JsonObject) g.toJsonTree(obj).getAsJsonObject();
         for(String removeKey : removeKeys){
-            System.out.println("remove: " + removeKey);
             json.remove(removeKey);
         }
         return json;
@@ -75,11 +73,9 @@ public class JsonIter <T>{
     public JsonObject jsonConcact(JsonObject jsonA, JsonObject jsonB){ // json 相加
         JsonObject json = new JsonObject();
         for(String key : jsonB.keySet()){
-            System.out.println("jsonB key: " + key);
             json.add(key, jsonB.get(key));
         }
         for(String key : jsonA.keySet()){
-            System.out.println("jsonA key: " + key);
             json.add(key, jsonA.get(key));
         }
         return json;
@@ -120,7 +116,6 @@ public class JsonIter <T>{
         JsonObject json = new JsonObject();
         JsonObject obJjson = g.toJsonTree(obj).getAsJsonObject();
         for(String key : keys){
-            System.out.println("add: " + key);
             json.add(key, obJjson.get(key));
         }
         return json;

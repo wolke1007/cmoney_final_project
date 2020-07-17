@@ -40,7 +40,6 @@ public class UserService {
             User user = userRepository.findById(crew.getUserId()).orElse(null);
             if (doctor != null) {
                 JsonObject doctorJson = ji.objIntoJsonWithoutKeys(doctor, Arrays.asList("roasters"));
-                //TODO 要加入 doctor 的 user info
                 JsonObject userJson = ji.objIntoJsonWithKeys(user, Arrays.asList("id",
                         "socialLicenseId", "joinTime", "firstName",
                         "lastName", "school", "addressCity",
@@ -48,7 +47,13 @@ public class UserService {
                         "birthday", "username", "role",
                         "userPhotos"));
                 JsonObject addTwoJson = ji.jsonConcact(doctorJson, userJson);
-                System.out.println("DEBUG addTwoJson:" + addTwoJson);
+                // 客製 json，將 doctorId 改成 userId
+                int userId = addTwoJson.get("userId").getAsInt();
+                int doctorId = addTwoJson.get("id").getAsInt();
+                addTwoJson.remove("id");
+                addTwoJson.remove("userId");
+                addTwoJson.addProperty("id", userId);
+                addTwoJson.addProperty("doctorId", doctorId);
                 ret.get("doctors").getAsJsonArray().add(addTwoJson);
             } else {
                 ret.get("staffs").getAsJsonArray().add(ji.objIntoJsonWithKeys(user,

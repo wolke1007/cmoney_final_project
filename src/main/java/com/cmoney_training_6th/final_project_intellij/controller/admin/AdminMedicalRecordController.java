@@ -140,7 +140,7 @@ public class AdminMedicalRecordController {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         } catch (NoSuchElementException e) {
             response.setStatus(404);
-            return new CommonResponse("cant find data this userId or petId.", 404).toString();
+            return new CommonResponse("cant find data of this userId or petId.", 404).toString();
         }
     }
 
