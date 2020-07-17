@@ -10,7 +10,7 @@ public class Crew {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="user_id")
+    @Column(name="user_id", unique = true)
     private int userId; //FK
 
     @Column(name="hospital_id")
