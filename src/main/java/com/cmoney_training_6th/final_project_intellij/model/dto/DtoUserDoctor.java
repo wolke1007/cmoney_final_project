@@ -8,7 +8,7 @@ import javax.persistence.Id;
 public class DtoUserDoctor {
 
     // user properties
-    private String socialLicenseId;
+    private String socialLicenseId = "";
     private String joinTime = "";
     private String firstName = "";
     private String lastName = "";
@@ -19,11 +19,11 @@ public class DtoUserDoctor {
     private String addressLine = "";
     private String phone = "";
     private String birthday = "";
-    private String username;
+    private String username = "";
     // doctor properties
-    private String doctorLicense;
-    private String experience;
-    private String skill;
+    private String doctorLicense = "";
+    private String experience = "";
+    private String skill = "";
     private int hospitalId;
 
     public String getSocialLicenseId() {

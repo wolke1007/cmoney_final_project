@@ -1,10 +1,10 @@
 package com.cmoney_training_6th.final_project_intellij.model.dto;
 
 public class DtoDoctor {
-    private String doctorLicense;
-    private String experience;
-    private String skill;
-    private String userName;
+    private String doctorLicense = "";
+    private String experience = "";
+    private String skill = "";
+    private String userName = "";
     private int hospitalId;
 
     public String getDoctorLicense() {

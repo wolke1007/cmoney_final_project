@@ -3,8 +3,8 @@ package com.cmoney_training_6th.final_project_intellij.model.dto;
 public class DtoRoaster {
     private int id;
     private int doctorId;
-    private String day;
-    private String time;
+    private String day = "";
+    private String time = "";
 
     public int getId() {
         return id;

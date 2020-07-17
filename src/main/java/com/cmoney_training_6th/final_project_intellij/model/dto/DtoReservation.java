@@ -7,9 +7,9 @@ public class DtoReservation {
     public int hospitalId;
     public int userId;
     public int petId;
-    public String day;
-    public String time;
-    public String date;
+    public String day = "";
+    public String time = "";
+    public String date = "";
     public int doctorId;
 
     public int getDoctorId() {
