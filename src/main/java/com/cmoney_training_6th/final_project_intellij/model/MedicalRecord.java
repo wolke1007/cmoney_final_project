@@ -29,7 +29,7 @@ public class MedicalRecord {
 //    @JoinColumn(name = "pet_id", unique = true)
 //    protected Pet pet;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="medical_record_id", referencedColumnName = "id")
     List<MedicalTreatment> medicalTreatments = new ArrayList<>();
 

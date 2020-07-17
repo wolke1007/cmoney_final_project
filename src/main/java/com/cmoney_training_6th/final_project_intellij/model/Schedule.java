@@ -17,7 +17,7 @@ public class Schedule {
 
     private String time;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="schedule_id", referencedColumnName = "id")
     List<Roaster> roasters = new ArrayList<>();
 

@@ -34,11 +34,11 @@ public class Hospital {
     @Column(name="address_line", columnDefinition="nvarchar(255)")
     private String addressLine = "";
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="hospital_id", referencedColumnName = "id")
     List<Announcement> announcements = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="hospital_id", referencedColumnName = "id")
     List<Doctor> doctors = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class Hospital {
 //    @JoinColumn(name="user_id", referencedColumnName = "id")
 //    User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="hospital_id", referencedColumnName = "id")
     protected List<MedicalRecord> medicalRecords = new ArrayList<>();
 

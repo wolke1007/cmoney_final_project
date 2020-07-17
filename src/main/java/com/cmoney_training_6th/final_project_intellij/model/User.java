@@ -58,23 +58,23 @@ public class User {
 
     private boolean active = true;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     List<Pet> pets = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecords = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     List<Doctor> doctors = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     List<UserPhoto> userPhotos = new ArrayList<>();
 

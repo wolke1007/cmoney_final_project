@@ -21,7 +21,7 @@ public class MedicalTreatment {
     @Column(columnDefinition="nvarchar(20000)")
     private String description = "";
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="medical_treatment_id", referencedColumnName = "id")
     List<Recipe> recipes = new ArrayList<>();
 

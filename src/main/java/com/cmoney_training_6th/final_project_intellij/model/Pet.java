@@ -44,15 +44,15 @@ public class Pet {
 //    @OneToOne(mappedBy = "pet")
 //    private MedicalRecord medicalRecord;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<Reservation> reservation;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<MedicalRecord> medicalRecord;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="pet_id", referencedColumnName = "id")
     List<PetPhoto> petPhotos = new ArrayList<>();
 

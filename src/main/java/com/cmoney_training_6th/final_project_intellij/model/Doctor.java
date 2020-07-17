@@ -32,7 +32,7 @@ public class Doctor {
     @Column(columnDefinition="nvarchar(1000)")
     private String experience = "";
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="doctor_id", referencedColumnName = "id")
     List<Roaster> roasters = new ArrayList<>();
 

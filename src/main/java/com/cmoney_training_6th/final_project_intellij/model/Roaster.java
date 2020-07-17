@@ -18,7 +18,7 @@ public class Roaster {
     @Column(name="schedule_id")
     private int scheduleId; //FK
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="roaster_id", referencedColumnName = "id")
     transient List<Reservation> reservations = new ArrayList<>();
 
