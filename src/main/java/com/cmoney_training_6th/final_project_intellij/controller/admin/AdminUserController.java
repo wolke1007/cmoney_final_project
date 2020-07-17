@@ -55,35 +55,50 @@ public class AdminUserController {
     @PostMapping(path = "/doctor/new", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewDoctor(
             HttpServletResponse response,
-            @RequestBody DtoDoctor request
+            @RequestBody DtoUserDoctor request
     ) {
         try {
-            Doctor doctor = new Doctor();
-            User user = userRepository.findByUsername(request.getUserName()).orElse(null);
-            if (user == null) {
+            User user = userRepository.findByUsername(request.getUsername()).orElse(null);
+            if (user != null) {
                 response.setStatus(404);
-                return new CommonResponse("this user not exist.", 404).toString();
+                return new CommonResponse("this username is exist.", 404).toString();
+            }else{
+                user = new User();
             }
-            Crew crew = new Crew();
-            if (doctorRepository.findByUserId(user.getId()).orElse(null) != null &&
-                    doctorRepository.findByHospitalId(request.getHospitalId()).size() > 0) {
-                response.setStatus(404);
-                return new CommonResponse("this user already was a doctor.", 404).toString();
-            }
-            System.out.println("debug doctor userID:" + user.getId());
-            doctor.setSkill(request.getSkill());
-            doctor.setExperience(request.getExperience());
-            doctor.setDoctorLicense(request.getDoctorLicense());
-            doctor.setUserId(user.getId());
-            doctor.setHospitalId(request.getHospitalId());
-            doctorRepository.save(doctor);
+            user.setUsername(request.getUsername());
+            user.setSocialLicenseId(request.getSocialLicenseId());
+            user.setJoinTime(request.getJoinTime());
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setPassword(request.getPassword());
+            user.setSchool(request.getSchool());
+            user.setAddressCity(request.getAddressCity());
+            user.setAddressArea(request.getAddressArea());
+            user.setAddressLine(request.getAddressLine());
+            user.setPhone(request.getPhone());
+            user.setBirthday(request.getBirthday());
             user.setRole("ROLE_DOCTOR");
             userRepository.save(user);
-            crew.setHospitalId(request.getHospitalId());
-            crew.setUserId(user.getId());
-            if (crewRepository.findByUserIdAndHospitalId(crew.getId(), crew.getHospitalId()).orElse(null) != null) {
-                return new CommonResponse("this user already is staff of this hospital.", 200).toString();
+            user = userRepository.findByUsername(request.getUsername()).orElse(null);
+            if(user == null){
+                response.setStatus(404);
+                return new CommonResponse("user save failed, can't get user by name:" + request.getUsername(), 404).toString();
             }
+            Doctor doctor = new Doctor();
+            doctor.setHospitalId(request.getHospitalId());
+            doctor.setUserId(user.getId());
+            doctor.setDoctorLicense(request.getDoctorLicense());
+            doctor.setExperience(request.getExperience());
+            doctor.setSkill(request.getSkill());
+            doctorRepository.save(doctor);
+            doctor = doctorRepository.findByUserId(user.getId()).orElse(null);
+            if(doctor == null){
+                response.setStatus(404);
+                return new CommonResponse("doctor save failed, can't get doctor by id:" + user.getId(), 404).toString();
+            }
+            Crew crew = new Crew();
+            crew.setHospitalId(doctor.getHospitalId());
+            crew.setUserId(user.getId());
             crewRepository.save(crew);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {

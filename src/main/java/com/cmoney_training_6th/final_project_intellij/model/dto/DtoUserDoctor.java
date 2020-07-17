@@ -24,7 +24,6 @@ public class DtoUserDoctor {
     private String doctorLicense;
     private String experience;
     private String skill;
-    private String userName;
     private int hospitalId;
 
     public String getSocialLicenseId() {
@@ -145,14 +144,6 @@ public class DtoUserDoctor {
 
     public void setSkill(String skill) {
         this.skill = skill;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public int getHospitalId() {
