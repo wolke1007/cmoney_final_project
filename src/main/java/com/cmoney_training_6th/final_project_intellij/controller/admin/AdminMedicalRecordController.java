@@ -70,8 +70,17 @@ public class AdminMedicalRecordController {
 //        }
         // 新增 User
         try {
-            MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getId()).get();
-            medicalRecordRepository.save(request);
+            MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getId()).orElse(null);
+            // TODO BUG here
+            if(medicalRecord == null){
+                response.setStatus(404);
+                return new CommonResponse("medical record " + request.getId() + " not found: ", 404).toString();
+            }
+            medicalRecord.setCreateDate(request.getCreateDate());
+            medicalRecord.setHospitalId(request.getHospitalId());
+            medicalRecord.setPetId(request.getPetId());
+            medicalRecord.setUserId(request.getUserId());
+            medicalRecordRepository.save(medicalRecord);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);

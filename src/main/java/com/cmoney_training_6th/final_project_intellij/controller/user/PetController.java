@@ -113,10 +113,24 @@ public class PetController {
         try {
             String token = jwt.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
-            Optional<User> user = userRepository.findByUsername(username);
-            request.setUserId(user.get().getId());
-            petRepository.findById(request.getId()).get();
-            petRepository.save(request);
+            User user = userRepository.findByUsername(username).orElse(null);
+            Pet pet = petRepository.findById(request.getId()).orElse(null);
+            if(pet == null){
+                response.setStatus(404);
+                return new CommonResponse("pet " + request.getId() + " not found: ", 404).toString();
+            }
+            pet.setUserId(user.getId());
+            pet.setChip(request.getChip());
+            pet.setWeight(request.getWeight());
+            pet.setGender(request.getGender());
+            pet.setNeutered(request.isNeutered());
+            pet.setAge(request.getAge());
+            pet.setBreed(request.getBreed());
+            pet.setSpecies(request.getSpecies());
+            pet.setName(request.getName());
+            pet.setAllergicWith(request.getAllergicWith());
+            pet.setOwnDate(request.getOwnDate());
+            petRepository.save(pet);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();

@@ -71,8 +71,23 @@ public class AdminPetController {
 //            return new CommonResponse(checkPassword,400);
 //        }
         try {
-            petRepository.findById(request.getId()).get();
-            petRepository.save(request);
+            Pet pet = petRepository.findById(request.getId()).orElse(null);
+            if(pet == null){
+                response.setStatus(404);
+                return new CommonResponse("pet " + request.getId() + " not found: ", 404).toString();
+            }
+            pet.setUserId(request.getUserId());
+            pet.setChip(request.getChip());
+            pet.setWeight(request.getWeight());
+            pet.setGender(request.getGender());
+            pet.setNeutered(request.isNeutered());
+            pet.setAge(request.getAge());
+            pet.setBreed(request.getBreed());
+            pet.setSpecies(request.getSpecies());
+            pet.setName(request.getName());
+            pet.setAllergicWith(request.getAllergicWith());
+            pet.setOwnDate(request.getOwnDate());
+            petRepository.save(pet);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();

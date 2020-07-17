@@ -2,6 +2,7 @@ package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
 import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.MedicalItem;
+import com.cmoney_training_6th.final_project_intellij.model.MedicalRecord;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
@@ -35,14 +36,6 @@ public class AdminMedicalItemController {
             HttpServletResponse response,
             @RequestBody MedicalItem request
     ) {
-//        ValidateParameter checkPassword = new ValidateParameter("password", password);
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
-//        }
-//        // 新增 Doctor
         try {
             medicalItemRepository.save(request);
             return new CommonResponse("success", 200).toString();
@@ -56,17 +49,16 @@ public class AdminMedicalItemController {
             HttpServletResponse response,
             @RequestBody MedicalItem request
     ) {
-//        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
-//        }
-        // 新增 User
         try {
-            medicalItemRepository.findByName(request.getName()); // 確認 name 是否可以找到東西，沒找到會噴掉被 catch
-            medicalItemRepository.save(request);
+            MedicalItem medicalItem = medicalItemRepository.findByName(request.getName()).orElse(null); // 確認 name 是否可以找到東西
+            if(medicalItem == null){
+                response.setStatus(404);
+                return new CommonResponse("medical item " + request.getId() + " not found: ", 404).toString();
+            }
+            medicalItem.setDescription(request.getDescription());
+            medicalItem.setItemType(request.getItemType());
+            medicalItem.setName(request.getName());
+            medicalItemRepository.save(medicalItem);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
@@ -79,14 +71,6 @@ public class AdminMedicalItemController {
             HttpServletResponse response,
             @RequestBody MedicalItem request
     ) {
-//        ValidateParameter checkPassword = new ValidateParameter("password", jsonUser.getPassword());
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
-//        }
-        // 新增 User
         try {
             medicalItemRepository.delete(request);
             return new CommonResponse("success", 200).toString();
