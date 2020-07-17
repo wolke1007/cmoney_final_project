@@ -60,7 +60,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"socialLicenseId\":\"Z1234567893\",\r\n    \"joinTime\":\"2020-07-12\",\r\n    \"firstName\":\"測試\",\r\n    \"lastName\":\"王\",\r\n    \"password\":\"1234\",\r\n    \"school\":\"school_name\",\r\n    \"addressCity\":\"新北市\",\r\n    \"addressArea\":\"大安區\",\r\n    \"addressLine\":\"文化路120段\",\r\n    \"phone\":\"test_phone\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"username\":\"staff1@test.com\"\r\n}",
+									"raw": "{\r\n    \"socialLicenseId\":\"Z1234567893\",\r\n    \"joinTime\":\"2020-07-12\",\r\n    \"firstName\":\"測試\",\r\n    \"lastName\":\"王\",\r\n    \"password\":\"1234\",\r\n    \"school\":\"school_name\",\r\n    \"addressCity\":\"新北市\",\r\n    \"addressArea\":\"大安區\",\r\n    \"addressLine\":\"文化路120段\",\r\n    \"phone\":\"test_phone\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"username\":\"staff1@test.com\",\r\n    \"doctorLicense\":\"license11\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"hospitalId\":1\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1234,37 +1234,6 @@
 							"response": []
 						},
 						{
-							"name": "get all reservations by hospital id",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "",
-										"type": "text",
-										"value": "",
-										"disabled": true
-									}
-								],
-								"url": {
-									"raw": "{{url}}/admin/reservation?hospitalId=1",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"admin",
-										"reservation"
-									],
-									"query": [
-										{
-											"key": "hospitalId",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "delete reservation",
 							"request": {
 								"method": "POST",
@@ -2248,7 +2217,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-17-12:00",
+					"name": "2020-07-17-12:40",
 					"item": [],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
@@ -4162,7 +4131,7 @@
 											}
 										],
 										"url": {
-											"raw": "{{url}}/admin/medical_record?userId=3&petId=4",
+											"raw": "{{url}}/admin/medical_record?userId=3&petId=3",
 											"host": [
 												"{{url}}"
 											],
@@ -4177,7 +4146,7 @@
 												},
 												{
 													"key": "petId",
-													"value": "4"
+													"value": "3"
 												}
 											]
 										}
@@ -4238,37 +4207,6 @@
 												"admin",
 												"hospital",
 												"crews"
-											],
-											"query": [
-												{
-													"key": "hospitalId",
-													"value": "1"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "get all reservations by hospital id",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "",
-												"type": "text",
-												"value": "",
-												"disabled": true
-											}
-										],
-										"url": {
-											"raw": "{{url}}/admin/reservation?hospitalId=1",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"admin",
-												"reservation"
 											],
 											"query": [
 												{

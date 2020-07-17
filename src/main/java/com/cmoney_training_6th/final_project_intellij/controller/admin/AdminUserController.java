@@ -3,6 +3,7 @@ package com.cmoney_training_6th.final_project_intellij.controller.admin;
 import com.cmoney_training_6th.final_project_intellij.model.*;
 import com.cmoney_training_6th.final_project_intellij.model.dto.DtoCrewUser;
 import com.cmoney_training_6th.final_project_intellij.model.dto.DtoDoctor;
+import com.cmoney_training_6th.final_project_intellij.model.dto.DtoUserDoctor;
 import com.cmoney_training_6th.final_project_intellij.repos.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
@@ -170,7 +171,7 @@ public class AdminUserController {
     @PostMapping(path = "/crew/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditCrewByUsername(
             HttpServletResponse response,
-            @RequestBody User request
+            @RequestBody DtoUserDoctor request
     ) {
         try {
             User user = userRepository.findByUsername(request.getUsername()).orElse(null);
@@ -198,6 +199,15 @@ public class AdminUserController {
             user.setPhone(request.getPhone());
             user.setBirthday(request.getBirthday());
             userRepository.save(user);
+            Doctor doctor = doctorRepository.findByUserId(user.getId()).orElse(null);
+            if(doctor != null){
+                doctor.setHospitalId(request.getHospitalId());
+                doctor.setUserId(user.getId());
+                doctor.setDoctorLicense(request.getDoctorLicense());
+                doctor.setExperience(request.getExperience());
+                doctor.setSkill(request.getSkill());
+                doctorRepository.save(doctor);
+            }
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
