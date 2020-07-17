@@ -39,12 +39,24 @@ public class UserService {
             Doctor doctor = doctorRepository.findByUserId(crew.getUserId()).orElse(null);
             User user = userRepository.findById(crew.getUserId()).orElse(null);
             if (doctor != null) {
-                ret.get("doctors").getAsJsonArray().add(ji.objIntoJsonWithoutKeys(doctor,
-                        Arrays.asList("roasters")));
+                JsonObject doctorJson = ji.objIntoJsonWithoutKeys(doctor, Arrays.asList("roasters"));
+                //TODO 要加入 doctor 的 user info
+                JsonObject userJson = ji.objIntoJsonWithKeys(user, Arrays.asList("id",
+                        "socialLicenseId", "joinTime", "firstName",
+                        "lastName", "school", "addressCity",
+                        "addressArea", "addressLine", "phone",
+                        "birthday", "username", "role",
+                        "userPhotos"));
+                JsonObject addTwoJson = ji.jsonConcact(doctorJson, userJson);
+                System.out.println("DEBUG addTwoJson:" + addTwoJson);
+                ret.get("doctors").getAsJsonArray().add(addTwoJson);
             } else {
-                ret.get("staffs").getAsJsonArray().add(ji.objIntoJsonWithoutKeys(user,
-                        Arrays.asList("pets", "medicalRecords", "doctors", "reservations",
-                                "password", "active")));
+                ret.get("staffs").getAsJsonArray().add(ji.objIntoJsonWithKeys(user,
+                        Arrays.asList("id", "socialLicenseId", "joinTime",
+                        "firstName", "lastName", "school", "addressCity",
+                        "addressArea", "addressLine", "phone",
+                        "birthday", "username", "role",
+                        "userPhotos")));
             }
         }
         return ret;
