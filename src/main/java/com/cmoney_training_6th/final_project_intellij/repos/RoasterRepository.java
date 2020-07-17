@@ -15,9 +15,6 @@ import java.util.Optional;
 public interface RoasterRepository extends JpaRepository<Roaster, Integer> {
     List<Roaster> findByDoctorId(int doctorId);
 
-    @Query(value = "SELECT * FROM newdatabase.roaster WHERE doctor_id = any(" +
-            "SELECT id FROM newdatabase.doctor WHERE hospital_id = ?1)",
-            nativeQuery = true)
     Optional<Roaster> findByDoctorIdAndScheduleId(int doctorId, int scheduleId);
 
     @Query(value = "SELECT * FROM newdatabase.roaster WHERE doctor_id = any(" +

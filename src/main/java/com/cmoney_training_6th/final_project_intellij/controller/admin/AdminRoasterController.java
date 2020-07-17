@@ -40,10 +40,20 @@ public class AdminRoasterController {
             HttpServletResponse response,
             @RequestBody DtoRoaster request) {
         try {
-            Doctor doctor = doctorRepository.findById(request.getDoctorId()).get();
-            Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get();
+            Doctor doctor = doctorRepository.findById(request.getDoctorId()).orElse(null);
+            if(doctor == null){
+                response.setStatus(404);
+                return new CommonResponse("this doctor id" + request.getDoctorId() + " does not exist.", 404).toString();
+            }
+            Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).orElse(null);
+            if (schedule == null) {
+                response.setStatus(404);
+                return new CommonResponse("this schedule with [" + request.getDay()
+                        + " " + request.getTime() + "] does not exist.", 404).toString();
+            }
             Roaster roaster = roasterRepository.findByDoctorIdAndScheduleId(doctor.getId(), schedule.getId()).orElse(null);
             if (roaster != null) {
+                response.setStatus(404);
                 return new CommonResponse("fail, this roaster already exist", 404).toString();
             }
             Roaster newRoaster = new Roaster();
@@ -85,8 +95,8 @@ public class AdminRoasterController {
             Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).orElse(null);
             if (schedule == null) {
                 response.setStatus(404);
-                return new CommonResponse("this schedule with day:" + request.getDay()
-                        + ",time:" + request.getTime() + " does not exist.", 404).toString();
+                return new CommonResponse("this schedule with [" + request.getDay()
+                        + " " + request.getTime() + "] does not exist.", 404).toString();
             }
             roaster.setScheduleId(schedule.getId());
             roaster.setDoctorId(request.getDoctorId());
