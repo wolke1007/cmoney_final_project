@@ -157,6 +157,9 @@ public class AdminUserController {
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -191,11 +194,11 @@ public class AdminUserController {
             user.setPhone(request.getPhone());
             user.setBirthday(request.getBirthday());
             userRepository.save(user);
+            return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         }
-        return new CommonResponse("success", 200).toString();
     }
 
     @PostMapping(path = "/crew/delete", produces = MediaType.APPLICATION_JSON_VALUE) // 從醫院中除職的概念
@@ -256,6 +259,9 @@ public class AdminUserController {
         } catch (NoSuchElementException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getMessage(), 404).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
