@@ -108,6 +108,10 @@ public class HospitalController {
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         } catch (NoSuchElementException e) {
             return new CommonResponse("booking fail because wrong value is given.", 404).toString();
+        } catch (io.jsonwebtoken.MalformedJwtException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (StringIndexOutOfBoundsException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
 //        try {
 //            String token = header.substring(7);
@@ -184,6 +188,10 @@ public class HospitalController {
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        } catch (io.jsonwebtoken.MalformedJwtException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (StringIndexOutOfBoundsException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
     }
 }

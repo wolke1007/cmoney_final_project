@@ -160,6 +160,10 @@ public class AdminUserController {
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        } catch (io.jsonwebtoken.MalformedJwtException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (StringIndexOutOfBoundsException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -262,6 +266,10 @@ public class AdminUserController {
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        } catch (io.jsonwebtoken.MalformedJwtException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (StringIndexOutOfBoundsException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -296,6 +304,10 @@ public class AdminUserController {
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        } catch (io.jsonwebtoken.MalformedJwtException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (StringIndexOutOfBoundsException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
     }
 

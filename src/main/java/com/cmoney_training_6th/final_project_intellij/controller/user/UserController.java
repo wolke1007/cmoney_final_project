@@ -65,6 +65,10 @@ public class UserController {
         }catch (ExpiredJwtException e){
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        } catch (io.jsonwebtoken.MalformedJwtException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (StringIndexOutOfBoundsException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -97,6 +101,10 @@ public class UserController {
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
         } catch (ExpiredJwtException e){
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        } catch (io.jsonwebtoken.MalformedJwtException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (StringIndexOutOfBoundsException e){
+            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
     }
 

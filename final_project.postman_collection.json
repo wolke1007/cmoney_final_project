@@ -12,7 +12,7 @@
 					"name": "staff",
 					"item": [
 						{
-							"name": "create new staff",
+							"name": "create new user as staff",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -25,7 +25,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"user\":{\r\n        \"socialLicenseId\":\"Z1234567891\",\r\n        \"username\":\"staff1\",\r\n        \"password\":\"1234\",\r\n        \"phone\":\"09121345\",\r\n        \"firstName\":\"小明\",\r\n        \"lastName\":\"王\",\r\n        \"role\":\"ROLE_STAFF\",\r\n        \"school\":\"school_name\",\r\n        \"birthday\":\"2020-10-10\",\r\n        \"joinTime\":\"2020-07-06\",\r\n        \"addressCity\":\"台北市\",\r\n        \"addressArea\":\"板橋區\",\r\n        \"addressLine\":\"文化路120段\"\r\n    },\r\n    \"hospitalId\": 1\r\n}",
+									"raw": "{\r\n    \"user\":{\r\n        \"socialLicenseId\":\"Z1234567891\",\r\n        \"username\":\"staff1@test.com\",\r\n        \"password\":\"1234\",\r\n        \"phone\":\"09121345\",\r\n        \"firstName\":\"小明\",\r\n        \"lastName\":\"王\",\r\n        \"role\":\"ROLE_STAFF\",\r\n        \"school\":\"school_name\",\r\n        \"birthday\":\"2020-10-10\",\r\n        \"joinTime\":\"2020-07-06\",\r\n        \"addressCity\":\"台北市\",\r\n        \"addressArea\":\"板橋區\",\r\n        \"addressLine\":\"文化路120段\"\r\n    },\r\n    \"hospitalId\": 1\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -60,7 +60,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"joinTime\":\"2020-07-12\",\r\n    \"firstName\":\"測試\",\r\n    \"lastName\":\"王\",\r\n    \"password\":\"1234\",\r\n    \"school\":\"school_name\",\r\n    \"addressCity\":\"新北市\",\r\n    \"addressArea\":\"大安區\",\r\n    \"addressLine\":\"文化路120段\",\r\n    \"phone\":\"test_phone\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"role\":\"ROLE_STAFF\"\r\n}",
+									"raw": "{\r\n    \"socialLicenseId\":\"Z1234567893\",\r\n    \"joinTime\":\"2020-07-12\",\r\n    \"firstName\":\"測試\",\r\n    \"lastName\":\"王\",\r\n    \"password\":\"1234\",\r\n    \"school\":\"school_name\",\r\n    \"addressCity\":\"新北市\",\r\n    \"addressArea\":\"大安區\",\r\n    \"addressLine\":\"文化路120段\",\r\n    \"phone\":\"test_phone\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"username\":\"staff1@test.com\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -68,13 +68,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/admin/staff/edit",
+									"raw": "{{url}}/admin/crew/edit",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"admin",
-										"staff",
+										"crew",
 										"edit"
 									]
 								}
@@ -87,15 +87,14 @@
 								"method": "POST",
 								"header": [
 									{
-										"key": "",
+										"key": "Authorization",
 										"type": "text",
-										"value": "",
-										"disabled": true
+										"value": "{{token}}"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"id\":2,\r\n    \"username\":\"add_staff_test1\"\r\n}",
+									"raw": "{\r\n    \"id\":6,\r\n    \"username\":\"staff1@test.com\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -103,14 +102,48 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/admin/staff/delete",
+									"raw": "{{url}}/admin/crew/delete",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"crew",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add new staff from exist user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":6,\r\n    \"username\":\"staff1@test.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/staff/add",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"admin",
 										"staff",
-										"delete"
+										"add"
 									]
 								}
 							},
@@ -1065,7 +1098,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"doctorLicense\":\"license11\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userName\":\"staff1\",\r\n    \"hospitalId\":1\r\n}",
+									"raw": "{\r\n    \"doctorLicense\":\"license11\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userName\":\"staff1@test.com\",\r\n    \"hospitalId\":1\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1503,7 +1536,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\":\"admin\",\n\t\"password\":\"admin\",\n\t\"uniSerialId\":123456789\n}",
+							"raw": "{\n\t\"username\":\"admin@test.com\",\n\t\"password\":\"admin\",\n\t\"uniSerialId\":123456789\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1619,7 +1652,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\",\r\n\t\"socialLicenseId\":\"Z123456789\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"老闆\",\r\n    \"lastName\":\"王\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
+									"raw": "{\r\n\t\"username\":\"test@test.com\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\",\r\n\t\"socialLicenseId\":\"Z123456789\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"老闆\",\r\n    \"lastName\":\"王\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2189,7 +2222,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\":\"test\",\n\t\"password\":\"1234\"\n}",
+							"raw": "{\n\t\"username\":\"test@test.com\",\n\t\"password\":\"1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2215,30 +2248,8 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-16_14:20",
+					"name": "2020-07-17-12:00",
 					"item": [],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "c7a668c8-08f9-47b7-9ddf-41777ebf4789",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "f473d1ed-cb19-4971-8b52-c12d75726cf4",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
@@ -2396,55 +2407,9 @@
 						}
 					},
 					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "test",
-			"item": [
-				{
-					"name": "ADMIN regist admin/admin",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "1d0a21e2-5f42-4e30-a174-a2d3c9151f3a",
-								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"username\":\"admin\",\n\t\"password\":\"admin\",\n\t\"socialLicenseId\":\"Z123456789\",\n    \"phone\":\"09121345\",\n    \"firstName\":\"老闆\",\n    \"lastName\":\"王\",\n    \"role\":\"ROLE_ADMIN\",\n    \"school\":\"school_name\",\n    \"birthday\":\"2020-10-10\",\n    \"joinTime\":\"2020-07-06\",\n    \"addressCity\":\"台北市\",\n    \"addressArea\":\"板橋區\",\n    \"addressLine\":\"文化路120段\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/regist/admin",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"regist",
-								"admin"
-							]
-						}
-					},
-					"response": []
 				},
 				{
-					"name": "ADMIN create new hospital",
+					"name": "create new hospital",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -2457,7 +2422,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressLine\":\"文化路blabla\",\r\n    \"name\":\"測試醫院\",\r\n    \"uniSerialId\":123456789,\r\n    \"userId\":1,\r\n    \"phone\":\"02123456789\"\r\n}",
+							"raw": "{\r\n    \"addressArea\":\"0\",\r\n    \"addressCity\":\"0\",\r\n    \"addressLine\":\"0\",\r\n    \"name\":\"0\",\r\n    \"uniSerialId\":0,\r\n    \"userId\":0,\r\n    \"phone\":\"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2477,965 +2442,1914 @@
 						}
 					},
 					"response": []
-				},
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "test",
+			"item": [
 				{
-					"name": "ADMIN login (get token and hospital id)",
-					"event": [
+					"name": "init test",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"id": "9a0150a3-e714-4750-80bf-f637eb8bf118",
-								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
+							"name": "ADMIN regist admin/admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1d0a21e2-5f42-4e30-a174-a2d3c9151f3a",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\":\"admin@test.com\",\n\t\"password\":\"admin\",\n\t\"socialLicenseId\":\"Z123456789\",\n    \"phone\":\"09121345\",\n    \"firstName\":\"老闆\",\n    \"lastName\":\"王\",\n    \"role\":\"ROLE_ADMIN\",\n    \"school\":\"school_name\",\n    \"birthday\":\"2020-10-10\",\n    \"joinTime\":\"2020-07-06\",\n    \"addressCity\":\"台北市\",\n    \"addressArea\":\"板橋區\",\n    \"addressLine\":\"文化路120段\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/regist/admin",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"regist",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new hospital",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
 								],
-								"type": "text/javascript"
-							}
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressLine\":\"文化路blabla\",\r\n    \"name\":\"測試醫院\",\r\n    \"uniSerialId\":123456789,\r\n    \"userId\":1,\r\n    \"phone\":\"02123456789\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/hospital/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"hospital",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN login (get token and hospital id)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9a0150a3-e714-4750-80bf-f637eb8bf118",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\":\"admin\",\n\t\"password\":\"admin\",\n\t\"uniSerialId\":123456789\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/login/admin",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"login",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN get info by token",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/info",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new staff",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"小明\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_STAFF\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-06\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/staff/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"staff",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN edit staff",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"小明\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_STAFF\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-06\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/staff/edit",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"staff",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new doctor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"doctorLicense\":\"license1\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userId\":2,\r\n    \"hospitalId\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/doctor/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"doctor",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new pet",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":2,\r\n    \"name\":\"小白\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/pet/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"pet",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new pet",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":2,\r\n    \"name\":\"小白2\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":111,\r\n    \"ownDate\":\"2020-07-13\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"tgrdgdytrty\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/pet/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"pet",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN edit pet",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/pet/delete",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"pet",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN edit pet",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 2,\r\n    \"userId\":1,\r\n    \"name\":\"編輯寵物\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/pet/edit",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"pet",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN get pets by hospital id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/pet/by/hospitalId?hospitalId=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"pet",
+										"by",
+										"hospitalId"
+									],
+									"query": [
+										{
+											"key": "hospitalId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN get pet all",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/pet/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"pet",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[DEBUG] setup schedule DB schema",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"equals": true,
+										"key": "Content-Type",
+										"type": "text",
+										"value": "{{json}}",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/maintenance/schedule/setup",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"maintenance",
+										"schedule",
+										"setup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new roaster",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"doctorId\":1,\r\n    \"day\":\"Monday\",\r\n    \"time\":\"day\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/roaster",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"roaster"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER regist",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/regist/user",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"regist",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new reservation",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"hospitalId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/reservation",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"reservation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER login (get token)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1a047483-ef3d-4dcf-bad4-ddb16f7d7880",
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\":\"test\",\n\t\"password\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN edit reservation",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":1,\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-13\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/reservation/edit",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"reservation",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER get info by token",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/user/account/info",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user",
+										"account",
+										"info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER booking a reservation",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"equals": true,
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-08\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/hospital/reservation/booking",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"hospital",
+										"reservation",
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new medical item 1",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"測試藥品名稱1\",\r\n    \"itemType\": \"TYPE_MEDICINE\",\r\n    \"description\":\"長字串測試~~~~~~~~~~~~製造或輸入動物用藥品許可證有效期間最長為五年，期滿仍擬繼續製造或輸入者，應於期限屆滿之日前二個月至六個月內，向中央主管機關申請展延，每次展延期間，不得超過五年；屆期未辦理展延或不准展延者，原許可證失效，由中央主管機關刊登政府公報。在前項許可證有效期間內，基於維護動物、人體健康或其他重大原因，中央主管機關得重新評估該動物用藥品，並限制其使用方法、範圍；必要時，得廢止前項許可證。中央主管機關為審查輸入動物用藥品許可證之申請、展延、依前項規定重新評估或因應其他實際需要，得派員至該動物用藥品之國外製造廠查核之；所需費用應依相關法令規定，並由經營該動物用藥品之輸入業者負擔。\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/medical_item/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"medical_item",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new medical item 2",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"測試藥品名稱2\",\r\n    \"itemType\": \"TYPE_MEDICINE\",\r\n    \"description\":\"長字串測試~~~~~~~~~~~~製造或輸入動物用藥品許可證有效期間最長為五年，期滿仍擬繼續製造或輸入者，應於期限屆滿之日前二個月至六個月內，向中央主管機關申請展延，每次展延期間，不得超過五年；屆期未辦理展延或不准展延者，原許可證失效，由中央主管機關刊登政府公報。在前項許可證有效期間內，基於維護動物、人體健康或其他重大原因，中央主管機關得重新評估該動物用藥品，並限制其使用方法、範圍；必要時，得廢止前項許可證。中央主管機關為審查輸入動物用藥品許可證之申請、展延、依前項規定重新評估或因應其他實際需要，得派員至該動物用藥品之國外製造廠查核之；所需費用應依相關法令規定，並由經營該動物用藥品之輸入業者負擔。\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/medical_item/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"medical_item",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN get all medical item",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/medical_item/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"medical_item",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new medical record",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"createDate\":\"2020-07-08\",\r\n    \"hospitalId\":1,\r\n    \"userId\":2,\r\n    \"petId\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/medical_record/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"medical_record",
+										"new"
+									],
+									"query": [
+										{
+											"key": "petId",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN get all medical record",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/medical_record/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"medical_record",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new medical treatment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"medicalRecordId\":1,\r\n    \"description\":\"長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試\",\r\n    \"weight\":10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/medical_treatment/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"medical_treatment",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN get all medical treatment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/medical_treatment/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"medical_treatment",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new recipe 2",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"medicalItemId\":2,\r\n    \"medicalTreatmentId\": 1,\r\n    \"quantity\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/recipe/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"recipe",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN create new recipe 1",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"medicalItemId\":1,\r\n    \"medicalTreatmentId\": 1,\r\n    \"quantity\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/recipe/new",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"recipe",
+										"new"
+									]
+								}
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"username\":\"admin\",\n\t\"password\":\"admin\",\n\t\"uniSerialId\":123456789\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/login/admin",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"login",
-								"admin"
-							]
-						}
-					},
-					"response": []
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "ADMIN get info by token",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/admin/info",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"info"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new staff",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"小明\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_STAFF\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-06\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/staff/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"staff",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN edit staff",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"socialLicenseId\":\"Z123456789\",\r\n    \"username\":\"add_staff_test1\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"09121345\",\r\n    \"firstName\":\"小明\",\r\n    \"lastName\":\"王\",\r\n    \"role\":\"ROLE_STAFF\",\r\n    \"school\":\"school_name\",\r\n    \"birthday\":\"2020-10-10\",\r\n    \"joinTime\":\"2020-07-06\",\r\n    \"addressCity\":\"台北市\",\r\n    \"addressArea\":\"板橋區\",\r\n    \"addressLine\":\"文化路120段\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/staff/edit",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"staff",
-								"edit"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new doctor",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"doctorLicense\":\"license1\",\r\n    \"experience\":\"台大醫院專科醫生\",\r\n    \"skill\":\"動物外科\",\r\n    \"userId\":2,\r\n    \"hospitalId\":1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/doctor/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"doctor",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new pet",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userId\":2,\r\n    \"name\":\"小白\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/pet/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"pet",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new pet",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userId\":2,\r\n    \"name\":\"小白2\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":111,\r\n    \"ownDate\":\"2020-07-13\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"tgrdgdytrty\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/pet/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"pet",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN edit pet",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": 2,\r\n    \"userId\":1,\r\n    \"name\":\"編輯寵物\",\r\n    \"species\":\"狗\",\r\n    \"breed\":\"柯基\",\r\n    \"age\":5,\r\n    \"weight\":100,\r\n    \"ownDate\":\"2020-07-06\",\r\n    \"allergicWith\":\"花生\",\r\n    \"neutered\":true,\r\n    \"gender\":0,\r\n    \"chip\":\"12312454afvakdlfjd\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/pet/edit",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"pet",
-								"edit"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN edit pet",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": 2\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/pet/delete",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"pet",
-								"delete"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN get pet all",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{url}}/admin/pet/all",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"pet",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN get pets by hospital id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{url}}/admin/pet/by/hospitalId?hospitalId=1",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"pet",
-								"by",
-								"hospitalId"
-							],
-							"query": [
-								{
-									"key": "hospitalId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "[DEBUG] setup schedule DB schema",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"equals": true,
-								"key": "Content-Type",
-								"type": "text",
-								"value": "{{json}}",
-								"disabled": true
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/maintenance/schedule/setup",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"maintenance",
-								"schedule",
-								"setup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new roaster",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"doctorId\":1,\r\n    \"day\":\"Monday\",\r\n    \"time\":\"day\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/roaster",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"roaster"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "USER regist",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\t\"username\":\"test\",\r\n\t\"password\":\"1234\",\r\n\t\"join_time\":\"2020-07-07\",\r\n\t\"role\":\"ROLE_USER\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/regist/user",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"regist",
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new reservation",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"hospitalId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-22\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/reservation",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"reservation"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN edit reservation",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\":1,\r\n    \"userId\":1,\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-13\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/reservation/edit",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"reservation",
-								"edit"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "USER login (get token)",
-					"event": [
+					"name": "get test ",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"id": "1a047483-ef3d-4dcf-bad4-ddb16f7d7880",
-								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
-								],
-								"type": "text/javascript"
-							}
+							"name": "user get info",
+							"item": [
+								{
+									"name": "user login (get token)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "ab92a1ea-2b0d-4b37-a980-0f93fe5c5f2c",
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"username\":\"test@test.com\",\n\t\"password\":\"1234\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/login",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get info by token",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/user/account/info",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"user",
+												"account",
+												"info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get medical record by token and petId",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/medical_record/all?petId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"medical_record",
+												"all"
+											],
+											"query": [
+												{
+													"key": "petId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get doctor name and roaster",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"equals": true,
+												"key": "Content-Type",
+												"type": "text",
+												"value": "{{json}}",
+												"disabled": true
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/hospital/doctors?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"hospital",
+												"doctors"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all reservations by token and hospital_id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/hospital/reservation?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"hospital",
+												"reservation"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all hostpital list",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/hospital/list",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"hospital",
+												"list"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get roasters by hospital id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/hospital/roasters?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"hospital",
+												"roasters"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get pet by token",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"equals": true,
+												"key": "Content-Type",
+												"type": "text",
+												"value": "{{json}}"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/pet",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"pet"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get pet photos",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"equals": true,
+												"key": "Content-Type",
+												"type": "text",
+												"value": "{{json}}"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/pet/getfiles?petId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"pet",
+												"getfiles"
+											],
+											"query": [
+												{
+													"key": "petId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get pet photos by pet id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"equals": true,
+												"key": "Content-Type",
+												"type": "text",
+												"value": "{{json}}"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/pet/photo?petId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"pet",
+												"photo"
+											],
+											"query": [
+												{
+													"key": "petId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "admin get info",
+							"item": [
+								{
+									"name": "admin login (get token and hospital id)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "f3153b80-dbd7-4fcb-8d75-f8aae72cec29",
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"pm.environment.set(\"token\", \"Bearer \" + jsonData.message.token);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"username\":\"admin@test.com\",\n\t\"password\":\"admin\",\n\t\"uniSerialId\":123456789\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/login/admin",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"login",
+												"admin"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "admin get info by token",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/info",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get pet all",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/pet/all",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"pet",
+												"all"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get pets by hospital id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/pet/by/hospitalId?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"pet",
+												"by",
+												"hospitalId"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get pets by user id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/pet/by/userId?userId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"pet",
+												"by",
+												"userId"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all crews",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"equals": true,
+												"key": "Content-Type",
+												"type": "text",
+												"value": "{{json}}",
+												"disabled": true
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{url}}/admin/hospital/crews?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"hospital",
+												"crews"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all medical item",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/medical_item/all",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"medical_item",
+												"all"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get medical item by page and size",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/medical_item?page=1&size=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"medical_item"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "size",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all medical treatment",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/medical_treatment/all",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"medical_treatment",
+												"all"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all medical record",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/medical_record/all",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"medical_record",
+												"all"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all medical record by user id and pet id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/medical_record?userId=3&petId=4",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"medical_record"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "3"
+												},
+												{
+													"key": "petId",
+													"value": "4"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all recipe",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/recipe/all",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"recipe",
+												"all"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get crews",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"equals": true,
+												"key": "Content-Type",
+												"type": "text",
+												"value": "{{json}}",
+												"disabled": true
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{token}}",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/hospital/crews?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"hospital",
+												"crews"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all reservations by hospital id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/reservation?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"reservation"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all reservations and other info by hospital id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/reservation/all?hospitalId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"reservation",
+												"all"
+											],
+											"query": [
+												{
+													"key": "hospitalId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all roaster by doctor id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"type": "text",
+												"value": "",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{url}}/admin/roaster?doctorId=1",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"admin",
+												"roaster"
+											],
+											"query": [
+												{
+													"key": "doctorId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"username\":\"test\",\n\t\"password\":\"1234\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/login",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "USER get info by token",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/user/account/info",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user",
-								"account",
-								"info"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "USER booking a reservation",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"equals": true,
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"petId\":1,\r\n    \"roasterId\":1,\r\n    \"date\":\"2020-07-08\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/hospital/reservation/booking",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"hospital",
-								"reservation",
-								"booking"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new medical item 1",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"測試藥品名稱1\",\r\n    \"itemType\": \"TYPE_MEDICINE\",\r\n    \"description\":\"長字串測試~~~~~~~~~~~~製造或輸入動物用藥品許可證有效期間最長為五年，期滿仍擬繼續製造或輸入者，應於期限屆滿之日前二個月至六個月內，向中央主管機關申請展延，每次展延期間，不得超過五年；屆期未辦理展延或不准展延者，原許可證失效，由中央主管機關刊登政府公報。在前項許可證有效期間內，基於維護動物、人體健康或其他重大原因，中央主管機關得重新評估該動物用藥品，並限制其使用方法、範圍；必要時，得廢止前項許可證。中央主管機關為審查輸入動物用藥品許可證之申請、展延、依前項規定重新評估或因應其他實際需要，得派員至該動物用藥品之國外製造廠查核之；所需費用應依相關法令規定，並由經營該動物用藥品之輸入業者負擔。\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/medical_item/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"medical_item",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new medical item 2",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"測試藥品名稱2\",\r\n    \"itemType\": \"TYPE_MEDICINE\",\r\n    \"description\":\"長字串測試~~~~~~~~~~~~製造或輸入動物用藥品許可證有效期間最長為五年，期滿仍擬繼續製造或輸入者，應於期限屆滿之日前二個月至六個月內，向中央主管機關申請展延，每次展延期間，不得超過五年；屆期未辦理展延或不准展延者，原許可證失效，由中央主管機關刊登政府公報。在前項許可證有效期間內，基於維護動物、人體健康或其他重大原因，中央主管機關得重新評估該動物用藥品，並限制其使用方法、範圍；必要時，得廢止前項許可證。中央主管機關為審查輸入動物用藥品許可證之申請、展延、依前項規定重新評估或因應其他實際需要，得派員至該動物用藥品之國外製造廠查核之；所需費用應依相關法令規定，並由經營該動物用藥品之輸入業者負擔。\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/medical_item/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"medical_item",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN get all medical item",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{url}}/admin/medical_item/all",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"medical_item",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new medical record",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"createDate\":\"2020-07-08\",\r\n    \"hospitalId\":1,\r\n    \"userId\":2,\r\n    \"petId\":1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/medical_record/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"medical_record",
-								"new"
-							],
-							"query": [
-								{
-									"key": "petId",
-									"value": "1",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN get all medical record",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{url}}/admin/medical_record/all",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"medical_record",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new medical treatment",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"medicalRecordId\":1,\r\n    \"description\":\"長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試\",\r\n    \"weight\":10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/medical_treatment/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"medical_treatment",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN get all medical treatment",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{url}}/admin/medical_treatment/all",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"medical_treatment",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new recipe 1",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"medicalItemId\":1,\r\n    \"medicalTreatmentId\": 1,\r\n    \"quantity\": 10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/recipe/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"recipe",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ADMIN create new recipe 2",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"medicalItemId\":2,\r\n    \"medicalTreatmentId\": 1,\r\n    \"quantity\": 5\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/admin/recipe/new",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"admin",
-								"recipe",
-								"new"
-							]
-						}
-					},
-					"response": []
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
