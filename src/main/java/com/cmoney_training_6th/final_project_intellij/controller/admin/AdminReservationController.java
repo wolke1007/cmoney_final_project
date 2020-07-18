@@ -51,9 +51,27 @@ public class AdminReservationController {
             HttpServletResponse response,
             @RequestBody DtoReservation request) {
         try {
-            int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
-            int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
-            Optional<User> user = userRepository.findById(request.getUserId());
+            Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).orElse(null);
+            if(schedule == null){
+                return new CommonResponse("schedule not found.", 404).toString();
+            }
+            int scheduleId = schedule.getId();
+            Roaster roaster = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).orElse(null);
+            if(roaster == null){
+                return new CommonResponse("roaster not found.", 404).toString();
+            }
+            int roasterId = roaster.getId();
+            User user = userRepository.findById(request.getUserId()).orElse(null);
+            if(user == null){
+                return new CommonResponse("user not found.", 404).toString();
+            }
+            Pet pet = petRepository.findById(request.getPetId()).orElse(null);
+            if(pet == null){
+                return new CommonResponse("pet not found.", 404).toString();
+            }
+            if(user.getId() != pet.getUserId()){
+                return new CommonResponse("pet's owner is not userId:" + user.getId(), 404).toString();
+            }
             Reservation reservation = reservationRepository.findByUserIdAndPetIdAndRoasterIdAndDate(
                     request.getUserId(),
                     request.getPetId(),
@@ -64,11 +82,9 @@ public class AdminReservationController {
                 return new CommonResponse("booked before, booking number is:" + reservation.getNumber(), 404).toString();
             }
             Reservation newRes = new Reservation();
-            newRes.setUserId(user.get().getId());
+            newRes.setUserId(user.getId());
             // 這邊考慮改成用 username 來做，前端會比較好傳值進來
-            System.out.println("DEBUG user_id: " + user.get().getId());
             int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(roasterId, request.getDate()).size();
-            System.out.println("DEBUG reservePatientCnt: " + reservePatientCnt);
             int bookingNum = reservePatientCnt + 1; // 預約這個班表且為同天的人數
             newRes.setNumber(bookingNum);
             newRes.setDate(request.getDate());
