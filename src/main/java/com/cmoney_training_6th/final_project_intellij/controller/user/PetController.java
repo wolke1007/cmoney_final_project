@@ -257,7 +257,15 @@ public class PetController {
             User user = userRepository.findByUsername(username).orElse(null);
             JsonArray arr = new JsonArray();
             // 這邊沒有做是不是飼主的判斷，目前是所有人都可以拿指定 pet 的圖片(方便前端測試)
+            if(petRepository.findById(petId).orElse(null) == null){
+                response.setStatus(404);
+                return new CommonResponse("pet not found.", 404).toString();
+            }
             List<PetPhoto> petPhotos = petPhotoRepository.findAllByPetId(petId);
+            if(petPhotos.size() == 0){
+                response.setStatus(404);
+                return new CommonResponse("pet photo not found.", 404).toString();
+            }
             for (PetPhoto petPhoto : petPhotos) {
                 JsonObject json = new JsonObject();
                 Resource r = filesStorageService.load(petPhoto.getName());
@@ -287,6 +295,10 @@ public class PetController {
             JsonArray arr = new JsonArray();
             List<PetPhoto> petPhotos = petPhotoRepository.findPetPhotosByUserId(user.getId());
             System.out.println("DEBUG petphotos count: " + petPhotos.size());
+            if(petPhotos.size() == 0){
+                response.setStatus(404);
+                return new CommonResponse("no pet photo found.", 404).toString();
+            }
             for (PetPhoto petPhoto : petPhotos) {
                 JsonObject json = new JsonObject();
                 Resource r = filesStorageService.load(petPhoto.getName());
