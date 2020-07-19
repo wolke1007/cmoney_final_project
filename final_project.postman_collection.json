@@ -2096,42 +2096,6 @@
 							"response": []
 						},
 						{
-							"name": "get pet photos",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"equals": true,
-										"key": "Content-Type",
-										"type": "text",
-										"value": "{{json}}"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{url}}/pet/getfiles?petId=1",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"pet",
-										"getfiles"
-									],
-									"query": [
-										{
-											"key": "petId",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "get pet photos by pet id",
 							"request": {
 								"method": "GET",
@@ -2149,7 +2113,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/pet/photo?petId=1",
+									"raw": "{{url}}/pet/photo?petId=3",
 									"host": [
 										"{{url}}"
 									],
@@ -2160,7 +2124,44 @@
 									"query": [
 										{
 											"key": "petId",
-											"value": "1"
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get pet photos by token",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"equals": true,
+										"key": "Content-Type",
+										"type": "text",
+										"value": "{{json}}"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/pet/photos",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"pet",
+										"photos"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
 										}
 									]
 								}
@@ -2217,7 +2218,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-17-15:44",
+					"name": "2020-07-19-17:26",
 					"item": [],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
@@ -2407,6 +2408,43 @@
 								"admin",
 								"hospital",
 								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[DEBUG] get all files which exist",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"equals": true,
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{json}}"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/pet/getfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pet",
+								"getfiles"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -4113,41 +4151,6 @@
 												"admin",
 												"medical_record",
 												"all"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "get all medical record by user id and pet id",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "",
-												"type": "text",
-												"value": "",
-												"disabled": true
-											}
-										],
-										"url": {
-											"raw": "{{url}}/admin/medical_record?userId=3&petId=3",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"admin",
-												"medical_record"
-											],
-											"query": [
-												{
-													"key": "userId",
-													"value": "3"
-												},
-												{
-													"key": "petId",
-													"value": "3"
-												}
 											]
 										}
 									},

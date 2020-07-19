@@ -60,7 +60,8 @@ public class PetController {
     }
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String findUserById(@RequestHeader("Authorization") String jwt) {
+    public String findUserById(HttpServletResponse response,
+                               @RequestHeader("Authorization") String jwt) {
         try{
             String token = jwt.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
@@ -75,6 +76,9 @@ public class PetController {
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         } catch (StringIndexOutOfBoundsException e){
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -105,6 +109,9 @@ public class PetController {
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         } catch (StringIndexOutOfBoundsException e){
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -152,6 +159,9 @@ public class PetController {
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         } catch (StringIndexOutOfBoundsException e){
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -239,13 +249,18 @@ public class PetController {
 
     @GetMapping(path = "/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPhotoByPetId(HttpServletResponse response,
+                                  @RequestHeader("Authorization") String jwt,
                                   @RequestParam int petId) throws IOException {
         try {
+            String a = jwt.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(a);
+            User user = userRepository.findByUsername(username).orElse(null);
             JsonArray arr = new JsonArray();
+            // 這邊沒有做是不是飼主的判斷，目前是所有人都可以拿指定 pet 的圖片(方便前端測試)
             List<PetPhoto> petPhotos = petPhotoRepository.findAllByPetId(petId);
-            for (PetPhoto petphoto : petPhotos) {
+            for (PetPhoto petPhoto : petPhotos) {
                 JsonObject json = new JsonObject();
-                Resource r = filesStorageService.load(petphoto.getName());
+                Resource r = filesStorageService.load(petPhoto.getName());
                 json.addProperty("petId", petId);
                 json.addProperty("URL", MvcUriComponentsBuilder
                         .fromMethodName(PetController.class, "getFile",
@@ -256,6 +271,38 @@ public class PetController {
         } catch (IOException e) {
             response.setStatus(404);
             return new CommonResponse("no such file", 404).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        }
+    }
+
+    @GetMapping(path = "/photos", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getPhotosByToken(HttpServletResponse response,
+                            @RequestHeader("Authorization") String jwt) throws IOException {
+        try {
+            String a = jwt.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(a);
+            User user = userRepository.findByUsername(username).orElse(null);
+            JsonArray arr = new JsonArray();
+            List<PetPhoto> petPhotos = petPhotoRepository.findPetPhotosByUserId(user.getId());
+            System.out.println("DEBUG petphotos count: " + petPhotos.size());
+            for (PetPhoto petPhoto : petPhotos) {
+                JsonObject json = new JsonObject();
+                Resource r = filesStorageService.load(petPhoto.getName());
+                json.addProperty("petId", petPhoto.getPetId());
+                json.addProperty("URL", MvcUriComponentsBuilder
+                        .fromMethodName(PetController.class, "getFile",
+                                r.getFile().toPath().getFileName().toString()).build().toString());
+                arr.add(json);
+            }
+            return new CommonResponse(arr, 200).toString();
+        } catch (IOException e) {
+            response.setStatus(404);
+            return new CommonResponse("no such file", 404).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
     }
 
@@ -267,6 +314,7 @@ public class PetController {
             String url = MvcUriComponentsBuilder
                     .fromMethodName(PetController.class, "getFile", path.getFileName().toString()).build().toString();
             int petId = petPhotos.iterator().next().getPetId();
+            System.out.println("pet petId:"+petId);
             return new PetPhoto(filename, url, petId);
         }).collect(Collectors.toList());
         JsonIter ji = new JsonIter();
