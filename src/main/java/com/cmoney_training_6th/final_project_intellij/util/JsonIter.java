@@ -99,7 +99,7 @@ public class JsonIter <T>{
         JsonArray arr = new JsonArray();
         if(list == null){
             System.out.println("list is null");
-            return null;
+            return arr;
         }
         JsonObject json;
         for(JsonElement je : list){

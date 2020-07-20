@@ -52,24 +52,24 @@ public class AdminReservationController {
             @RequestBody DtoReservation request) {
         try {
             Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).orElse(null);
-            if(schedule == null){
+            if (schedule == null) {
                 return new CommonResponse("schedule not found.", 404).toString();
             }
             int scheduleId = schedule.getId();
             Roaster roaster = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).orElse(null);
-            if(roaster == null){
+            if (roaster == null) {
                 return new CommonResponse("roaster not found.", 404).toString();
             }
             int roasterId = roaster.getId();
             User user = userRepository.findById(request.getUserId()).orElse(null);
-            if(user == null){
+            if (user == null) {
                 return new CommonResponse("user not found.", 404).toString();
             }
             Pet pet = petRepository.findById(request.getPetId()).orElse(null);
-            if(pet == null){
+            if (pet == null) {
                 return new CommonResponse("pet not found.", 404).toString();
             }
-            if(user.getId() != pet.getUserId()){
+            if (user.getId() != pet.getUserId()) {
                 return new CommonResponse("pet's owner is not userId:" + user.getId(), 404).toString();
             }
             Reservation reservation = reservationRepository.findByUserIdAndPetIdAndRoasterIdAndDate(
@@ -78,7 +78,7 @@ public class AdminReservationController {
                     roasterId,
                     request.getDate()
             ).orElse(null);
-            if (reservation != null){ // 同飼主 同寵物 同醫院 同天 同時段 的預約已經存在，不準預約
+            if (reservation != null) { // 同飼主 同寵物 同醫院 同天 同時段 的預約已經存在，不準預約
                 return new CommonResponse("booked before, booking number is:" + reservation.getNumber(), 404).toString();
             }
             Reservation newRes = new Reservation();
@@ -157,7 +157,7 @@ public class AdminReservationController {
     ) {
         try {
             Reservation res = reservationRepository.findById(request.getId()).orElse(null); // 確認 id 是否可以找到東西
-            if( res == null ){
+            if (res == null) {
                 response.setStatus(404);
                 return new CommonResponse("reservation " + request.getId() + " not found", 404).toString();
             }
@@ -174,46 +174,57 @@ public class AdminReservationController {
 
     // 有效能問題需要改善
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String adminGetAllReservationsByHostpitalId(@RequestParam(value = "hospitalId")
+    public String adminGetAllReservationsByHostpitalId(HttpServletResponse response,
+                                                       @RequestParam(value = "hospitalId")
                                                                int hospitalId) {
-        List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
-        JsonIter ji = new JsonIter();
-        JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
-        Gson g = new Gson();
-        for(Reservation res : reservations){
-            int roaId = res.getRoasterId();
-            Roaster roaster = roasterRepository.findById(roaId).get();
-            int doctorId = roaster.getDoctorId();
-            Doctor doctor = doctorRepository.findById(doctorId).get();
-            String doctorName = userRepository.findById(doctor.getUserId()).get().getName();
-            User user = userRepository.findById(res.getUserId()).get();
-            String userPhone = user.getPhone();
-            String userName = user.getName();
-            Pet pet = petRepository.findById(res.getPetId()).get();
-            int scheduleId = roaster.getScheduleId();
-            Schedule schedule = scheduleRepository.findById(scheduleId).get();
-            String time = schedule.getDay() + " " + schedule.getTime();
-            System.out.println("userid:"+user.getId()+" petid:"+ pet.getId());
-            MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
-            for(JsonElement je : arr){
-                je.getAsJsonObject().addProperty("doctorName", doctorName);
-                je.getAsJsonObject().addProperty("userName", userName);
-                je.getAsJsonObject().addProperty("userPhone", userPhone);
-                je.getAsJsonObject().addProperty("petName", pet.getName());
-                je.getAsJsonObject().addProperty("petAge", pet.getAge());
-                je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
-                je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
-                je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
-                je.getAsJsonObject().addProperty("day", schedule.getDay());
-                je.getAsJsonObject().addProperty("time", schedule.getTime());
-                JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
-                JsonIter jii = new JsonIter();
-                JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
-                je.getAsJsonObject().add("medicalTreatments", descriptions);
+        try {
+            List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+            JsonIter ji = new JsonIter();
+            JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+            Gson g = new Gson();
+            for (Reservation res : reservations) {
+                int roaId = res.getRoasterId();
+                Roaster roaster = roasterRepository.findById(roaId).get();
+                int doctorId = roaster.getDoctorId();
+                Doctor doctor = doctorRepository.findById(doctorId).get();
+                String doctorName = userRepository.findById(doctor.getUserId()).get().getName();
+                User user = userRepository.findById(res.getUserId()).get();
+                String userPhone = user.getPhone();
+                String userName = user.getName();
+                Pet pet = petRepository.findById(res.getPetId()).get();
+                int scheduleId = roaster.getScheduleId();
+                Schedule schedule = scheduleRepository.findById(scheduleId).get();
+                String time = schedule.getDay() + " " + schedule.getTime();
+                System.out.println("userid:" + user.getId() + " petid:" + pet.getId());
+                MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
+                for (JsonElement je : arr) {
+                    je.getAsJsonObject().addProperty("doctorName", doctorName);
+                    je.getAsJsonObject().addProperty("userName", userName);
+                    je.getAsJsonObject().addProperty("userPhone", userPhone);
+                    je.getAsJsonObject().addProperty("petName", pet.getName());
+                    je.getAsJsonObject().addProperty("petAge", pet.getAge());
+                    je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
+                    je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
+                    je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
+                    je.getAsJsonObject().addProperty("day", schedule.getDay());
+                    je.getAsJsonObject().addProperty("time", schedule.getTime());
+                    JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                    JsonIter jii = new JsonIter();
+                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
+                    if(descriptions.size() == 0){
+                        JsonObject jsonDes = new JsonObject();
+                        jsonDes.addProperty("description", "沒有診療紀錄");
+                        descriptions.add(jsonDes);
+                    }
+                    je.getAsJsonObject().add("medicalTreatments", descriptions);
+                }
+                System.out.println("DEBUG8");
             }
-            System.out.println("DEBUG8");
+            System.out.println("DEBUG9");
+            return new CommonResponse(arr, 200).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         }
-        System.out.println("DEBUG9");
-        return new CommonResponse(arr, 200).toString();
     }
 }
