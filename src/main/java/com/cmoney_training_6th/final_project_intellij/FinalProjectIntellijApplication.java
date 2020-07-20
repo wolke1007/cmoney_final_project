@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.Resource;
+import java.util.TimeZone;
 
 
 @SpringBootApplication
@@ -18,11 +19,16 @@ public class FinalProjectIntellijApplication implements CommandLineRunner {
 
 
     public static void main(String[] args) {
+        init();
         SpringApplication.run(FinalProjectIntellijApplication.class, args);
     }
 
     @Override
     public void run(String... arg) throws Exception {
         storageService.init();
+    }
+
+    public static void init(){
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8:00")); // 讓 log 的時間可以符合 +8 時區
     }
 }
