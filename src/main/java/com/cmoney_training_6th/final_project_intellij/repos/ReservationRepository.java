@@ -33,4 +33,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             int userId, int petId, int roasterId, String date);
 
     List<Reservation> findReservationByUserId(int userId);
+
+    @Query( value = "SELECT * FROM newdatabase.reservation WHERE roaster_id = any(" +
+            "SELECT id FROM newdatabase.roaster WHERE doctor_id = ?1)",
+            nativeQuery = true)
+    List<Reservation> findReservationByDoctorId(int doctorId);
 }

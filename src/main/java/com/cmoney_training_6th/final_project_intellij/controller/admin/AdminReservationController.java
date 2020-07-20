@@ -100,45 +100,6 @@ public class AdminReservationController {
         }
     }
 
-//    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public String adminGetReservation(
-//            HttpServletResponse response,
-//            @RequestParam String username) {
-//        try {
-//
-//            int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
-//            int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
-//            Optional<User> user = userRepository.findById(request.getUserId());
-//            Reservation reservation = reservationRepository.findByUserIdAndPetIdAndRoasterIdAndDate(
-//                    request.getUserId(),
-//                    request.getPetId(),
-//                    roasterId,
-//                    request.getDate()
-//            ).orElse(null);
-//            if (reservation != null){ // 同飼主 同寵物 同醫院 同天 同時段 的預約已經存在，不準預約
-//                return new CommonResponse("booked before, booking number is:" + reservation.getNumber(), 404).toString();
-//            }
-//            Reservation newRes = new Reservation();
-//            newRes.setUserId(user.get().getId());
-//            // 這邊考慮改成用 username 來做，前端會比較好傳值進來
-//            System.out.println("DEBUG user_id: " + user.get().getId());
-//            int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(roasterId, request.getDate()).size();
-//            System.out.println("DEBUG reservePatientCnt: " + reservePatientCnt);
-//            int bookingNum = reservePatientCnt + 1; // 預約這個班表且為同天的人數
-//            newRes.setNumber(bookingNum);
-//            newRes.setDate(request.getDate());
-//            newRes.setRoasterId(roasterId);
-//            newRes.setPetId(request.getPetId());
-//            reservationRepository.save(newRes);
-//            return new CommonResponse("reservation_id: " + bookingNum, 200).toString();
-//        } catch (ExpiredJwtException e) {
-//            response.setStatus(403);
-//            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
-//        } catch (NoSuchElementException e) {
-//            return new CommonResponse("booking fail because wrong value is given.", 404).toString();
-//        }
-//    }
-
     @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditReservation(@RequestBody Reservation request) {
         Reservation reservation = reservationRepository.findById(request.getId()).get();
@@ -186,6 +147,60 @@ public class AdminReservationController {
                 int roaId = res.getRoasterId();
                 Roaster roaster = roasterRepository.findById(roaId).get();
                 int doctorId = roaster.getDoctorId();
+                Doctor doctor = doctorRepository.findById(doctorId).get();
+                String doctorName = userRepository.findById(doctor.getUserId()).get().getName();
+                User user = userRepository.findById(res.getUserId()).get();
+                String userPhone = user.getPhone();
+                String userName = user.getName();
+                Pet pet = petRepository.findById(res.getPetId()).get();
+                int scheduleId = roaster.getScheduleId();
+                Schedule schedule = scheduleRepository.findById(scheduleId).get();
+                String time = schedule.getDay() + " " + schedule.getTime();
+                System.out.println("userid:" + user.getId() + " petid:" + pet.getId());
+                MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
+                for (JsonElement je : arr) {
+                    je.getAsJsonObject().addProperty("doctorName", doctorName);
+                    je.getAsJsonObject().addProperty("userName", userName);
+                    je.getAsJsonObject().addProperty("userPhone", userPhone);
+                    je.getAsJsonObject().addProperty("petName", pet.getName());
+                    je.getAsJsonObject().addProperty("petAge", pet.getAge());
+                    je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
+                    je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
+                    je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
+                    je.getAsJsonObject().addProperty("day", schedule.getDay());
+                    je.getAsJsonObject().addProperty("time", schedule.getTime());
+                    JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                    JsonIter jii = new JsonIter();
+                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
+                    if(descriptions.size() == 0){
+                        JsonObject jsonDes = new JsonObject();
+                        jsonDes.addProperty("description", "沒有診療紀錄");
+                        descriptions.add(jsonDes);
+                    }
+                    je.getAsJsonObject().add("medicalTreatments", descriptions);
+                }
+                System.out.println("DEBUG8");
+            }
+            System.out.println("DEBUG9");
+            return new CommonResponse(arr, 200).toString();
+        } catch (ExpiredJwtException e) {
+            response.setStatus(403);
+            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+        }
+    }
+
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String adminGetReservationByDoctorId(
+            HttpServletResponse response,
+            @RequestParam int doctorId) {
+        try {
+            List<Reservation> reservations = reservationRepository.findReservationByDoctorId(doctorId);
+            JsonIter ji = new JsonIter();
+            JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+            Gson g = new Gson();
+            for (Reservation res : reservations) {
+                int roaId = res.getRoasterId();
+                Roaster roaster = roasterRepository.findById(roaId).get();
                 Doctor doctor = doctorRepository.findById(doctorId).get();
                 String doctorName = userRepository.findById(doctor.getUserId()).get().getName();
                 User user = userRepository.findById(res.getUserId()).get();
