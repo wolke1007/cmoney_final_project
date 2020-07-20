@@ -114,9 +114,9 @@ public class AuthencateController {
     @PostMapping(path = "/regist/user", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String addNewUser(
             HttpServletResponse response,
-            @RequestBody User jsonUser
+            @RequestBody User request
     ) throws Exception {
-        ValidateParameter checkRole = new ValidateParameter("role", jsonUser.getRole());
+        ValidateParameter checkRole = new ValidateParameter("role", request.getRole());
         if(!checkRole.stringShouldBe("ROLE_USER")
                 .getResult()){
             response.setStatus(404);
@@ -124,10 +124,11 @@ public class AuthencateController {
         }
         try {
             User n = new User();
-            n.setUsername(jsonUser.getUsername());
-            n.setPassword(jsonUser.getPassword());
-            n.setJoinTime(jsonUser.getJoinTime());
-            n.setRole(jsonUser.getRole());
+            n.setUsername(request.getUsername());
+            n.setPassword(request.getPassword());
+            n.setSocialLicenseId(request.getSocialLicenseId());
+            n.setJoinTime(request.getJoinTime());
+            n.setRole(request.getRole());
             userRepository.save(n);
             return new CommonResponse("Saved", 200).toString();
         } catch (DataIntegrityViolationException e) {

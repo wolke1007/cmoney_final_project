@@ -58,7 +58,7 @@ public class UserController {
             Optional<User> user = userRepository.findByUsername(username);
             Gson g = new Gson();
             JsonObject json = g.toJsonTree(user).getAsJsonObject().get("value").getAsJsonObject();
-            json.remove("password"); // 不能讓前端看到密碼
+//            json.remove("password"); // 不能讓前端看到密碼 // 方便前端使用，把密碼加回去...
             return new CommonResponse(json, 200).toString();
         }catch (ExpiredJwtException e){
             response.setStatus(403);

@@ -150,9 +150,12 @@ public class HospitalController {
             int roaId = roaster.getId();
             int scheduleId = roaster.getScheduleId();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
-            String time = schedule.getDay() + " " + schedule.getTime();
+            Doctor doctor = doctorRepository.findById(roaster.getDoctorId()).orElse(null);
+            User user = userRepository.findById(doctor.getUserId()).orElse(null);
             for (JsonElement je : arr) {
-                je.getAsJsonObject().addProperty("time", time);
+                je.getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
+                je.getAsJsonObject().addProperty("day", schedule.getDay());
+                je.getAsJsonObject().addProperty("time", schedule.getTime());
             }
         }
         return new CommonResponse(arr, 200).toString();
