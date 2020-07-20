@@ -76,6 +76,7 @@ public class AdminRoasterController {
         List<Roaster> roasters = roasterRepository.findByDoctorId(doctorId);
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKey(roasters, "reservations");
+        int index = 0;
         for (JsonElement json : arr) {
             int scheduleId = json.getAsJsonObject().get("scheduleId").getAsInt();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
@@ -98,6 +99,7 @@ public class AdminRoasterController {
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKeys(roasters,
                 Arrays.asList("scheduleId", "reservations"));
+        int index = 0;
         for (Roaster roaster : roasters) {
             int roaId = roaster.getId();
             int scheduleId = roaster.getScheduleId();
@@ -107,12 +109,13 @@ public class AdminRoasterController {
 //            json.getAsJsonObject().remove("scheduleId");
             Doctor doctor = doctorRepository.findById(roaster.getDoctorId()).orElse(null);
             User user = userRepository.findById(doctor.getUserId()).orElse(null);
-            for (JsonElement je : arr) {
+//            for (JsonElement je : arr) {
 //                je.getAsJsonObject().addProperty("time", time);
-                je.getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
-                je.getAsJsonObject().addProperty("day", schedule.getDay());
-                je.getAsJsonObject().addProperty("time", schedule.getTime());
-            }
+            arr.get(index).getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
+            arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
+            arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
+            index++;
+//            }
         }
         return new CommonResponse(arr, 200).toString();
     }
