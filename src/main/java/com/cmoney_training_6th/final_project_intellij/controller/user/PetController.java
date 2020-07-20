@@ -249,12 +249,12 @@ public class PetController {
 
     @GetMapping(path = "/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPhotoByPetId(HttpServletResponse response,
-                                  @RequestHeader("Authorization") String jwt,
+//                                  @RequestHeader("Authorization") String jwt,
                                   @RequestParam int petId) throws IOException {
         try {
-            String a = jwt.substring(7);
-            String username = jwtTokenUtil.getUserNameFromJwtToken(a);
-            User user = userRepository.findByUsername(username).orElse(null);
+//            String a = jwt.substring(7);
+//            String username = jwtTokenUtil.getUserNameFromJwtToken(a);
+//            User user = userRepository.findByUsername(username).orElse(null);
             JsonArray arr = new JsonArray();
             // 這邊沒有做是不是飼主的判斷，目前是所有人都可以拿指定 pet 的圖片(方便前端測試)
             if(petRepository.findById(petId).orElse(null) == null){
