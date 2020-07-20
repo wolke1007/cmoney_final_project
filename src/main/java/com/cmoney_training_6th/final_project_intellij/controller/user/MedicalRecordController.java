@@ -9,13 +9,7 @@ import com.cmoney_training_6th.final_project_intellij.repos.MedicalRecordReposit
 import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
-import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
