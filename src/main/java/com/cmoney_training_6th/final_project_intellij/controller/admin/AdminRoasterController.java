@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -67,7 +68,7 @@ public class AdminRoasterController {
         }
     }
 
-    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    @GetMapping(path = "/by/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminGetRoaster(@RequestParam(value = "doctorId")
                                           int doctorId) {
         List<Roaster> roasters = roasterRepository.findByDoctorId(doctorId);
@@ -76,9 +77,34 @@ public class AdminRoasterController {
         for (JsonElement json : arr) {
             int scheduleId = json.getAsJsonObject().get("scheduleId").getAsInt();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
-            String time = schedule.getDay() + " " + schedule.getTime();
-            json.getAsJsonObject().addProperty("time", time);
-            json.getAsJsonObject().remove("scheduleId");
+//            String time = schedule.getDay() + " " + schedule.getTime();
+//            json.getAsJsonObject().addProperty("time", time);
+//            json.getAsJsonObject().remove("scheduleId");
+            json.getAsJsonObject().addProperty("day", schedule.getDay());
+            json.getAsJsonObject().addProperty("time", schedule.getTime());
+        }
+        return new CommonResponse(arr, 200).toString();
+    }
+
+    @GetMapping(path = "/by/hospital", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String adminGetRoastersByHostpitalId(@RequestParam(value = "hospitalId")
+                                                       int hospitalId) {
+        List<Roaster> roasters = roasterRepository.findByHospitalId(hospitalId);
+        JsonIter ji = new JsonIter();
+        JsonArray arr = ji.listIntoArrayWithoutKeys(roasters,
+                Arrays.asList("scheduleId", "reservations"));
+        for (Roaster roaster : roasters) {
+            int roaId = roaster.getId();
+            int scheduleId = roaster.getScheduleId();
+            Schedule schedule = scheduleRepository.findById(scheduleId).get();
+//            String time = schedule.getDay() + " " + schedule.getTime();
+//            json.getAsJsonObject().addProperty("time", time);
+//            json.getAsJsonObject().remove("scheduleId");
+            for (JsonElement je : arr) {
+//                je.getAsJsonObject().addProperty("time", time);
+                je.getAsJsonObject().addProperty("day", schedule.getDay());
+                je.getAsJsonObject().addProperty("time", schedule.getTime());
+            }
         }
         return new CommonResponse(arr, 200).toString();
     }

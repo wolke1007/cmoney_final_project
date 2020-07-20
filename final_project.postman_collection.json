@@ -1339,6 +1339,37 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "get reservations by doctor id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/reservation?doctorId=3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"reservation"
+									],
+									"query": [
+										{
+											"key": "doctorId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -1428,13 +1459,15 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/admin/roaster?doctorId=1",
+									"raw": "{{url}}/admin/roaster/by/doctor?doctorId=1",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"admin",
-										"roaster"
+										"roaster",
+										"by",
+										"doctor"
 									],
 									"query": [
 										{
@@ -1476,6 +1509,39 @@
 										"admin",
 										"roaster",
 										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all roaster by hospital id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/admin/roaster/by/hospital?hospitalId=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"roaster",
+										"by",
+										"hospital"
+									],
+									"query": [
+										{
+											"key": "hospitalId",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -2218,7 +2284,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-19-17:26",
+					"name": "2020-07-20-14:00",
 					"item": [],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
