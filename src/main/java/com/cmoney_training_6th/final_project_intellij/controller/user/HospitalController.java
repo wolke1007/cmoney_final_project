@@ -146,17 +146,17 @@ public class HospitalController {
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKeys(roasters,
                 Arrays.asList("scheduleId", "reservations"));
+        int index = 0;
         for (Roaster roaster : roasters) {
             int roaId = roaster.getId();
             int scheduleId = roaster.getScheduleId();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
             Doctor doctor = doctorRepository.findById(roaster.getDoctorId()).orElse(null);
             User user = userRepository.findById(doctor.getUserId()).orElse(null);
-            for (JsonElement je : arr) {
-                je.getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
-                je.getAsJsonObject().addProperty("day", schedule.getDay());
-                je.getAsJsonObject().addProperty("time", schedule.getTime());
-            }
+            arr.get(index).getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
+            arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
+            arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
+            index++;
         }
         return new CommonResponse(arr, 200).toString();
     }
