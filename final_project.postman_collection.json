@@ -638,7 +638,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"medicalRecordId\":1,\r\n    \"description\":\"長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試長字串測試\",\r\n    \"weight\":10\r\n}",
+											"raw": "{\r\n    \"medicalRecordId\":7,\r\n    \"description\":\"第二筆診療紀錄\",\r\n    \"weight\":5,\r\n    \"date\":\"2020-07-21\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -673,7 +673,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"id\":1,\r\n    \"description\":\"eddddd\",\r\n    \"weight\":11\r\n}",
+											"raw": "{\r\n    \"id\":1,\r\n    \"description\":\"eddddd\",\r\n    \"weight\":11,\r\n    \"date\":\"2020-07-21\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2284,7 +2284,7 @@
 			"name": "DEBUG",
 			"item": [
 				{
-					"name": "2020-07-20-14:00",
+					"name": "2020-07-21-11:47",
 					"item": [],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
