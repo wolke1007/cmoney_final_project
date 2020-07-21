@@ -170,6 +170,11 @@ public class AdminReservationController {
                     je.getAsJsonObject().addProperty("day", schedule.getDay());
                     je.getAsJsonObject().addProperty("time", schedule.getTime());
                     JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                    if(medicalRecord == null){
+                        je.getAsJsonObject().addProperty("medicalRecordId", "null");
+                    }else{
+                        je.getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
+                    }
 //                    JsonIter jii = new JsonIter();
 //                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
 //                    if(descriptions.size() == 0){
@@ -178,7 +183,11 @@ public class AdminReservationController {
 //                        descriptions.add(jsonDes);
 //                    }
 //                    je.getAsJsonObject().add("medicalTreatments", descriptions);
-                    je.getAsJsonObject().add("medicalTreatments", medicalTreatments);
+                    if(medicalTreatments == null){
+                        je.getAsJsonObject().addProperty("medicalTreatments", "null");
+                    }else{
+                        je.getAsJsonObject().add("medicalTreatments", medicalTreatments);
+                    }
                 }
                 System.out.println("DEBUG8");
             }
@@ -225,6 +234,11 @@ public class AdminReservationController {
                     je.getAsJsonObject().addProperty("day", schedule.getDay());
                     je.getAsJsonObject().addProperty("time", schedule.getTime());
                     JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                    if(medicalRecord == null){
+                        je.getAsJsonObject().addProperty("medicalRecordId", "null");
+                    }else{
+                        je.getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
+                    }
                     JsonIter jii = new JsonIter();
                     JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
                     if(descriptions.size() == 0){
