@@ -41,6 +41,10 @@ public class HospitalController {
     @Autowired
     private ReservationRepository reservationRepository;
     @Autowired
+    private PetRepository petRepository;
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
+    @Autowired
     private DoctorService doctorService;
 
     @Autowired
@@ -166,35 +170,100 @@ public class HospitalController {
                                                   @RequestParam(value = "hospitalId") int hospitalId,
                                                   @RequestHeader("Authorization") String header) {
         try {
-            String token = header.substring(7);
-            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
-            User user = userRepository.findByUsername(username).get();
-            int userId = user.getId();
-            List<Reservation> reservations = reservationRepository.findReservationByUserIdAndHospitalId(userId, hospitalId);
+            List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
             JsonIter ji = new JsonIter();
             JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
-            int index = 0;
-            System.out.println("DEBUG reservation size:"+reservations.size());
+            Gson g = new Gson();
             for (Reservation res : reservations) {
                 int roaId = res.getRoasterId();
                 Roaster roaster = roasterRepository.findById(roaId).get();
+                int doctorId = roaster.getDoctorId();
+                Doctor doctor = doctorRepository.findById(doctorId).get();
+                String doctorName = userRepository.findById(doctor.getUserId()).get().getName();
+                User user = userRepository.findById(res.getUserId()).get();
+                String userPhone = user.getPhone();
+                String userName = user.getName();
+                Pet pet = petRepository.findById(res.getPetId()).get();
                 int scheduleId = roaster.getScheduleId();
                 Schedule schedule = scheduleRepository.findById(scheduleId).get();
                 String time = schedule.getDay() + " " + schedule.getTime();
-                int doctorId = roaster.getDoctorId();
-                arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
-                arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
-                arr.get(index).getAsJsonObject().addProperty("doctorId", doctorId);
-                index++;
+                System.out.println("userid:" + user.getId() + " petid:" + pet.getId());
+                MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
+                for (JsonElement je : arr) {
+                    je.getAsJsonObject().addProperty("doctorName", doctorName);
+                    je.getAsJsonObject().addProperty("userName", userName);
+                    je.getAsJsonObject().addProperty("userPhone", userPhone);
+                    je.getAsJsonObject().addProperty("petName", pet.getName());
+                    je.getAsJsonObject().addProperty("petAge", pet.getAge());
+                    je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
+                    je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
+                    je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
+                    je.getAsJsonObject().addProperty("day", schedule.getDay());
+                    je.getAsJsonObject().addProperty("time", schedule.getTime());
+                    JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                    if(medicalRecord == null){
+                        je.getAsJsonObject().addProperty("medicalRecordId", "null");
+                    }else{
+                        je.getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
+                    }
+//                    JsonIter jii = new JsonIter();
+//                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
+//                    if(descriptions.size() == 0){
+//                        JsonObject jsonDes = new JsonObject();
+//                        jsonDes.addProperty("description", "沒有診療紀錄");
+//                        descriptions.add(jsonDes);
+//                    }
+//                    je.getAsJsonObject().add("medicalTreatments", descriptions);
+                    if(medicalTreatments == null){
+                        je.getAsJsonObject().addProperty("medicalTreatments", "null");
+                    }else{
+                        je.getAsJsonObject().add("medicalTreatments", medicalTreatments);
+                    }
+                }
+                System.out.println("DEBUG8");
             }
+            System.out.println("DEBUG9");
             return new CommonResponse(arr, 200).toString();
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
-        } catch (io.jsonwebtoken.MalformedJwtException e){
-            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
-        } catch (StringIndexOutOfBoundsException e){
-            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
     }
+
+//    @GetMapping(path = "/reservation", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+//    public String getAllReservationsByHostpitalId(HttpServletResponse response,
+//                                                  @RequestParam(value = "hospitalId") int hospitalId,
+//                                                  @RequestHeader("Authorization") String header) {
+//        try {
+//            String token = header.substring(7);
+//            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+//            User user = userRepository.findByUsername(username).get();
+//            int userId = user.getId();
+//            List<Reservation> reservations = reservationRepository.findReservationByUserIdAndHospitalId(userId, hospitalId);
+//            JsonIter ji = new JsonIter();
+//            JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
+//            int index = 0;
+//            System.out.println("DEBUG reservation size:"+reservations.size());
+//            for (Reservation res : reservations) {
+//                int roaId = res.getRoasterId();
+//                Roaster roaster = roasterRepository.findById(roaId).get();
+//                int scheduleId = roaster.getScheduleId();
+//                Schedule schedule = scheduleRepository.findById(scheduleId).get();
+//                String time = schedule.getDay() + " " + schedule.getTime();
+//                int doctorId = roaster.getDoctorId();
+//                arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
+//                arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
+//                arr.get(index).getAsJsonObject().addProperty("doctorId", doctorId);
+//                index++;
+//            }
+//            return new CommonResponse(arr, 200).toString();
+//        } catch (ExpiredJwtException e) {
+//            response.setStatus(403);
+//            return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
+//        } catch (io.jsonwebtoken.MalformedJwtException e){
+//            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+//        } catch (StringIndexOutOfBoundsException e){
+//            return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
+//        }
+//    }
 }
