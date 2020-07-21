@@ -13,6 +13,7 @@ public class MedicalTreatment {
     private int id;
 
     private int weight = 0;
+    private String date = "";
 
     @Column(name="medical_record_id")
     private int medicalRecordId; //FK
@@ -24,6 +25,14 @@ public class MedicalTreatment {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="medical_treatment_id", referencedColumnName = "id")
     List<Recipe> recipes = new ArrayList<>();
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public int getId() {
         return id;

@@ -70,6 +70,7 @@ public class AdminMedicalTreatmentController {
         try {
             MedicalTreatment medicalTreatment = medicalTreatmentRepository.findById(request.getId()).get();
             medicalTreatment.setDescription(request.getDescription());
+            medicalTreatment.setDate(request.getDate());
             medicalTreatmentRepository.save(medicalTreatment);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
