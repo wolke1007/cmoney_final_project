@@ -216,14 +216,12 @@ public class AdminUserController {
             user.setBirthday(request.getBirthday());
             userRepository.save(user);
             Doctor doctor = doctorRepository.findByUserIdAndHospitalId(user.getId(), request.getHospitalId()).orElse(null);
-            if(doctor == null){
-                response.setStatus(404);
-                return new CommonResponse("doctor not found, maybe this doctor doesn't belong to your hospital.", 404).toString();
+            if(doctor != null){
+                doctor.setDoctorLicense(request.getDoctorLicense());
+                doctor.setExperience(request.getExperience());
+                doctor.setSkill(request.getSkill());
+                doctorRepository.save(doctor);
             }
-            doctor.setDoctorLicense(request.getDoctorLicense());
-            doctor.setExperience(request.getExperience());
-            doctor.setSkill(request.getSkill());
-            doctorRepository.save(doctor);
             return new CommonResponse("success", 200).toString();
         } catch (DataIntegrityViolationException e) {
             response.setStatus(404);
