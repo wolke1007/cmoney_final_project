@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.Doc;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
@@ -85,19 +84,19 @@ public class HospitalController {
         try {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
-            Optional<User> user = userRepository.findByUsername(username);
+            User user = userRepository.findByUsername(username).orElse(null);
             int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
             int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
             List<Reservation> reservations = reservationRepository.
-                    findAllByRoasterIdAndDateAndUserId(roasterId, request.getDate(), user.get().getId());
+                    findAllByRoasterIdAndDateAndUserId(roasterId, request.getDate(), user.getId());
             if (reservations.size() >= 1) {
                 int bookingNum = reservations.get(reservations.size() - 1).getNumber();
                 return new CommonResponse("booked before, booking number is:" + bookingNum, 404).toString();
             }
             Reservation newRes = new Reservation();
-            newRes.setUserId(user.get().getId());
+            newRes.setUserId(user.getId());
             // 這邊考慮改成用 username 來做，前端會比較好傳值進來
-            System.out.println("DEBUG user_id: " + user.get().getId());
+            System.out.println("DEBUG user_id: " + user.getId());
             int reservePatientCnt = reservationRepository.findAllByRoasterIdAndDate(roasterId, request.getDate()).size();
             System.out.println("DEBUG reservePatientCnt: " + reservePatientCnt);
             int bookingNum = reservePatientCnt + 1; // 預約這個班表且為同天的人數
@@ -105,6 +104,17 @@ public class HospitalController {
             newRes.setDate(request.getDate());
             newRes.setRoasterId(roasterId);
             newRes.setPetId(request.getPetId());
+            MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), request.getPetId()).orElse(null);
+            if(medicalRecord == null){
+                medicalRecord = new MedicalRecord();
+                medicalRecord.setUserId(user.getId());
+                medicalRecord.setPetId(request.getPetId());
+                medicalRecord.setHospitalId(request.getHospitalId());
+                Date date = new Date();
+                DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                medicalRecord.setCreateDate(sdf.format(date));
+                medicalRecordRepository.save(medicalRecord);
+            }
             reservationRepository.save(newRes);
             return new CommonResponse("reservation_id: " + bookingNum, 200).toString();
         } catch (ExpiredJwtException e) {
