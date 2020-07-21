@@ -170,14 +170,15 @@ public class AdminReservationController {
                     je.getAsJsonObject().addProperty("day", schedule.getDay());
                     je.getAsJsonObject().addProperty("time", schedule.getTime());
                     JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
-                    JsonIter jii = new JsonIter();
-                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
-                    if(descriptions.size() == 0){
-                        JsonObject jsonDes = new JsonObject();
-                        jsonDes.addProperty("description", "沒有診療紀錄");
-                        descriptions.add(jsonDes);
-                    }
-                    je.getAsJsonObject().add("medicalTreatments", descriptions);
+//                    JsonIter jii = new JsonIter();
+//                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
+//                    if(descriptions.size() == 0){
+//                        JsonObject jsonDes = new JsonObject();
+//                        jsonDes.addProperty("description", "沒有診療紀錄");
+//                        descriptions.add(jsonDes);
+//                    }
+//                    je.getAsJsonObject().add("medicalTreatments", descriptions);
+                    je.getAsJsonObject().add("medicalTreatments", medicalTreatments);
                 }
                 System.out.println("DEBUG8");
             }
