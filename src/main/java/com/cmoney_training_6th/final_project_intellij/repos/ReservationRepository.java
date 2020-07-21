@@ -29,6 +29,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             nativeQuery = true)
     List<Reservation> findReservationByHospitalId(int hospitalId);
 
+    @Query( value = "SELECT * FROM newdatabase.reservation WHERE user_id = ?1 AND roaster_id = any(" +
+            "SELECT id FROM newdatabase.roaster WHERE doctor_id = any(" +
+            "SELECT id FROM newdatabase.doctor WHERE hospital_id = ?2))",
+            nativeQuery = true)
+    List<Reservation> findReservationByHospitalIdAndUserId(int userId, int hospitalId);
+
     Optional<Reservation> findByUserIdAndPetIdAndRoasterIdAndDate(
             int userId, int petId, int roasterId, String date);
 

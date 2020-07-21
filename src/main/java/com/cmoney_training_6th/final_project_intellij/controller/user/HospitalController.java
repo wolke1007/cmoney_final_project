@@ -180,7 +180,10 @@ public class HospitalController {
                                                   @RequestParam(value = "hospitalId") int hospitalId,
                                                   @RequestHeader("Authorization") String header) {
         try {
-            List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
+            String token = header.substring(7);
+            String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+            User user = userRepository.findByUsername(username).orElse(null);
+            List<Reservation> reservations = reservationRepository.findReservationByHospitalIdAndUserId(user.getId(), hospitalId);
             JsonIter ji = new JsonIter();
             JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
             Gson g = new Gson();
@@ -190,7 +193,6 @@ public class HospitalController {
                 int doctorId = roaster.getDoctorId();
                 Doctor doctor = doctorRepository.findById(doctorId).get();
                 String doctorName = userRepository.findById(doctor.getUserId()).get().getName();
-                User user = userRepository.findById(res.getUserId()).get();
                 String userPhone = user.getPhone();
                 String userName = user.getName();
                 Pet pet = petRepository.findById(res.getPetId()).get();
