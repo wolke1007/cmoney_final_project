@@ -143,6 +143,7 @@ public class AdminReservationController {
             JsonIter ji = new JsonIter();
             JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
             Gson g = new Gson();
+            int index = 0;
             for (Reservation res : reservations) {
                 int roaId = res.getRoasterId();
                 Roaster roaster = roasterRepository.findById(roaId).get();
@@ -158,40 +159,29 @@ public class AdminReservationController {
                 String time = schedule.getDay() + " " + schedule.getTime();
                 System.out.println("userid:" + user.getId() + " petid:" + pet.getId());
                 MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
-                for (JsonElement je : arr) {
-                    je.getAsJsonObject().addProperty("doctorName", doctorName);
-                    je.getAsJsonObject().addProperty("userName", userName);
-                    je.getAsJsonObject().addProperty("userPhone", userPhone);
-                    je.getAsJsonObject().addProperty("petName", pet.getName());
-                    je.getAsJsonObject().addProperty("petAge", pet.getAge());
-                    je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
-                    je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
-                    je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
-                    je.getAsJsonObject().addProperty("day", schedule.getDay());
-                    je.getAsJsonObject().addProperty("time", schedule.getTime());
-                    JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
-                    if(medicalRecord == null){
-                        je.getAsJsonObject().addProperty("medicalRecordId", "null");
-                    }else{
-                        je.getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
-                    }
-//                    JsonIter jii = new JsonIter();
-//                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
-//                    if(descriptions.size() == 0){
-//                        JsonObject jsonDes = new JsonObject();
-//                        jsonDes.addProperty("description", "沒有診療紀錄");
-//                        descriptions.add(jsonDes);
-//                    }
-//                    je.getAsJsonObject().add("medicalTreatments", descriptions);
-                    if(medicalTreatments == null){
-                        je.getAsJsonObject().addProperty("medicalTreatments", "null");
-                    }else{
-                        je.getAsJsonObject().add("medicalTreatments", medicalTreatments);
-                    }
+                arr.get(index).getAsJsonObject().addProperty("doctorName", doctorName);
+                arr.get(index).getAsJsonObject().addProperty("userName", userName);
+                arr.get(index).getAsJsonObject().addProperty("userPhone", userPhone);
+                arr.get(index).getAsJsonObject().addProperty("petName", pet.getName());
+                arr.get(index).getAsJsonObject().addProperty("petAge", pet.getAge());
+                arr.get(index).getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
+                arr.get(index).getAsJsonObject().addProperty("petBreed", pet.getBreed());
+                arr.get(index).getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
+                arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
+                arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
+                JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                if(medicalRecord == null){
+                    arr.get(index).getAsJsonObject().addProperty("medicalRecordId", "null");
+                }else{
+                    arr.get(index).getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
                 }
-                System.out.println("DEBUG8");
+                if(medicalTreatments == null){
+                    arr.get(index).getAsJsonObject().addProperty("medicalTreatments", "null");
+                }else{
+                    arr.get(index).getAsJsonObject().add("medicalTreatments", medicalTreatments);
+                }
+                index++;
             }
-            System.out.println("DEBUG9");
             return new CommonResponse(arr, 200).toString();
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
@@ -208,6 +198,7 @@ public class AdminReservationController {
             JsonIter ji = new JsonIter();
             JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
             Gson g = new Gson();
+            int index = 0;
             for (Reservation res : reservations) {
                 int roaId = res.getRoasterId();
                 Roaster roaster = roasterRepository.findById(roaId).get();
@@ -222,35 +213,32 @@ public class AdminReservationController {
                 String time = schedule.getDay() + " " + schedule.getTime();
                 System.out.println("userid:" + user.getId() + " petid:" + pet.getId());
                 MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
-                for (JsonElement je : arr) {
-                    je.getAsJsonObject().addProperty("doctorName", doctorName);
-                    je.getAsJsonObject().addProperty("userName", userName);
-                    je.getAsJsonObject().addProperty("userPhone", userPhone);
-                    je.getAsJsonObject().addProperty("petName", pet.getName());
-                    je.getAsJsonObject().addProperty("petAge", pet.getAge());
-                    je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
-                    je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
-                    je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
-                    je.getAsJsonObject().addProperty("day", schedule.getDay());
-                    je.getAsJsonObject().addProperty("time", schedule.getTime());
-                    JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
-                    if(medicalRecord == null){
-                        je.getAsJsonObject().addProperty("medicalRecordId", "null");
-                    }else{
-                        je.getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
-                    }
-                    JsonIter jii = new JsonIter();
-                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
-                    if(descriptions.size() == 0){
-                        JsonObject jsonDes = new JsonObject();
-                        jsonDes.addProperty("description", "沒有診療紀錄");
-                        descriptions.add(jsonDes);
-                    }
-                    je.getAsJsonObject().add("medicalTreatments", descriptions);
+                arr.get(index).getAsJsonObject().addProperty("doctorName", doctorName);
+                arr.get(index).getAsJsonObject().addProperty("userName", userName);
+                arr.get(index).getAsJsonObject().addProperty("userPhone", userPhone);
+                arr.get(index).getAsJsonObject().addProperty("petName", pet.getName());
+                arr.get(index).getAsJsonObject().addProperty("petAge", pet.getAge());
+                arr.get(index).getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
+                arr.get(index).getAsJsonObject().addProperty("petBreed", pet.getBreed());
+                arr.get(index).getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
+                arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
+                arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
+                JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                if(medicalRecord == null){
+                    arr.get(index).getAsJsonObject().addProperty("medicalRecordId", "null");
+                }else{
+                    arr.get(index).getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
                 }
-                System.out.println("DEBUG8");
+                JsonIter jii = new JsonIter();
+                JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
+                if(descriptions.size() == 0){
+                    JsonObject jsonDes = new JsonObject();
+                    jsonDes.addProperty("description", "沒有診療紀錄");
+                    descriptions.add(jsonDes);
+                }
+                arr.get(index).getAsJsonObject().add("medicalTreatments", descriptions);
+                index++;
             }
-            System.out.println("DEBUG9");
             return new CommonResponse(arr, 200).toString();
         } catch (ExpiredJwtException e) {
             response.setStatus(403);
