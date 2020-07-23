@@ -207,7 +207,9 @@ public class AdminUserController {
             user.setJoinTime(request.getJoinTime());
             user.setFirstName(request.getFirstName());
             user.setLastName(request.getLastName());
-            user.setPassword(request.getPassword());
+            if(!request.getPassword().equals("")){
+                user.setPassword(request.getPassword());
+            }
             user.setSchool(request.getSchool());
             user.setAddressCity(request.getAddressCity());
             user.setAddressArea(request.getAddressArea());

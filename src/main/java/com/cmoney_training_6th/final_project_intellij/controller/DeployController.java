@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DeployController {
 
-    @Value("${build_version}")
-    private String build_version;
+    @Value("${build_number}")
+    private String buildNumber;
 
-    @GetMapping(path = "/version")
+    @GetMapping(path = "/build_number")
     public @ResponseBody String getBuildVersion(){
-        return "API version: " + build_version;
+        return "build number: " + buildNumber;
     }
 }

@@ -63,7 +63,11 @@ public class AdminRoasterController {
             newRoaster.setDoctorId(doctor.getId());
             newRoaster.setScheduleId(schedule.getId());
             roasterRepository.save(newRoaster);
-            return new CommonResponse("success", 200).toString();
+            Roaster createdRoaster = roasterRepository.findByDoctorIdAndScheduleId(newRoaster.getDoctorId(), newRoaster.getScheduleId()).orElse(null);
+            if(createdRoaster == null){
+                return new CommonResponse("roaster which just been created can't be found.", 500).toString();
+            }
+            return new CommonResponse(createdRoaster.getId(), 200).toString();
         }  catch (DataIntegrityViolationException e) {
             response.setStatus(404);
             return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
