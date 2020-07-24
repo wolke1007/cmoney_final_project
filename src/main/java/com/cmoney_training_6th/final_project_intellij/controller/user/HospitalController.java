@@ -88,7 +88,7 @@ public class HospitalController {
             int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
             int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
             List<Reservation> reservations = reservationRepository.
-                    findAllByRoasterIdAndDateAndUserId(roasterId, request.getDate(), user.getId());
+                    findAllByRoasterIdAndDateAndPetId(roasterId, request.getDate(), request.getPetId());
             if (reservations.size() >= 1) {
                 int bookingNum = reservations.get(reservations.size() - 1).getNumber();
                 return new CommonResponse("booked before, booking number is:" + bookingNum, 404).toString();
@@ -105,7 +105,7 @@ public class HospitalController {
             newRes.setRoasterId(roasterId);
             newRes.setPetId(request.getPetId());
             MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), request.getPetId()).orElse(null);
-            if(medicalRecord == null){
+            if (medicalRecord == null) {
                 medicalRecord = new MedicalRecord();
                 medicalRecord.setUserId(user.getId());
                 medicalRecord.setPetId(request.getPetId());
@@ -122,9 +122,9 @@ public class HospitalController {
             return new CommonResponse("token expired: " + e.getMessage(), 403).toString();
         } catch (NoSuchElementException e) {
             return new CommonResponse("booking fail because wrong value is given.", 404).toString();
-        } catch (io.jsonwebtoken.MalformedJwtException e){
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
-        } catch (StringIndexOutOfBoundsException e){
+        } catch (StringIndexOutOfBoundsException e) {
             return new CommonResponse("token format fail: " + e.getMessage(), 403).toString();
         }
 //        try {
@@ -155,7 +155,7 @@ public class HospitalController {
 
     @GetMapping(path = "/roasters", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String userGetRoastersByHostpitalId(@RequestParam(value = "hospitalId")
-                                                              int hospitalId) {
+                                                       int hospitalId) {
         List<Roaster> roasters = roasterRepository.findByHospitalId(hospitalId);
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKeys(roasters,
@@ -167,7 +167,7 @@ public class HospitalController {
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
             Doctor doctor = doctorRepository.findById(roaster.getDoctorId()).orElse(null);
             User user = userRepository.findById(doctor.getUserId()).orElse(null);
-            arr.get(index).getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
+            arr.get(index).getAsJsonObject().addProperty("doctorName", user.getLastName() + user.getFirstName());
             arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
             arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
             index++;
@@ -187,6 +187,7 @@ public class HospitalController {
             JsonIter ji = new JsonIter();
             JsonArray arr = ji.listIntoArrayWithoutKey(reservations, "roasterId");
             Gson g = new Gson();
+            int index = 0;
             for (Reservation res : reservations) {
                 int roaId = res.getRoasterId();
                 Roaster roaster = roasterRepository.findById(roaId).get();
@@ -201,23 +202,23 @@ public class HospitalController {
                 String time = schedule.getDay() + " " + schedule.getTime();
                 System.out.println("userid:" + user.getId() + " petid:" + pet.getId());
                 MedicalRecord medicalRecord = medicalRecordRepository.findByUserIdAndPetId(user.getId(), pet.getId()).orElse(null);
-                for (JsonElement je : arr) {
-                    je.getAsJsonObject().addProperty("doctorName", doctorName);
-                    je.getAsJsonObject().addProperty("userName", userName);
-                    je.getAsJsonObject().addProperty("userPhone", userPhone);
-                    je.getAsJsonObject().addProperty("petName", pet.getName());
-                    je.getAsJsonObject().addProperty("petAge", pet.getAge());
-                    je.getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
-                    je.getAsJsonObject().addProperty("petBreed", pet.getBreed());
-                    je.getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
-                    je.getAsJsonObject().addProperty("day", schedule.getDay());
-                    je.getAsJsonObject().addProperty("time", schedule.getTime());
-                    JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
-                    if(medicalRecord == null){
-                        je.getAsJsonObject().addProperty("medicalRecordId", "null");
-                    }else{
-                        je.getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
-                    }
+//                for (JsonElement je : arr) {
+                arr.get(index).getAsJsonObject().addProperty("doctorName", doctorName);
+                arr.get(index).getAsJsonObject().addProperty("userName", userName);
+                arr.get(index).getAsJsonObject().addProperty("userPhone", userPhone);
+                arr.get(index).getAsJsonObject().addProperty("petName", pet.getName());
+                arr.get(index).getAsJsonObject().addProperty("petAge", pet.getAge());
+                arr.get(index).getAsJsonObject().addProperty("petSpecies", pet.getSpecies());
+                arr.get(index).getAsJsonObject().addProperty("petBreed", pet.getBreed());
+                arr.get(index).getAsJsonObject().addProperty("petOwnDate", pet.getOwnDate());
+                arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
+                arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
+                JsonArray medicalTreatments = medicalRecord == null ? null : g.toJsonTree(medicalRecord).getAsJsonObject().get("medicalTreatments").getAsJsonArray();
+                if (medicalRecord == null) {
+                    arr.get(index).getAsJsonObject().addProperty("medicalRecordId", "null");
+                } else {
+                    arr.get(index).getAsJsonObject().addProperty("medicalRecordId", medicalRecord.getId());
+                }
 //                    JsonIter jii = new JsonIter();
 //                    JsonArray descriptions = jii.listIntoArrayWithKeys(medicalTreatments, Arrays.asList("description"));
 //                    if(descriptions.size() == 0){
@@ -226,13 +227,14 @@ public class HospitalController {
 //                        descriptions.add(jsonDes);
 //                    }
 //                    je.getAsJsonObject().add("medicalTreatments", descriptions);
-                    if(medicalTreatments == null){
-                        je.getAsJsonObject().addProperty("medicalTreatments", "null");
-                    }else{
-                        je.getAsJsonObject().add("medicalTreatments", medicalTreatments);
-                    }
+                if (medicalTreatments == null) {
+                    arr.get(index).getAsJsonObject().addProperty("medicalTreatments", "null");
+                } else {
+                    arr.get(index).getAsJsonObject().add("medicalTreatments", medicalTreatments);
                 }
+//                }
                 System.out.println("DEBUG8");
+                index++;
             }
             System.out.println("DEBUG9");
             return new CommonResponse(arr, 200).toString();

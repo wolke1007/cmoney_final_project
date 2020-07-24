@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
     List<Reservation> findAllByRoasterIdAndDate(int roasterId, String date);
     List<Reservation> findAllByRoasterIdAndDateAndUserId(int roasterId, String date, int userId);
+    List<Reservation> findAllByRoasterIdAndDateAndPetId(int roasterId, String date, int petId);
 
     @Query( value = "SELECT * FROM newdatabase.reservation WHERE user_id = ?1 AND roaster_id = any(" +
             "SELECT id FROM newdatabase.roaster WHERE doctor_id = any(" +
