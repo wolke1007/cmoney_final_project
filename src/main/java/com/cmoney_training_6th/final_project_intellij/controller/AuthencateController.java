@@ -1,15 +1,13 @@
 package com.cmoney_training_6th.final_project_intellij.controller;
 
 import com.cmoney_training_6th.final_project_intellij.AuthenticationAdminRequest;
-import com.cmoney_training_6th.final_project_intellij.model.Crew;
 import com.cmoney_training_6th.final_project_intellij.model.Hospital;
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.CrewRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.HospitalRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
-import com.cmoney_training_6th.final_project_intellij.services.MyUserDetailsService;
+import com.cmoney_training_6th.final_project_intellij.dao.CrewRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.HospitalRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.service.MyUserDetailsService;
 import com.cmoney_training_6th.final_project_intellij.AuthenticationRequest;
-import com.cmoney_training_6th.final_project_intellij.AuthenticationResponse;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
@@ -17,7 +15,6 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

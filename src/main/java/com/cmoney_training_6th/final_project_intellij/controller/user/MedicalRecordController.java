@@ -1,12 +1,8 @@
 package com.cmoney_training_6th.final_project_intellij.controller.user;
 
-import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.MedicalRecord;
 import com.cmoney_training_6th.final_project_intellij.model.Pet;
-import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.MedicalRecordRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.MedicalRecordRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import org.springframework.beans.factory.annotation.Autowired;

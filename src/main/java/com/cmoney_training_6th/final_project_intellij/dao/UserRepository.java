@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij.repos;
+package com.cmoney_training_6th.final_project_intellij.dao;
 
 
 
@@ -7,9 +7,7 @@ package com.cmoney_training_6th.final_project_intellij.repos;
 
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.util.Streamable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {

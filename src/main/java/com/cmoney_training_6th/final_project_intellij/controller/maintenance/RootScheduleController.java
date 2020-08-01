@@ -1,15 +1,9 @@
 package com.cmoney_training_6th.final_project_intellij.controller.maintenance;
 
 import com.cmoney_training_6th.final_project_intellij.model.Schedule;
-import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.ScheduleRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.ScheduleRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.UserRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
@@ -17,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json

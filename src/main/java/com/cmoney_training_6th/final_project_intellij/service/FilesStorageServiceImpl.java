@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij.services;
+package com.cmoney_training_6th.final_project_intellij.service;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;

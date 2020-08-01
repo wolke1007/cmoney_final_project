@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij.repos;
+package com.cmoney_training_6th.final_project_intellij.dao;
 
 
 
@@ -7,8 +7,6 @@ package com.cmoney_training_6th.final_project_intellij.repos;
 
 import com.cmoney_training_6th.final_project_intellij.model.MedicalTreatment;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
 
 public interface MedicalTreatmentRepository extends JpaRepository<MedicalTreatment, Integer> {
 

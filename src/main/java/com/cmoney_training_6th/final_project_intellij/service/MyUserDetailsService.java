@@ -1,8 +1,8 @@
-package com.cmoney_training_6th.final_project_intellij.services;
+package com.cmoney_training_6th.final_project_intellij.service;
 
 import com.cmoney_training_6th.final_project_intellij.MyUserDetails;
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

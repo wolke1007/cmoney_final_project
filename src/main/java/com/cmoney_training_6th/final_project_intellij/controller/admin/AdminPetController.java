@@ -1,13 +1,10 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
-import com.cmoney_training_6th.final_project_intellij.model.Doctor;
-import com.cmoney_training_6th.final_project_intellij.model.MedicalItem;
 import com.cmoney_training_6th.final_project_intellij.model.Pet;
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.*;
+import com.cmoney_training_6th.final_project_intellij.dao.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
-import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 //@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json

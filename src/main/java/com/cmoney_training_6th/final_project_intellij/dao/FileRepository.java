@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij.repos;
+package com.cmoney_training_6th.final_project_intellij.dao;
 
 
 

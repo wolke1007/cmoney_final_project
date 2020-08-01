@@ -1,7 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
 import com.cmoney_training_6th.final_project_intellij.model.*;
-import com.cmoney_training_6th.final_project_intellij.repos.*;
+import com.cmoney_training_6th.final_project_intellij.dao.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -10,9 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 //@Controller // This means that this class is a Controller

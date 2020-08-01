@@ -1,8 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
-import com.cmoney_training_6th.final_project_intellij.model.MedicalItem;
 import com.cmoney_training_6th.final_project_intellij.model.Recipe;
-import com.cmoney_training_6th.final_project_intellij.repos.RecipeRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.RecipeRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.google.gson.JsonArray;

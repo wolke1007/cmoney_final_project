@@ -1,13 +1,10 @@
 package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
 import com.cmoney_training_6th.final_project_intellij.model.MedicalRecord;
-import com.cmoney_training_6th.final_project_intellij.model.MedicalTreatment;
-import com.cmoney_training_6th.final_project_intellij.repos.MedicalRecordRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.PetRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.MedicalRecordRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.PetRepository;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;

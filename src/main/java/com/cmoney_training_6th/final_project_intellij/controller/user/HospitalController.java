@@ -2,9 +2,8 @@ package com.cmoney_training_6th.final_project_intellij.controller.user;
 
 import com.cmoney_training_6th.final_project_intellij.model.*;
 import com.cmoney_training_6th.final_project_intellij.model.dto.DtoReservation;
-import com.cmoney_training_6th.final_project_intellij.repos.*;
-import com.cmoney_training_6th.final_project_intellij.services.DoctorService;
-import com.cmoney_training_6th.final_project_intellij.services.HospitalService;
+import com.cmoney_training_6th.final_project_intellij.dao.*;
+import com.cmoney_training_6th.final_project_intellij.service.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Modifier;
 import java.text.DateFormat;

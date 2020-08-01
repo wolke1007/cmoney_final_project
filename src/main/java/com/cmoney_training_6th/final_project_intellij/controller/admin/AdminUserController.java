@@ -2,14 +2,12 @@ package com.cmoney_training_6th.final_project_intellij.controller.admin;
 
 import com.cmoney_training_6th.final_project_intellij.model.*;
 import com.cmoney_training_6th.final_project_intellij.model.dto.DtoCrewUser;
-import com.cmoney_training_6th.final_project_intellij.model.dto.DtoDoctor;
 import com.cmoney_training_6th.final_project_intellij.model.dto.DtoUserDoctor;
-import com.cmoney_training_6th.final_project_intellij.repos.*;
+import com.cmoney_training_6th.final_project_intellij.dao.*;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij;
 
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
-import com.cmoney_training_6th.final_project_intellij.services.FilesStorageService;
+import com.cmoney_training_6th.final_project_intellij.dao.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.service.FilesStorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

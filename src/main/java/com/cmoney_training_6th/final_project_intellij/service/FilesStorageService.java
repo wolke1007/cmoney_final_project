@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij.services;
+package com.cmoney_training_6th.final_project_intellij.service;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;

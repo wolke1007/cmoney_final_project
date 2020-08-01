@@ -1,11 +1,11 @@
-package com.cmoney_training_6th.final_project_intellij.services;
+package com.cmoney_training_6th.final_project_intellij.service;
 
 import com.cmoney_training_6th.final_project_intellij.model.Crew;
 import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.repos.CrewRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.DoctorRepository;
-import com.cmoney_training_6th.final_project_intellij.repos.UserRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.CrewRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.DoctorRepository;
+import com.cmoney_training_6th.final_project_intellij.dao.UserRepository;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

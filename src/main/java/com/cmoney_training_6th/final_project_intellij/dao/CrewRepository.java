@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij.repos;
+package com.cmoney_training_6th.final_project_intellij.dao;
 
 
 
@@ -6,7 +6,6 @@ package com.cmoney_training_6th.final_project_intellij.repos;
 // CRUD refers Create, Read, Update, Delete
 
 import com.cmoney_training_6th.final_project_intellij.model.Crew;
-import com.cmoney_training_6th.final_project_intellij.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
