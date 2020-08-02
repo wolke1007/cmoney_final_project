@@ -16,6 +16,6 @@ public interface PetService {
     CommonResponse getByHospitalId(int hospitalId);
     CommonResponse getByToken(String jwt);
     CommonResponse uploadPetPhoto(String jwt, MultipartFile file, int petId);
-    CommonResponse getPhotoByPetId(int petId);
+    CommonResponse getPhotoByPetId(String jwt, int petId);
     CommonResponse getPhotosByToken(String jwt);
 }

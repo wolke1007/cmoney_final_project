@@ -266,7 +266,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public CommonResponse getPhotoByPetId(int petId) {
+    public CommonResponse getPhotoByPetId(String jwt, int petId) {
         try {
             JsonArray arr = new JsonArray();
             // 這邊沒有做是不是飼主的判斷，目前是所有人都可以拿指定 pet 的圖片(前端要求，方便前端測試)
@@ -284,7 +284,7 @@ public class PetServiceImpl implements PetService {
                 UriComponentsBuilder uriComponentsBuilder = MvcUriComponentsBuilder
                         .fromMethodName(FileController.class, "getFile",
                                 r.getFile().toPath().getFileName().toString());
-                if(uriComponentsBuilder == null){
+                if (uriComponentsBuilder == null) {
                     continue;
                 }
                 json.addProperty("URL", uriComponentsBuilder.build().toString());
@@ -317,7 +317,7 @@ public class PetServiceImpl implements PetService {
                 UriComponentsBuilder uriComponentsBuilder = MvcUriComponentsBuilder
                         .fromMethodName(FileController.class, "getFile",
                                 r.getFile().toPath().getFileName().toString());
-                if(uriComponentsBuilder == null){
+                if (uriComponentsBuilder == null) {
                     continue;
                 }
                 json.addProperty("URL", uriComponentsBuilder.build().toString());

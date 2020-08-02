@@ -2,6 +2,7 @@ package com.cmoney_training_6th.final_project_intellij.config;
 
 
 import com.cmoney_training_6th.final_project_intellij.filters.JwtRequestFilter;
+import com.cmoney_training_6th.final_project_intellij.implenment.MyUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserDetailsService myUserDetailsService;
+    private MyUserDetailsServiceImpl myUserDetailsService;
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 

@@ -102,8 +102,9 @@ public class PetController {
 
     @GetMapping(path = "{petId}/photo", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPhotoByPetId(HttpServletResponse response,
+                                  @RequestHeader("Authorization") String jwt,
                                   @PathVariable("petId") int petId) throws IOException {
-        CommonResponse ret = petService.getPhotoByPetId(petId);
+        CommonResponse ret = petService.getPhotoByPetId(jwt, petId);
         response.setStatus(ret.getStatus());
         return ret.toString();
     }
