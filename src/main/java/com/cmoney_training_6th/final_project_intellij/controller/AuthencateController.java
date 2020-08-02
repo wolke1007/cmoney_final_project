@@ -1,13 +1,13 @@
 package com.cmoney_training_6th.final_project_intellij.controller;
 
-import com.cmoney_training_6th.final_project_intellij.AuthenticationAdminRequest;
+import com.cmoney_training_6th.final_project_intellij.authentication.AuthenticationAdminRequest;
 import com.cmoney_training_6th.final_project_intellij.model.Hospital;
 import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.dao.CrewRepository;
 import com.cmoney_training_6th.final_project_intellij.dao.HospitalRepository;
 import com.cmoney_training_6th.final_project_intellij.dao.UserRepository;
-import com.cmoney_training_6th.final_project_intellij.service.MyUserDetailsService;
-import com.cmoney_training_6th.final_project_intellij.AuthenticationRequest;
+import com.cmoney_training_6th.final_project_intellij.implenment.MyUserDetailsServiceImpl;
+import com.cmoney_training_6th.final_project_intellij.authentication.AuthenticationRequest;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.cmoney_training_6th.final_project_intellij.util.ValidateParameter;
@@ -34,7 +34,7 @@ public class AuthencateController {
     private JwtUtil jwtTokenUtil;
 
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    private MyUserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private UserRepository userRepository;

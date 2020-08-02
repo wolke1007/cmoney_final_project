@@ -1,4 +1,4 @@
-package com.cmoney_training_6th.final_project_intellij;
+package com.cmoney_training_6th.final_project_intellij.authentication;
 
 import java.io.Serializable;
 
