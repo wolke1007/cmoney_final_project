@@ -21,6 +21,7 @@ public class GenFilePathController {
     @GetMapping(value = "/download/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public ResponseEntity<Resource> genFilePath(@PathVariable String filename) {
+        System.out.println("enter gen file path");
         Resource file = filesStorageService.load(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);

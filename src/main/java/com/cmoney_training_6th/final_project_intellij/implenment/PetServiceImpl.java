@@ -283,6 +283,7 @@ public class PetServiceImpl implements PetService {
                         .fromMethodName(GenFilePathController.class, "genFilePath",
                                 r.getFile().toPath().getFileName().toString());
                 if (uriComponentsBuilder == null) {
+                    System.out.println("uriComponentsBuilder is null");
                     continue;
                 }
                 json.addProperty("URL", uriComponentsBuilder.build().toString());
@@ -316,6 +317,7 @@ public class PetServiceImpl implements PetService {
                         .fromMethodName(GenFilePathController.class, "genFilePath",
                                 r.getFile().toPath().getFileName().toString());
                 if (uriComponentsBuilder == null) {
+                    System.out.println("uriComponentsBuilder is null");
                     continue;
                 }
                 json.addProperty("URL", uriComponentsBuilder.build().toString());

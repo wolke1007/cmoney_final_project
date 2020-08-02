@@ -21,11 +21,9 @@ public class FileController {
 
     @GetMapping(value = "/download/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@RequestHeader String jwt,
+    public ResponseEntity<Resource> getFile(@RequestHeader("Authorization") String jwt,
                                             @PathVariable String filename) {
-        System.out.println("jwt:"+jwt);
         if(!userService.isExist(jwt)){
-            System.out.println("null here");
             return null;
         }
         Resource file = filesStorageService.load(filename);

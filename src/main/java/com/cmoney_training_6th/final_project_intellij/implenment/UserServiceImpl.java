@@ -89,6 +89,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isExist(String jwt) {
         String token = jwt.substring(7);
+        if (jwt == null || !jwtTokenUtil.validateJwtToken(token)) {
+            return false;
+        }
         String username = jwtTokenUtil.getUserNameFromJwtToken(token);
         User user = userRepository.findByUsername(username).orElse(null);
         if(user == null){
