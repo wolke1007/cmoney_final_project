@@ -85,7 +85,7 @@ public class HospitalController {
             User user = userRepository.findByUsername(username).orElse(null);
             int scheduleId = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).get().getId();
             int roasterId = roasterRepository.findByDoctorIdAndScheduleId(request.getDoctorId(), scheduleId).get().getId();
-            if (petRepository.findByUserIdAndPetId(user.getId(), request.getPetId()).orElse(null) == null) {
+            if (petRepository.findByUserIdAndId(user.getId(), request.getPetId()).orElse(null) == null) {
                 response.setStatus(404);
                 return new CommonResponse("pet:" + request.getPetId() +
                         " of this user:" + user.getId() + " can't be found", 404).toString();

@@ -13,5 +13,5 @@ import java.util.Optional;
 
 public interface PetRepository extends JpaRepository<Pet, Integer> {
     List<Pet> findByUserId(int userId);
-    Optional<Pet> findByUserIdAndPetId(int userId, int petId);
+    Optional<Pet> findByUserIdAndId(int userId, int petId);
 }

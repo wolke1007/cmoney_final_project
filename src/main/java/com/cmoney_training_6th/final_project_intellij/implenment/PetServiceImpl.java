@@ -2,11 +2,9 @@ package com.cmoney_training_6th.final_project_intellij.implenment;
 
 import com.cmoney_training_6th.final_project_intellij.controller.user.PetController;
 import com.cmoney_training_6th.final_project_intellij.dao.*;
-import com.cmoney_training_6th.final_project_intellij.model.Doctor;
 import com.cmoney_training_6th.final_project_intellij.model.Pet;
 import com.cmoney_training_6th.final_project_intellij.model.PetPhoto;
 import com.cmoney_training_6th.final_project_intellij.model.User;
-import com.cmoney_training_6th.final_project_intellij.service.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.service.FilesStorageService;
 import com.cmoney_training_6th.final_project_intellij.service.PetService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
@@ -110,7 +108,7 @@ public class PetServiceImpl implements PetService {
             String token = jwt.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
             User user = userRepository.findByUsername(username).orElse(null);
-            Pet pet = petRepository.findByUserIdAndPetId(user.getId(), petEdit.getId()).orElse(null);
+            Pet pet = petRepository.findByUserIdAndId(user.getId(), petEdit.getId()).orElse(null);
             if (pet == null) {
                 return new CommonResponse("user_id:" + user.getId() + " + pet_id:" + petEdit.getId() + " not found.", 404);
             }
@@ -150,7 +148,7 @@ public class PetServiceImpl implements PetService {
             String token = jwt.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
             User user = userRepository.findByUsername(username).orElse(null);
-            Pet pet = petRepository.findByUserIdAndPetId(user.getId(), petDelete.getId()).orElse(null);
+            Pet pet = petRepository.findByUserIdAndId(user.getId(), petDelete.getId()).orElse(null);
             if (pet == null) {
                 return new CommonResponse("user_id:" + user.getId() + " + pet_id:" + petDelete.getId() + " not found.", 404);
             }
