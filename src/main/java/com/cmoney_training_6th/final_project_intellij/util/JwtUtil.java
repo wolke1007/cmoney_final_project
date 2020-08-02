@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
-    private String SECRET_KEY = "secret";
 
     @Value("${jwtSecret}")
     private String jwtSecret;

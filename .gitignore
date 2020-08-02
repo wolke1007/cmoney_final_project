@@ -3,6 +3,7 @@ HELP.md
 build/
 uploads/
 !gradle/wrapper/gradle-wrapper.jar
+/src/main/resources/application.properties
 !**/src/main/**
 !**/src/test/**
 
