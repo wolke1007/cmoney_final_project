@@ -1,18 +1,17 @@
-package com.cmoney_training_6th.final_project_intellij.controller;
+package com.cmoney_training_6th.final_project_intellij.controller.file;
 
 import com.cmoney_training_6th.final_project_intellij.service.FilesStorageService;
 import com.cmoney_training_6th.final_project_intellij.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.core.io.Resource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
-public class FileController {
+public class GenFilePathController {
 
     @Autowired
     FilesStorageService filesStorageService;
@@ -21,12 +20,7 @@ public class FileController {
 
     @GetMapping(value = "/download/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-//        System.out.println("jwt:"+jwt);
-//        if(!userService.isExist(jwt)){
-//            System.out.println("null here");
-//            return null;
-//        }
+    public ResponseEntity<Resource> genFilePath(@PathVariable String filename) {
         Resource file = filesStorageService.load(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);

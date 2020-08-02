@@ -1,7 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.implenment;
 
-import com.cmoney_training_6th.final_project_intellij.controller.FileController;
-import com.cmoney_training_6th.final_project_intellij.controller.user.PetController;
+import com.cmoney_training_6th.final_project_intellij.controller.file.FileController;
+import com.cmoney_training_6th.final_project_intellij.controller.file.GenFilePathController;
 import com.cmoney_training_6th.final_project_intellij.dao.*;
 import com.cmoney_training_6th.final_project_intellij.model.Pet;
 import com.cmoney_training_6th.final_project_intellij.model.PetPhoto;
@@ -19,8 +19,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -282,7 +280,7 @@ public class PetServiceImpl implements PetService {
                 Resource r = filesStorageService.load(petPhoto.getName());
                 json.addProperty("petId", petId);
                 UriComponentsBuilder uriComponentsBuilder = MvcUriComponentsBuilder
-                        .fromMethodName(FileController.class, "getFile",
+                        .fromMethodName(GenFilePathController.class, "genFilePath",
                                 r.getFile().toPath().getFileName().toString());
                 if (uriComponentsBuilder == null) {
                     continue;
@@ -315,7 +313,7 @@ public class PetServiceImpl implements PetService {
                 Resource r = filesStorageService.load(petPhoto.getName());
                 json.addProperty("petId", petPhoto.getPetId());
                 UriComponentsBuilder uriComponentsBuilder = MvcUriComponentsBuilder
-                        .fromMethodName(FileController.class, "getFile",
+                        .fromMethodName(GenFilePathController.class, "genFilePath",
                                 r.getFile().toPath().getFileName().toString());
                 if (uriComponentsBuilder == null) {
                     continue;
