@@ -42,6 +42,7 @@ public class AdminMedicalItemController {
             HttpServletResponse response,
             @RequestBody MedicalItem request
     ) {
+        // TODO should refactor here, because fat controller design
         try {
             MedicalItem medicalItem = medicalItemRepository.findByName(request.getName()).orElse(null); // 確認 name 是否可以找到東西
             if(medicalItem == null){
@@ -64,6 +65,7 @@ public class AdminMedicalItemController {
             HttpServletResponse response,
             @RequestBody MedicalItem request
     ) {
+        // TODO should refactor here, because fat controller design
         try {
             MedicalItem medicalItem = medicalItemRepository.findById(request.getId()).orElse(null);
             if(medicalItem == null){
@@ -89,6 +91,7 @@ public class AdminMedicalItemController {
     public String getPageMedcalItems(HttpServletResponse response,
                                      @RequestParam int page,
                                      @RequestParam int size) {
+        // TODO should refactor here, because fat controller design
         Page<MedicalItem> pageResult = medicalItemRepository.findAll(
                 PageRequest.of(page,  // 查詢的頁數，從0起算
                         size, // 查詢的每頁筆數

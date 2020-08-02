@@ -35,6 +35,7 @@ public class AdminRoasterController {
     public String adminAddRoaster(
             HttpServletResponse response,
             @RequestBody DtoRoaster request) {
+        // TODO should refactor here, because fat controller design
         try {
             Doctor doctor = doctorRepository.findById(request.getDoctorId()).orElse(null);
             if(doctor == null){
@@ -70,6 +71,7 @@ public class AdminRoasterController {
     @GetMapping(path = "/by/doctor", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminGetRoaster(@RequestParam(value = "doctorId")
                                           int doctorId) {
+        // TODO should refactor here, because fat controller design
         List<Roaster> roasters = roasterRepository.findByDoctorId(doctorId);
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKey(roasters, "reservations");
@@ -88,6 +90,7 @@ public class AdminRoasterController {
     @GetMapping(path = "/by/hospital", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminGetRoastersByHostpitalId(@RequestParam(value = "hospitalId")
                                                        int hospitalId) {
+        // TODO should refactor here, because fat controller design
         List<Roaster> roasters = roasterRepository.findByHospitalId(hospitalId);
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKeys(roasters,
@@ -109,6 +112,7 @@ public class AdminRoasterController {
     @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditReservation(HttpServletResponse response,
                                        @RequestBody DtoRoaster request) {
+        // TODO should refactor here, because fat controller design
         try {
             Roaster roaster = roasterRepository.findById(request.getId()).orElse(null);
             if (roaster == null) {
@@ -134,6 +138,7 @@ public class AdminRoasterController {
     @PostMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminDeleteRoaster(HttpServletResponse response,
                                      @RequestBody DtoRoaster request) {
+        // TODO should refactor here, because fat controller design
         try {
             Roaster roaster = roasterRepository.findById(request.getId()).orElse(null);
             if (roaster == null) {

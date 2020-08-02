@@ -27,22 +27,10 @@ public class UserController {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
-//    @Autowired
-//    private DoctorRepository doctorRepository;
-
-    @GetMapping(path = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String acHello(@RequestParam String utf8) {
-        return "account hello 中文測試" + utf8;
-    }
-
-    @GetMapping(path = "/all/info", produces = MediaType.APPLICATION_JSON_VALUE) // DEBUG
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
     @GetMapping(path = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getUser(HttpServletResponse response,
                                   @RequestHeader("Authorization") String header) {
+        // TODO should refactor here, because fat controller design
         try {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);
@@ -67,6 +55,7 @@ public class UserController {
             @RequestHeader("Authorization") String header,
             @RequestBody User request
     ) throws Exception {
+        // TODO should refactor here, because fat controller design
         try {
             String token = header.substring(7);
             String username = jwtTokenUtil.getUserNameFromJwtToken(token);

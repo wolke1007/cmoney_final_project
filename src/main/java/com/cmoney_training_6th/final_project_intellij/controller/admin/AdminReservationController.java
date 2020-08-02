@@ -48,6 +48,7 @@ public class AdminReservationController {
     public String adminBookingReservation(
             HttpServletResponse response,
             @RequestBody DtoReservation request) {
+        // TODO should refactor here, because fat controller design
         try {
             Schedule schedule = scheduleRepository.findByDayAndTime(request.getDay(), request.getTime()).orElse(null);
             if (schedule == null) {
@@ -100,6 +101,7 @@ public class AdminReservationController {
 
     @PostMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
     public String adminEditReservation(@RequestBody Reservation request) {
+        // TODO should refactor here, because fat controller design
         Reservation reservation = reservationRepository.findById(request.getId()).get();
         reservation.setUserId(request.getUserId());
         reservation.setPetId(request.getPetId());
@@ -114,6 +116,7 @@ public class AdminReservationController {
             HttpServletResponse response,
             @RequestBody Reservation request
     ) {
+        // TODO should refactor here, because fat controller design
         try {
             Reservation res = reservationRepository.findById(request.getId()).orElse(null); // 確認 id 是否可以找到東西
             if (res == null) {
@@ -136,6 +139,7 @@ public class AdminReservationController {
     public String adminGetAllReservationsByHostpitalId(HttpServletResponse response,
                                                        @RequestParam(value = "hospitalId")
                                                                int hospitalId) {
+        // TODO should refactor here, because fat controller design
         try {
             List<Reservation> reservations = reservationRepository.findReservationByHospitalId(hospitalId);
             JsonIter ji = new JsonIter();
@@ -191,6 +195,7 @@ public class AdminReservationController {
     public String adminGetReservationByDoctorId(
             HttpServletResponse response,
             @RequestParam int doctorId) {
+        // TODO should refactor here, because fat controller design
         try {
             List<Reservation> reservations = reservationRepository.findReservationByDoctorId(doctorId);
             JsonIter ji = new JsonIter();

@@ -25,6 +25,7 @@ public class AdminMedicalRecipeController {
             HttpServletResponse response,
             @RequestBody MedicalRecipe request
     ) {
+        // TODO should refactor here, because fat controller design
         try {
             medicalRecipeRepository.save(request);
             return new CommonResponse("success", 200).toString();
@@ -39,6 +40,7 @@ public class AdminMedicalRecipeController {
             HttpServletResponse response,
             @RequestBody MedicalRecipe request
     ) {
+        // TODO should refactor here, because fat controller design
         try {
             MedicalRecipe medicalRecipe = medicalRecipeRepository.findById(request.getId()).get(); // 確認 id 是否可以找到東西，沒找到會噴掉被 catch
             medicalRecipe.setQuantity(request.getQuantity());
@@ -58,6 +60,7 @@ public class AdminMedicalRecipeController {
             HttpServletResponse response,
             @RequestBody MedicalRecipe request
     ) {
+        // TODO should refactor here, because fat controller design
         try {
             MedicalRecipe medicalRecipe = medicalRecipeRepository.findById(request.getId()).orElse(null); // 確認 id 是否可以找到東西，沒找到會噴掉被 catch
             if(medicalRecipe == null){

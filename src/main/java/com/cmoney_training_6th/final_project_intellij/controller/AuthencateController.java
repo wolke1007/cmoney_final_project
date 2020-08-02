@@ -48,7 +48,7 @@ public class AuthencateController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
     public String createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
+        // TODO should refactor here, because fat controller design
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -74,7 +74,7 @@ public class AuthencateController {
     public String createAdminAuthenticationToken(
             HttpServletResponse response,
             @RequestBody AuthenticationAdminRequest authenticationRequest) throws Exception {
-
+        // TODO should refactor here, because fat controller design
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -113,6 +113,7 @@ public class AuthencateController {
             HttpServletResponse response,
             @RequestBody User request
     ) throws Exception {
+        // TODO should refactor here, because fat controller design
         ValidateParameter checkRole = new ValidateParameter("role", request.getRole());
         if(!checkRole.stringShouldBe("ROLE_USER")
                 .getResult()){
@@ -139,6 +140,7 @@ public class AuthencateController {
             HttpServletResponse response,
             @RequestBody User jsonUser
     ) throws Exception {
+        // TODO should refactor here, because fat controller design
         ValidateParameter checkRole = new ValidateParameter("role", jsonUser.getRole());
         if(!checkRole.stringShouldBe("ROLE_ADMIN")
                 .getResult()){
