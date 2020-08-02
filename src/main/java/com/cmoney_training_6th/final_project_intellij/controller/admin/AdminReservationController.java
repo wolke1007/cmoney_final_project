@@ -3,7 +3,7 @@ package com.cmoney_training_6th.final_project_intellij.controller.admin;
 import com.cmoney_training_6th.final_project_intellij.model.*;
 import com.cmoney_training_6th.final_project_intellij.model.dto.DtoReservation;
 import com.cmoney_training_6th.final_project_intellij.dao.*;
-import com.cmoney_training_6th.final_project_intellij.service.DoctorService;
+import com.cmoney_training_6th.final_project_intellij.implenment.DoctorServiceImpl;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
@@ -28,7 +28,7 @@ public class AdminReservationController {
     @Autowired
     private HospitalRepository hospitalRepository;
     @Autowired
-    private DoctorService doctorService;
+    private DoctorServiceImpl doctorServiceImpl;
     @Autowired
     private RoasterRepository roasterRepository;
     @Autowired

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "recipe")
-public class Recipe {
+@Table(name = "medical_recipe")
+public class MedicalRecipe {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

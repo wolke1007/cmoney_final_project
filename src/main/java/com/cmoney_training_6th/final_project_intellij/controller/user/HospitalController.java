@@ -62,7 +62,7 @@ public class HospitalController {
     public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospitalId")
                                                        int hospitalId) {
         Gson g = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).create();
-        List<Doctor> doctors = doctorService.findByHospitalId(hospitalId);
+        List<Doctor> doctors = doctorService.getDoctorsByHospitalId(hospitalId);
         JsonIter ji = new JsonIter();
         return new CommonResponse(ji.listIntoArray(doctors), 200).toString();
     }

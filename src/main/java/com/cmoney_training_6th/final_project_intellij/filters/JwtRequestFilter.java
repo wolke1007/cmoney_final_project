@@ -1,7 +1,7 @@
 package com.cmoney_training_6th.final_project_intellij.filters;
 
 
-import com.cmoney_training_6th.final_project_intellij.service.MyUserDetailsService;
+import com.cmoney_training_6th.final_project_intellij.implenment.MyUserDetailsServiceImpl;
 import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    private MyUserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;

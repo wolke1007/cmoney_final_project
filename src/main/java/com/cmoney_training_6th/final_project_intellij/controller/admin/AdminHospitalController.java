@@ -3,7 +3,7 @@ package com.cmoney_training_6th.final_project_intellij.controller.admin;
 import com.cmoney_training_6th.final_project_intellij.model.Crew;
 import com.cmoney_training_6th.final_project_intellij.model.Hospital;
 import com.cmoney_training_6th.final_project_intellij.dao.*;
-import com.cmoney_training_6th.final_project_intellij.service.DoctorService;
+import com.cmoney_training_6th.final_project_intellij.implenment.DoctorServiceImpl;
 import com.cmoney_training_6th.final_project_intellij.service.UserService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import com.google.gson.JsonObject;
@@ -25,7 +25,7 @@ public class AdminHospitalController {
     @Autowired
     private CrewRepository crewRepository;
     @Autowired
-    private DoctorService doctorService;
+    private DoctorServiceImpl doctorServiceImpl;
     @Autowired
     private UserService userService;
 
@@ -34,14 +34,6 @@ public class AdminHospitalController {
             HttpServletResponse response,
             @RequestBody Hospital request
     ) {
-//        ValidateParameter checkPassword = new ValidateParameter("password", password);
-//        if(!checkPassword.strLongerThan(50)
-//                .strShorterThan(0)
-//                .getResult()){
-//            response.setStatus(400);
-//            return new CommonResponse(checkPassword,400);
-//        }
-//        // 新增 Doctor
         try {
             Crew crew = new Crew();
             Hospital hospital = hospitalRepository.findByUserId(request.getUserId()).orElse(null);

@@ -23,7 +23,7 @@ public class MedicalItem {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="medical_item_id", referencedColumnName = "id")
-    List<Recipe> recipes = new ArrayList<>();
+    List<MedicalRecipe> medicalRecipes = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -33,12 +33,12 @@ public class MedicalItem {
         this.id = id;
     }
 
-    public List<Recipe> getRecipes() {
-        return recipes;
+    public List<MedicalRecipe> getRecipes() {
+        return medicalRecipes;
     }
 
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
+    public void setRecipes(List<MedicalRecipe> medicalRecipes) {
+        this.medicalRecipes = medicalRecipes;
     }
 
     public String getItemType() {
