@@ -9,6 +9,7 @@ import com.cmoney_training_6th.final_project_intellij.model.User;
 import com.cmoney_training_6th.final_project_intellij.service.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.service.UserService;
 import com.cmoney_training_6th.final_project_intellij.util.JsonIter;
+import com.cmoney_training_6th.final_project_intellij.util.JwtUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -24,11 +25,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private DoctorService doctorService;
-    @Autowired
     private CrewRepository crewRepository;
     @Autowired
     private DoctorRepository doctorRepository;
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
     @Override
     public void add(int hospitalId) {
@@ -49,7 +50,6 @@ public class UserServiceImpl implements UserService {
     public JsonObject getAllCrewByHospitalId(int hospitalId) {
         JsonObject ret = new JsonObject();
         JsonIter ji;
-        Gson g = new Gson();
         ret.add("doctors", new JsonArray());
         ret.add("staffs", new JsonArray());
         List<Crew> crews = crewRepository.findByHospitalId(hospitalId);
@@ -84,5 +84,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return ret;
+    }
+
+    @Override
+    public boolean isExist(String jwt) {
+        String token = jwt.substring(7);
+        String username = jwtTokenUtil.getUserNameFromJwtToken(token);
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user == null){
+            return false;
+        }
+        return true;
     }
 }

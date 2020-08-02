@@ -4,6 +4,7 @@ import com.cmoney_training_6th.final_project_intellij.dao.*;
 import com.cmoney_training_6th.final_project_intellij.model.MedicalRecipe;
 import com.cmoney_training_6th.final_project_intellij.model.MedicalTreatment;
 import com.cmoney_training_6th.final_project_intellij.service.*;
+import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,62 +26,62 @@ public class MedicalServiceImpl implements MedicalService {
     private MedicalRecordRepository medicalRecordRepository;
 
     @Override
-    public void addMedicalItem() {
-
+    public CommonResponse addMedicalItem() {
+        return null;
     }
 
     @Override
-    public void editMedicalItem() {
-
+    public CommonResponse editMedicalItem() {
+        return null;
     }
 
     @Override
-    public void deleteMedicalItem() {
-
+    public CommonResponse deleteMedicalItem() {
+        return null;
     }
 
     @Override
-    public void addMedicalRecipe() {
-
+    public CommonResponse addMedicalRecipe() {
+        return null;
     }
 
     @Override
-    public void editMedicalRecipe() {
-
+    public CommonResponse editMedicalRecipe() {
+        return null;
     }
 
     @Override
-    public void deleteMedicalRecipe() {
-
+    public CommonResponse deleteMedicalRecipe() {
+        return null;
     }
 
     @Override
-    public void addMedicalRecord() {
-
+    public CommonResponse addMedicalTreatment() {
+        return null;
     }
 
     @Override
-    public void editMedicalRecord() {
-
+    public CommonResponse editMedicalTreatment() {
+        return null;
     }
 
     @Override
-    public void deleteMedicalRecord() {
-
+    public CommonResponse deleteMedicalTreatment() {
+        return null;
     }
 
     @Override
-    public void addMedicalTreatment() {
-
+    public CommonResponse addMedicalRecord() {
+        return null;
     }
 
     @Override
-    public void editMedicalTreatment() {
-
+    public CommonResponse editMedicalRecord() {
+        return null;
     }
 
     @Override
-    public void deleteMedicalTreatment() {
-
+    public CommonResponse deleteMedicalRecord() {
+        return null;
     }
 }

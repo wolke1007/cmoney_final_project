@@ -29,7 +29,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         return user.map(MyUserDetails::new).get();
     }
 
-    public static class MyUserDetails implements UserDetails {
+    private static class MyUserDetails implements UserDetails {
 
         private String username;
         private String password;

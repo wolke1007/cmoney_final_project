@@ -1,5 +1,6 @@
 package com.cmoney_training_6th.final_project_intellij.implenment;
 
+import com.cmoney_training_6th.final_project_intellij.controller.FileController;
 import com.cmoney_training_6th.final_project_intellij.controller.user.PetController;
 import com.cmoney_training_6th.final_project_intellij.dao.*;
 import com.cmoney_training_6th.final_project_intellij.model.Pet;
@@ -23,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.lang.reflect.Modifier;
@@ -279,9 +281,13 @@ public class PetServiceImpl implements PetService {
                 JsonObject json = new JsonObject();
                 Resource r = filesStorageService.load(petPhoto.getName());
                 json.addProperty("petId", petId);
-                json.addProperty("URL", MvcUriComponentsBuilder
-                        .fromMethodName(PetServiceImpl.class, "getFile",
-                                r.getFile().toPath().getFileName().toString()).build().toString());
+                UriComponentsBuilder uriComponentsBuilder = MvcUriComponentsBuilder
+                        .fromMethodName(FileController.class, "getFile",
+                                r.getFile().toPath().getFileName().toString());
+                if(uriComponentsBuilder == null){
+                    continue;
+                }
+                json.addProperty("URL", uriComponentsBuilder.build().toString());
                 arr.add(json);
             }
             return new CommonResponse(arr, 200);
@@ -308,9 +314,13 @@ public class PetServiceImpl implements PetService {
                 JsonObject json = new JsonObject();
                 Resource r = filesStorageService.load(petPhoto.getName());
                 json.addProperty("petId", petPhoto.getPetId());
-                json.addProperty("URL", MvcUriComponentsBuilder
-                        .fromMethodName(PetController.class, "getFile",
-                                r.getFile().toPath().getFileName().toString()).build().toString());
+                UriComponentsBuilder uriComponentsBuilder = MvcUriComponentsBuilder
+                        .fromMethodName(FileController.class, "getFile",
+                                r.getFile().toPath().getFileName().toString());
+                if(uriComponentsBuilder == null){
+                    continue;
+                }
+                json.addProperty("URL", uriComponentsBuilder.build().toString());
                 arr.add(json);
             }
             return new CommonResponse(arr, 200);
@@ -321,9 +331,4 @@ public class PetServiceImpl implements PetService {
         }
     }
 
-    private ResponseEntity<Resource> getFile(String filename) {
-        Resource file = filesStorageService.load(filename);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-    }
 }
