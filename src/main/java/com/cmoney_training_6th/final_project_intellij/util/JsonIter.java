@@ -16,19 +16,11 @@ public class JsonIter <T>{
     private Gson g;
 
     public JsonIter(){
-//        this.arr = new JsonArray();
-//        this.json = new JsonObject();
-        // 用 Modifier 可以去除指定的屬性格式不序列化，可避免造成 stack overflow
+        // 用 Modifier 可以去除指定的屬性格式不序列化，可避免如果有實體關聯上有迴圈而造成 stack overflow
         this.g = new GsonBuilder()
                 .excludeFieldsWithModifiers(Modifier.PROTECTED)
                 .create();
     }
-//
-//    public JsonIter(JsonObject json, T obj){
-//        this.json = json;
-//        this.obj = obj;
-//        this.arr = new JsonArray();
-//    }
 
     public JsonArray listIntoArray(List<T> list){
         JsonArray arr = new JsonArray();

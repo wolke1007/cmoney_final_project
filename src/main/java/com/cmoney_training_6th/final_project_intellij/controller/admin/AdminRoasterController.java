@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
-//@Controller // This means that this class is a Controller
 @RestController // 用這個就不用每個 request 加上 ResponsBody 才可以回傳 json
 @RequestMapping(path = "/admin/roaster")
 public class AdminRoasterController {
@@ -63,7 +63,7 @@ public class AdminRoasterController {
             return new CommonResponse(createdRoaster.getId(), 200).toString();
         }  catch (DataIntegrityViolationException e) {
             response.setStatus(404);
-            return new CommonResponse("fail: " + e.getRootCause().getMessage(), 404).toString();
+            return new CommonResponse("fail: " + Objects.requireNonNull(e.getRootCause()).getMessage(), 404).toString();
         }
     }
 
@@ -73,13 +73,9 @@ public class AdminRoasterController {
         List<Roaster> roasters = roasterRepository.findByDoctorId(doctorId);
         JsonIter ji = new JsonIter();
         JsonArray arr = ji.listIntoArrayWithoutKey(roasters, "reservations");
-        int index = 0;
         for (JsonElement json : arr) {
             int scheduleId = json.getAsJsonObject().get("scheduleId").getAsInt();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
-//            String time = schedule.getDay() + " " + schedule.getTime();
-//            json.getAsJsonObject().addProperty("time", time);
-//            json.getAsJsonObject().remove("scheduleId");
             Doctor doctor = doctorRepository.findById(json.getAsJsonObject().get("doctorId").getAsInt()).orElse(null);
             User user = userRepository.findById(doctor.getUserId()).orElse(null);
             json.getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
@@ -98,21 +94,14 @@ public class AdminRoasterController {
                 Arrays.asList("scheduleId", "reservations"));
         int index = 0;
         for (Roaster roaster : roasters) {
-            int roaId = roaster.getId();
             int scheduleId = roaster.getScheduleId();
             Schedule schedule = scheduleRepository.findById(scheduleId).get();
-//            String time = schedule.getDay() + " " + schedule.getTime();
-//            json.getAsJsonObject().addProperty("time", time);
-//            json.getAsJsonObject().remove("scheduleId");
             Doctor doctor = doctorRepository.findById(roaster.getDoctorId()).orElse(null);
             User user = userRepository.findById(doctor.getUserId()).orElse(null);
-//            for (JsonElement je : arr) {
-//                je.getAsJsonObject().addProperty("time", time);
             arr.get(index).getAsJsonObject().addProperty("doctorName", user.getLastName()+user.getFirstName());
             arr.get(index).getAsJsonObject().addProperty("day", schedule.getDay());
             arr.get(index).getAsJsonObject().addProperty("time", schedule.getTime());
             index++;
-//            }
         }
         return new CommonResponse(arr, 200).toString();
     }

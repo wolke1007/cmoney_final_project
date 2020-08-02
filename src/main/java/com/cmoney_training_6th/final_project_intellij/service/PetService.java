@@ -1,7 +1,21 @@
 package com.cmoney_training_6th.final_project_intellij.service;
 
+import com.cmoney_training_6th.final_project_intellij.model.Pet;
+import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import org.springframework.web.multipart.MultipartFile;
+
 public interface PetService {
-    public abstract void add(int hospitalId);
-    public abstract void edit(int doctorId);
-    public abstract void delete(int doctorId);
+    CommonResponse add(Pet newPet);
+    CommonResponse add(String jwt, Pet newPet);
+    CommonResponse edit(Pet petEdit);
+    CommonResponse edit(String jwt, Pet petEdit);
+    CommonResponse delete(Pet petDelete);
+    CommonResponse delete(String jwt, Pet petDelete);
+    CommonResponse getAll();
+    CommonResponse getByUserId(int userId);
+    CommonResponse getByHospitalId(int hospitalId);
+    CommonResponse getByToken(String jwt);
+    CommonResponse uploadPetPhoto(String jwt, MultipartFile file, int petId);
+    CommonResponse getPhotoByPetId(int petId);
+    CommonResponse getPhotosByToken(String jwt);
 }
