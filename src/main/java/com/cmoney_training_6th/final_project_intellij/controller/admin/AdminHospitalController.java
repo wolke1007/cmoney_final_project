@@ -4,8 +4,10 @@ import com.cmoney_training_6th.final_project_intellij.model.Crew;
 import com.cmoney_training_6th.final_project_intellij.model.Hospital;
 import com.cmoney_training_6th.final_project_intellij.dao.*;
 import com.cmoney_training_6th.final_project_intellij.implenment.DoctorServiceImpl;
+import com.cmoney_training_6th.final_project_intellij.service.DoctorService;
 import com.cmoney_training_6th.final_project_intellij.service.UserService;
 import com.cmoney_training_6th.final_project_intellij.util.CommonResponse;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,7 +27,7 @@ public class AdminHospitalController {
     @Autowired
     private CrewRepository crewRepository;
     @Autowired
-    private DoctorServiceImpl doctorServiceImpl;
+    private DoctorService doctorService;
     @Autowired
     private UserService userService;
 
@@ -56,11 +58,12 @@ public class AdminHospitalController {
         }
     }
 
-    @GetMapping(path = "/crews", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public String getDoctorDetailByHostpitalId(@RequestParam(value = "hospitalId")
+    @GetMapping(path = "/all_crew", produces = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
+    public String getAllCrewByHostpitalId(@RequestParam(value = "hospitalId")
                                                        int hospitalId) {
         JsonObject json;
-        json = userService.findCrewByHospitalId(hospitalId);
+        Gson g = new Gson();
+        json = g.toJsonTree(userService.getAllCrewByHospitalId(hospitalId)).getAsJsonObject();
         return new CommonResponse(json, 200).toString();
     }
 }
